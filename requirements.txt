@@ -3,3 +3,4 @@ Django==5.0
 Pillow==10.1.0
 segno==1.6.0
 sqlparse==0.4.4
+six==1.16.0
