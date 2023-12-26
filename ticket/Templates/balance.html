@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balance</title>
+</head>
+<body>
+    <h1>Balance</h1>
+    {% if user.is_verified %}
+    <p>Hi, {{request.session.fname}}</p>
+    <br>
+    <br>
+    <p>Your balance is:  {{request.session.balance}}</p>
+    {% endif %}
+</body>
+</html>

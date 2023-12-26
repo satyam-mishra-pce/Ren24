@@ -4,7 +4,7 @@ from config import settings
 from .models import *
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password,check_password
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout,authenticate
 from django.core.mail import EmailMessage, send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -40,7 +40,8 @@ def register(request):
             return redirect('home')
         
         # create a new user object with the input data
-        myuser = User.objects.create(email=email, first_name=fname,last_name=lname,password=make_password(pass1))
+        myuser = User.objects.create(email=email, first_name=fname,last_name=lname,password=pass1)
+        myuser.set_password(pass1)
         myuser.save()
         
         # return a success message
@@ -86,19 +87,14 @@ def signin(request):
         user=User.objects.filter(email=email)
         if user.exists():
             if (user[0].is_verified==True):
-                if check_password(password ,user[0].password):
-                    # print(user[0].userid)
-                    # payload={
-                    #     "id":str(user[0].userid),
-                    #     "exp":datetime.datetime.utcnow()+datetime.timedelta(minutes=60),
-                    #     "iat":datetime.datetime.utcnow()
-                    # }
-                    # token=jwt.encode(payload,"secret",algorithm='HS256')
-                    # return Response({"message": "LogIn sucessful!","jwt":token}, status=200)
+                myuser=authenticate(request,email=email,password=password)
+                if myuser is not None:
                     login(request,user[0])
-                    fname=user[0].first_name
                     messages.success(request,"Logged IN Sucessfully")
-                    return render(request,"index.html",{'fname':fname})
+                    request.session['fname'] = user[0].first_name
+                    request.session['is_verified'] = user[0].is_verified
+                    request.session['id'] = user[0].pk
+                    return redirect('home')
                 else:
                     # return Response({"message": "Incorrect password!"}, status=400)      
                     messages.error(request, "Incorrect Password")
@@ -115,35 +111,6 @@ def signin(request):
         return render(request,"login.html")
 
 
-def profile(request, username):
-    # get the profile object that matches the username or raise a 404 error
-    profile = get_object_or_404(Profile, userid__username=username)
-    # check if the request is a POST method
-    if request.method == 'POST':
-        # get the input data from the request
-        avatar = request.FILES.get('avatar')
-        phone = request.POST.get('phone')
-        dob = request.POST.get('dob')
-        sem = request.POST.get('sem')
-        college = request.POST.get('college')
-        address = request.POST.get('address')
-        # update the profile object with the input data
-        profile.avatar = avatar
-        profile.phone = phone
-        profile.dob = dob
-        profile.sem = sem
-        profile.college = college
-        profile.address = address
-        # save the profile object
-        profile.save()
-        # display a success message
-        messages.success(request, 'Profile updated successfully.')
-    # create a context dictionary that contains the profile object
-    context = {
-        'profile': profile
-    }
-    # render the profile.html template with the context dictionary and return the response
-    return render(request, 'profile.html', context)
 
 def signout(request):
     logout(request)
@@ -160,6 +127,7 @@ def activate(request, uidb64, token):
     if myuser is not None and generate_token.check_token(myuser,token):
         myuser.is_verified=True
         myuser.save()
+        Wallet.objects.create(userid=myuser)
         login(request,myuser)
         messages.success(request, "Your Account has been activated!!")
         return redirect('signin')

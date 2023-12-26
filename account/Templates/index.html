@@ -12,7 +12,7 @@
             <a href="#">Home</a>
             <a href="#">About</a>
             <a href="#">Services</a>
-            <a href="#">Balance</a>
+            <a href="{% url 'balance' %}">Balance</a>
         </div>
     </header>
 
@@ -29,8 +29,8 @@
     <h3>Welcome, </h3>
 
 
-    {% if user.is_verified %}
-    <h3>Hello {{fname}}!</h3>
+    {% if request.session.is_verified %}
+    <h3>Hello {{request.session.fname}}!</h3>
     <h4>You're successfully logged in.</h4>
     <button type="submit"><a href="/signout">SignOut</a></button>
     {% else %}
