@@ -40,8 +40,7 @@ def register(request):
             return redirect('home')
         
         # create a new user object with the input data
-        myuser = User.objects.create(email=email, first_name=fname,last_name=lname,password=pass1)
-        myuser.set_password(pass1)
+        myuser = User.objects.create_user(email=email, first_name=fname,last_name=lname,is_active=False)
         myuser.save()
         
         # return a success message
@@ -84,17 +83,18 @@ def signin(request):
     if request.method=="POST":
         email = request.POST.get('email')
         password = request.POST.get('pass1')
-        user=User.objects.filter(email=email)
-        print(user[0].id)
-        if user.exists():
-            if (user[0].is_verified==True):
-                myuser=authenticate(request,id=user[0].id,password=password)
+        user=User.objects.get(email=email)
+        print(user,password)
+        if user:
+            if (user.is_active==True):
+                myuser=authenticate(id=user.id, password=password)
+                print(myuser)
                 if myuser is not None:
-                    login(request,user[0])
+                    login(request,user)
                     messages.success(request,"Logged IN Sucessfully")
-                    request.session['fname'] = user[0].first_name
-                    request.session['is_verified'] = user[0].is_verified
-                    request.session['id'] = user[0].pk
+                    # request.session['fname'] = user[0].first_name
+                    # request.session['is_verified'] = user[0].is_verified
+                    # request.session['id'] = user[0].pk
                     return redirect('home')
                 else:
                     # return Response({"message": "Incorrect password!"}, status=400)      
@@ -126,7 +126,7 @@ def activate(request, uidb64, token):
         myuser= None
         
     if myuser is not None and generate_token.check_token(myuser,token):
-        myuser.is_verified=True
+        myuser.is_active=True
         myuser.save()
         Wallet.objects.create(userid=myuser)
         login(request,myuser)

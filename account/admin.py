@@ -2,7 +2,8 @@ from django.contrib import admin
 from .models import *
 
 class UserAdmin(admin.ModelAdmin):
-    readonly_fields=('userid','is_verified','last_login')
+    list_display=('id','first_name','last_name','email','last_login')
+    readonly_fields=('userid','last_login')
     
 class WalletAdmin(admin.ModelAdmin):
     list_display=('userid','walletid')
