@@ -40,7 +40,7 @@ def register(request):
             return redirect('home')
         
         # create a new user object with the input data
-        myuser = User.objects.create(email=email, first_name=fname,last_name=lname,password=pass1)
+        myuser = User.objects.create(email=email, first_name=fname,last_name=lname,password=pass1,username=email)
         myuser.set_password(pass1)
         myuser.save()
         
@@ -85,10 +85,11 @@ def signin(request):
         email = request.POST.get('email')
         password = request.POST.get('pass1')
         user=User.objects.filter(email=email)
-        print(user[0].id)
+        
         if user.exists():
             if (user[0].is_verified==True):
-                myuser=authenticate(request,id=user[0].id,password=password)
+                myuser=authenticate(request,username=user[0].username,password=password)
+                print(myuser)
                 if myuser is not None:
                     login(request,user[0])
                     messages.success(request,"Logged IN Sucessfully")

@@ -6,12 +6,21 @@
     <title>Balance</title>
 </head>
 <body>
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        <strong>Message:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+    </div>
+    {% endfor %}
     <h1>Balance</h1>
     {% if user.is_verified %}
     <p>Hi, {{request.session.fname}}</p>
     <br>
     <br>
     <p>Your balance is:  {{request.session.balance}}</p>
+    <a href="{% url 'payment' %}">Add balance</a>
     {% endif %}
 </body>
 </html>
