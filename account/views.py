@@ -91,11 +91,11 @@ def signin(request):
                 myuser=authenticate(request,username=user[0].username,password=password)
                 print(myuser)
                 if myuser is not None:
-                    login(request,user[0])
+                    login(request,user)
                     messages.success(request,"Logged IN Sucessfully")
-                    request.session['fname'] = user[0].first_name
-                    request.session['is_verified'] = user[0].is_verified
-                    request.session['id'] = user[0].pk
+                    # request.session['fname'] = user[0].first_name
+                    # request.session['is_verified'] = user[0].is_verified
+                    # request.session['id'] = user[0].pk
                     return redirect('home')
                 else:
                     # return Response({"message": "Incorrect password!"}, status=400)      
@@ -127,7 +127,7 @@ def activate(request, uidb64, token):
         myuser= None
         
     if myuser is not None and generate_token.check_token(myuser,token):
-        myuser.is_verified=True
+        myuser.is_active=True
         myuser.save()
         Wallet.objects.create(userid=myuser)
         login(request,myuser)
