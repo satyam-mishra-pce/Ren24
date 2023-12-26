@@ -128,9 +128,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+<<<<<<< HEAD
 STATIC_URL = 'account/Templates/static/'
 # STATICFILES_DIRS = [BASE_DIR / 'account/Templates/static/']
 # STATIC_ROOT = os.path.join(BASE_DIR, 'account/Templates/static/')
+=======
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
+STATICFILES_DIRS = [BASE_DIR / 'account/Templates/static/']
+>>>>>>> ebe6332be769237ea83c5c5aa31d8020620dea99
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
