@@ -85,9 +85,10 @@ def signin(request):
         email = request.POST.get('email')
         password = request.POST.get('pass1')
         user=User.objects.filter(email=email)
+        print(user[0].id)
         if user.exists():
             if (user[0].is_verified==True):
-                myuser=authenticate(request,email=email,password=password)
+                myuser=authenticate(request,id=user[0].id,password=password)
                 if myuser is not None:
                     login(request,user[0])
                     messages.success(request,"Logged IN Sucessfully")
