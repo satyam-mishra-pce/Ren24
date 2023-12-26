@@ -15,11 +15,8 @@ from django.contrib import messages
 @login_required(login_url='signin')
 def balance(request):
     # load only the balance field and defer the rest
-    print(request.user)
-    print(request.user.id)
     wallet = Wallet.objects.only('balance').get(userid__id=request.user.id)
     request.session['balance'] = wallet.balance
-    print(request.session.get('balance'))
     return render(request,'balance.html')
 
 @login_required(login_url='signin')
@@ -32,15 +29,12 @@ razorpay_client = razorpay.Client(
 
 @login_required(login_url='signin')
 def paymentpage(request):
-    print(request.POST)
     currency = 'INR'
     amount = request.POST.get('amount') # Rs. 200
     if amount is None:
         amount=100
-        print('hi')
     else:
         amount=int(float(amount)*100)
-        print(amount)
 
     # Create a Razorpay Order
     razorpay_order = razorpay_client.order.create(dict(amount=amount,
@@ -71,7 +65,6 @@ def paymentpage(request):
 @login_required(login_url='signin')
 @csrf_exempt
 def paymenthandler(request):
-    print(request.POST)
 
     # only accept POST request.
     if request.method == "POST":
