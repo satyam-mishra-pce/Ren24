@@ -91,9 +91,6 @@ def signin(request):
                 if myuser is not None:
                     login(request,user)
                     messages.success(request,"Logged IN Sucessfully")
-                    request.session['fname'] = user.first_name
-                    request.session['is_verified'] = user.is_verified
-                    request.session['id'] = user.pk
                     return redirect('home')
                 else:
                     # return Response({"message": "Incorrect password!"}, status=400)      
