@@ -40,8 +40,8 @@ def register(request):
             return redirect('home')
         
         # create a new user object with the input data
-        myuser = User.objects.create(email=email, first_name=fname,last_name=lname,password=pass1,username=email)
-        myuser.set_password(pass1)
+        myuser = User.objects.create_user(email=email, first_name=fname,last_name=lname,password=pass1,is_active=False)
+        # myuser.set_password(pass1)
         myuser.save()
         
         # return a success message
@@ -59,7 +59,6 @@ def register(request):
         current_site = get_current_site(request)
         email_subject = "Confirm your Email @Ren2024"
         message2 = render_to_string('email_confirmation.html',{
-            
             'name': myuser.first_name,
             'domain': current_site.domain,
             'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
@@ -84,17 +83,17 @@ def signin(request):
     if request.method=="POST":
         email = request.POST.get('email')
         password = request.POST.get('pass1')
-        user=User.objects.filter(email=email)
+        user=User.objects.get(email=email)
         
-        if user.exists():
-            if (user[0].is_verified==True):
-                myuser=authenticate(request,username=user[0].username,password=password)
+        if user:
+            if (user.is_active==True):
+                myuser=authenticate(id=user.id,password=password)
                 if myuser is not None:
-                    login(request,user[0])
+                    login(request,user)
                     messages.success(request,"Logged IN Sucessfully")
-                    request.session['fname'] = user[0].first_name
-                    request.session['is_verified'] = user[0].is_verified
-                    request.session['id'] = user[0].pk
+                    request.session['fname'] = user.first_name
+                    request.session['is_verified'] = user.is_verified
+                    request.session['id'] = user.pk
                     return redirect('home')
                 else:
                     # return Response({"message": "Incorrect password!"}, status=400)      
@@ -126,7 +125,7 @@ def activate(request, uidb64, token):
         myuser= None
         
     if myuser is not None and generate_token.check_token(myuser,token):
-        myuser.is_verified=True
+        myuser.is_active=True
         myuser.save()
         Wallet.objects.create(userid=myuser)
         login(request,myuser)
