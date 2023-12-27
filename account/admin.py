@@ -24,7 +24,7 @@ class AccountAdmin(UserAdmin):
     
     list_display=('id','first_name','last_name','email','last_login')
     search_fields = ["email","id","first_name"]
-    readonly_fields = ['userid','is_verified',"date_joined","last_login"]
+    readonly_fields = ['userid',"date_joined","last_login"]
     filter_horizontal = ()
     list_filter = ()
     fieldsets = ()

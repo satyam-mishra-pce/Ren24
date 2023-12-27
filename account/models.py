@@ -13,7 +13,7 @@ class User(AbstractUser):
     email=models.EmailField(max_length=200)
     first_name=models.CharField(max_length=200)
     last_name=models.CharField(max_length=200)
-    is_verified=models.BooleanField(default=False,editable=True)
+    # is_verified=models.BooleanField(default=False,editable=True)
     
     objects = UserManager()
     
