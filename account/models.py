@@ -34,6 +34,9 @@ class Profile(models.Model):
     address=models.CharField(max_length=200)
 
 class Wallet(models.Model):
-    userid=models.ForeignKey(User, on_delete=models.CASCADE)
+    # userid=models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(to='User',on_delete=models.CASCADE)
     walletid=models.UUIDField(default=uuid.uuid4,primary_key=True,unique=True,editable=False)
     balance = models.IntegerField(default=0)
+    def __str__(self) -> str:
+        return self.user.email

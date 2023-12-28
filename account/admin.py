@@ -31,10 +31,21 @@ class AccountAdmin(UserAdmin):
     ordering =()
     
 class WalletAdmin(admin.ModelAdmin):
-    list_display=('userid','walletid')
-    readonly_fields=('userid','walletid','balance')
+    list_display=('get_username','get_email','walletid')
+    readonly_fields=('user','walletid')
+    
+    def get_email(self,obj):
+        return obj.user.email 
+    
+    def get_username(self,obj):
+        return f'{obj.user.first_name} {obj.user.last_name}'
+    
+    get_email.short_description = "Email"
+    get_email.admin_order_field = "user__email"
+    get_username.short_description = "Name"
+    get_username.admin_order_field = "user__first_name"
 # Register your models here.
 
 admin.site.register(User,AccountAdmin)
 admin.site.register(Profile)
-admin.site.register(Wallet)
+admin.site.register(Wallet,WalletAdmin)

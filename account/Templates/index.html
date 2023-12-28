@@ -29,7 +29,7 @@
     <h3>Welcome, </h3>
 
 
-    {% if request.session.is_verified %}
+    {% if request.user.is_authenticated %}
     <h3>Hello {{request.session.fname}}!</h3>
     <h4>You're successfully logged in.</h4>
     <button type="submit"><a href="/signout">SignOut</a></button>

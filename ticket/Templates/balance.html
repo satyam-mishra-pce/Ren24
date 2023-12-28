@@ -15,11 +15,11 @@
     </div>
     {% endfor %}
     <h1>Balance</h1>
-    {% if user.is_verified %}
-    <p>Hi, {{request.session.fname}}</p>
+    {% if request.user.is_authenticated  %}
+    <p>Hi, {{request.user.first_name }}</p>
     <br>
     <br>
-    <p>Your balance is:  {{request.session.balance}}</p>
+    <p>Your balance is:  {{request.user.wallet.balance}}</p>
     <a href="{% url 'payment' %}">Add balance</a>
     {% endif %}
 </body>

@@ -15,7 +15,7 @@ from django.contrib import messages
 @login_required(login_url='signin')
 def balance(request):
     # load only the balance field and defer the rest
-    wallet = Wallet.objects.only('balance').get(userid__id=request.user.id)
+    wallet = Wallet.objects.only('balance').get(user__id=request.user.id)
     request.session['balance'] = wallet.balance
     return render(request,'balance.html')
 
@@ -40,7 +40,10 @@ def paymentpage(request):
     razorpay_order = razorpay_client.order.create(dict(amount=amount,
                                                     currency=currency,
                                                     payment_capture='0'))
-    RazorpayPayments.objects.create(order_id=razorpay_order['id'],amount=amount//100,userid=request.user)
+    RazorpayPayments.objects.create(order_id=razorpay_order['id'],
+                                    amount=amount//100,
+                                    user=request.user,
+                                    type="credit")
     # order id of newly created order.
     razorpay_order_id = razorpay_order['id']
     callback_url = 'paymenthandler/'

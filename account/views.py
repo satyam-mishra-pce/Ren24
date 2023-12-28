@@ -29,8 +29,6 @@ def register(request):
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
         
-        # validate the input data
-        
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email Already Registered!!")
             return redirect('home')
@@ -39,9 +37,11 @@ def register(request):
             messages.error(request, "Passwords didn't matched!!")
             return redirect('home')
         
-        # create a new user object with the input data
-        myuser = User.objects.create_user(email=email, first_name=fname,last_name=lname,password=pass1,is_active=False)
-        # myuser.set_password(pass1)
+        myuser = User.objects.create_user(email=email, 
+                                          first_name=fname,
+                                          last_name=lname,
+                                          password=pass1,
+                                          is_active=False)
         myuser.save()
         
         # return a success message
@@ -83,9 +83,10 @@ def signin(request):
     if request.method=="POST":
         email = request.POST.get('email')
         password = request.POST.get('pass1')
-        user=User.objects.get(email=email)
+        user=User.objects.filter(email=email)
         
-        if user:
+        if user.exists():
+            user = user.first()
             if (user.is_active==True):
                 myuser=authenticate(id=user.id,password=password)
                 if myuser is not None:
@@ -124,7 +125,7 @@ def activate(request, uidb64, token):
     if myuser is not None and generate_token.check_token(myuser,token):
         myuser.is_active=True
         myuser.save()
-        Wallet.objects.create(userid=myuser)
+        Wallet.objects.create(user=myuser)
         login(request,myuser)
         messages.success(request, "Your Account has been activated!!")
         return redirect('signin')
