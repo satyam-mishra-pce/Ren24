@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
+import razorpay
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -60,7 +62,8 @@ AUTH_USER_MODEL = 'account.User'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.abspath(os.path.dirname(__file__)+"/../account/Templates"),os.path.abspath(os.path.dirname(__file__)+"/../ticket/Templates")],
+        'DIRS': [os.path.join(BASE_DIR,"account","templates"),
+                 os.path.join(BASE_DIR,"ticket","templates"),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -132,7 +135,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'account/Templates/static/'
+STATIC_URL = '/static/'
 # STATICFILES_DIRS = [BASE_DIR / 'account/Templates/static/']
 # STATIC_ROOT = os.path.join(BASE_DIR, 'account/Templates/static/')
 
@@ -155,3 +158,6 @@ EMAIL_USE_SSL=False
 
 RAZOR_KEY_ID='rzp_test_9JEwuZhaVvyqhU'
 RAZOR_KEY_SECRET='sXqXAI5Cz3PY4vmQEwgUzCxH'
+
+RAZORPAY_CLIENT = razorpay.Client(
+	auth=(RAZOR_KEY_ID, RAZOR_KEY_SECRET))

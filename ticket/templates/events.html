@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>events</title>
+
+</head>
+<body>
+
+
+    {% for event in events %}
+    <div>
+        <h2>{{ event.name }}</h2>
+        <p>Type: {{ event.type }}</p>
+        <p>Description: {{ event.description }}</p>
+        <p>Amount: {{ event.money }} coins</p>
+        <form method="post" action="{% url 'purchase_ticket' event_id=event.id %}">
+            {% csrf_token %}
+            <input type="submit" value="Pay">
+        </form>
+    </div>
+    {% endfor %}
+</body>
+</html>

@@ -1,6 +1,6 @@
 import json
 import time
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest,HttpResponse
 from django.shortcuts import redirect, render
 from account.models import User,Wallet
 from django.contrib.auth.decorators import login_required
@@ -8,8 +8,9 @@ import razorpay
 from django.db import transaction
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
-from config import settings
+from config.settings import RAZORPAY_CLIENT,RAZOR_KEY_ID
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
 # Create your views here.
 
 @login_required(login_url='signin')
@@ -23,10 +24,6 @@ def balance(request):
 def payment(request):
     return render(request,'payment.html')
 
-
-razorpay_client = razorpay.Client(
-	auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
-
 @login_required(login_url='signin')
 def paymentpage(request):
     currency = 'INR'
@@ -37,7 +34,7 @@ def paymentpage(request):
         amount=int(float(amount)*100)
 
     # Create a Razorpay Order
-    razorpay_order = razorpay_client.order.create(dict(amount=amount,
+    razorpay_order = RAZORPAY_CLIENT.order.create(dict(amount=amount,
                                                     currency=currency,
                                                     payment_capture='0'))
     RazorpayPayments.objects.create(order_id=razorpay_order['id'],
@@ -51,7 +48,7 @@ def paymentpage(request):
     # we need to pass these details to frontend.
     context = {}
     context['razorpay_order_id'] = razorpay_order_id
-    context['razorpay_merchant_key'] = settings.RAZOR_KEY_ID
+    context['razorpay_merchant_key'] = RAZOR_KEY_ID
     context['razorpay_amount'] = amount
     context['currency'] = currency
     context['callback_url'] = callback_url 
@@ -84,7 +81,7 @@ def paymenthandler(request):
             }
 
             # verify the payment signature.
-            result = razorpay_client.utility.verify_payment_signature(params_dict)
+            result = RAZORPAY_CLIENT.utility.verify_payment_signature(params_dict)
             if result is True:
                 paymentobj = RazorpayPayments.objects.get(order_id=razorpay_order_id)
                 amount=paymentobj.amount*100
@@ -96,7 +93,7 @@ def paymenthandler(request):
                     user_wallet.save()
                     
                     # capture the payment
-                    razorpay_client.payment.capture(payment_id, amount)
+                    RAZORPAY_CLIENT.payment.capture(payment_id, amount)
                     
                     # render success page on successful capture of payment
                     paymentobj.is_paid=True
@@ -123,3 +120,32 @@ def paymenthandler(request):
         # if other than POST request is made.
         return HttpResponseBadRequest()
     
+@login_required
+def qr(request):
+        try:
+            ticket = Ticket.objects.get(user=request.user)
+            context = {'qr_code': ticket.qr_code}
+            return render(request, 'qr.html', context)
+        except Ticket.DoesNotExist:
+            ticket = None
+            return HttpResponse("please purchase ticket")
+        
+@login_required
+def purchase_ticket(request, event_id):
+    event_instance = get_object_or_404(Event, id=event_id)
+    user_wallet = Wallet.objects.get(user=request.user)
+
+    if user_wallet.balance >= event_instance.cost:
+
+        user_wallet.balance -= event_instance.cost
+        user_wallet.save()
+        messages.success(request, f"payment have been successful collect ur qr from the below link")
+        tickets = Ticket.objects.create(user =request.user, event=event_instance)
+        return redirect('success')
+    else:
+        messages.error(request, "insufficient balance")
+        return render(request, 'events.html')
+
+def event(request):
+    events = Event.objects.all()
+    return render(request, 'events.html', {'events': events})

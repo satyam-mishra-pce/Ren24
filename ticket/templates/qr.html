@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>qr</title>
+</head>
+<body>
+
+    {% if qr_code %}
+        <img src="{{ MEDIA_URL }}{{ qr_code.url }}" alt="QR Code">
+    {% else %}
+        <p>{{ error_message }}</p>
+    {% endif %}</body>
+</html>
