@@ -4,27 +4,31 @@ from django.http import HttpResponseBadRequest,HttpResponse
 from django.shortcuts import redirect, render
 from account.models import User,Wallet
 from django.contrib.auth.decorators import login_required
-import razorpay
-from django.db import transaction
+# from django.db import transaction
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
 from config.settings import RAZORPAY_CLIENT,RAZOR_KEY_ID
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
+from PIL import Image
+import qrcode
+from io import  BytesIO
+import base64
+from PIL import ImageDraw, ImageFont
 # Create your views here.
 
-@login_required(login_url='signin')
+@login_required
 def balance(request):
     # load only the balance field and defer the rest
     wallet = Wallet.objects.only('balance').get(user__id=request.user.id)
     request.session['balance'] = wallet.balance
     return render(request,'balance.html')
 
-@login_required(login_url='signin')
+@login_required
 def payment(request):
     return render(request,'payment.html')
 
-@login_required(login_url='signin')
+@login_required
 def paymentpage(request):
     currency = 'INR'
     amount = request.POST.get('amount') # Rs. 200
@@ -37,7 +41,7 @@ def paymentpage(request):
     razorpay_order = RAZORPAY_CLIENT.order.create(dict(amount=amount,
                                                     currency=currency,
                                                     payment_capture='0'))
-    RazorpayPayments.objects.create(order_id=razorpay_order['id'],
+    Transaction.objects.create(order_id=razorpay_order['id'],
                                     amount=amount//100,
                                     user=request.user,
                                     type="credit")
@@ -62,7 +66,7 @@ def paymentpage(request):
 # we need to csrf_exempt this url as
 # POST request will be made by Razorpay
 # and it won't have the csrf token.
-@login_required(login_url='signin')
+@login_required
 @csrf_exempt
 def paymenthandler(request):
 
@@ -83,11 +87,11 @@ def paymenthandler(request):
             # verify the payment signature.
             result = RAZORPAY_CLIENT.utility.verify_payment_signature(params_dict)
             if result is True:
-                paymentobj = RazorpayPayments.objects.get(order_id=razorpay_order_id)
+                paymentobj = Transaction.objects.get(order_id=razorpay_order_id)
                 amount=paymentobj.amount*100
                 try:
                     # # get the user's wallet
-                    user_wallet = Wallet.objects.get(userid=request.user)
+                    user_wallet = Wallet.objects.get(user=request.user)
                     # update the wallet balance
                     user_wallet.balance += amount//100
                     user_wallet.save()
@@ -100,7 +104,8 @@ def paymenthandler(request):
                     messages.success(request,"Payment Sucessful!!")
                     time.sleep(5)
                     return redirect('home')
-                except:
+            
+                except Exception as e:
 
                     # if there is an error while capturing payment.
                     messages.success(request,"Payment Fail!!")
@@ -121,11 +126,29 @@ def paymenthandler(request):
         return HttpResponseBadRequest()
     
 @login_required
-def qr(request):
+def qr(request,ticketId):
         try:
-            ticket = Ticket.objects.get(user=request.user)
-            context = {'qr_code': ticket.qr_code}
-            return render(request, 'qr.html', context)
+            ticket = Ticket.objects.filter(user=request.user,id=ticketId)
+            if(ticket.exists()):
+                ticket = ticket.first()
+                qr_image = qrcode.make(str(ticket.id))
+                bg = Image.new("RGB", (300,400), "white")
+                bg.paste(qr_image,(50,50))
+                font = ImageFont.truetype(font='roboto',size=36)
+                text =f"{request.user.first_name} {request.user.first_name}"
+                # textwidth, textheight = draw.textsize(,font)
+                draw = ImageDraw.Draw(bg)
+                margin = 10
+                x = 100
+                y = 200
+
+                # draw watermark in the bottom right corner
+                draw.text((x,y),text,font=font)
+                
+                fp = BytesIO()
+                draw.save(fp, "PNG")
+                context = {'qr_code': base64.b64encode(fp.getvalue()).decode('utf-8')}
+                return render(request, 'qr.html', context)
         except Ticket.DoesNotExist:
             ticket = None
             return HttpResponse("please purchase ticket")
@@ -140,7 +163,11 @@ def purchase_ticket(request, event_id):
         user_wallet.balance -= event_instance.cost
         user_wallet.save()
         messages.success(request, f"payment have been successful collect ur qr from the below link")
-        tickets = Ticket.objects.create(user =request.user, event=event_instance)
+        Transaction.objects.create(user=request.user,
+                                   amount=event_instance.cost,
+                                   type="debit",
+                                   is_paid=True,)
+        Ticket.objects.create(user =request.user, event=event_instance)
         return redirect('success')
     else:
         messages.error(request, "insufficient balance")

@@ -7,7 +7,7 @@
 <body>
 
     {% if qr_code %}
-        <img src="{{ MEDIA_URL }}{{ qr_code.url }}" alt="QR Code">
+    <img src="data:image/png;base64,{{qr_code}}" alt="Ticket"/>
     {% else %}
         <p>{{ error_message }}</p>
     {% endif %}</body>

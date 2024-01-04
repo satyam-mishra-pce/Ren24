@@ -59,6 +59,9 @@ AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
 ROOT_URLCONF = 'config.urls'
 AUTH_USER_MODEL = 'account.User'
 
+LOGIN_URL = 'sigin'
+LOGOUT_URL = 'signout'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -109,15 +112,54 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = "account.User" 
 
-PASSWORD_HASHERS = [
-    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
-    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
-    "django.contrib.auth.hashers.Argon2PasswordHasher",
-    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
-    "django.contrib.auth.hashers.ScryptPasswordHasher",
-]
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers":False,
+#     'formatters': {
+#         'verbose': {
+#             'format': "[%(asctime)s] %(levelname)s [%(filename)s:%(lineno)s] %(message)s",
+#             'datefmt': "%Y/%b/%d %H:%M:%S"
+#         },
+#         'simple': {
+#             'format': '%(levelname)s %(message)s'
+#         },
+#     },
+#     "handlers": {
+#         'admin': {
+#             'level': 'INFO',
+#             'class': 'logging.FileHandler',
+#             'filename': BASE_DIR / 'debug.log',
+#             'formatter': 'verbose',
+#         },
+#         'errors': {
+#             'level': 'ERROR',
+#             'class': 'logging.FileHandler',
+#             'filename': BASE_DIR / 'errors.log',
+#             'formatter': 'verbose',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['admin'],
+#             'level': 'INFO',
+#             'propagate': True,
+#         },
+#         'django': {
+#             'handlers': ['errors'],
+#             'level': 'ERROR',
+#             'propagate': True,
+#         },
+#     },
+# }
+
+# PASSWORD_HASHERS = [
+#     "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+#     "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+#     "django.contrib.auth.hashers.Argon2PasswordHasher",
+#     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+#     "django.contrib.auth.hashers.ScryptPasswordHasher",
+# ]
 
 
 # Internationalization
@@ -136,8 +178,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [BASE_DIR / 'account/Templates/static/']
-# STATIC_ROOT = os.path.join(BASE_DIR, 'account/Templates/static/')
+STATICFILES_DIRS = [os.path.join(BASE_DIR,"account","static"),
+                 os.path.join(BASE_DIR,"ticket","static"),]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -145,7 +188,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'

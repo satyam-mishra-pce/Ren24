@@ -30,6 +30,6 @@ class TicketAdmin(admin.ModelAdmin):
     get_username.admin_order_field = "user__first_name"
     
 
-admin.site.register(RazorpayPayments)
+admin.site.register(Transaction)
 admin.site.register(Event,EventAdmin)
 admin.site.register(Ticket,TicketAdmin)

@@ -8,7 +8,7 @@ urlpatterns = [
     path('paymentpage',views.paymentpage,name='paymentpage'),
     path('paymenthandler/',views.paymenthandler,name='paymenthandler'),
     path('event', views.event, name='event'),
-    path('qr', views.qr, name='qr'),
+    path('qr/<uuid:ticketId>', views.qr, name='qr'),
     # path('success', views.purchase_ticket, name='success'),
     path('ticket/<uuid:event_id>', views.purchase_ticket, name='purchase_ticket'),
 ]
