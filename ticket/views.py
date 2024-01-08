@@ -168,7 +168,7 @@ def purchase_ticket(request, event_id):
                                    type="debit",
                                    is_paid=True,)
         Ticket.objects.create(user =request.user, event=event_instance)
-        return redirect('success')
+        return redirect('event')
     else:
         messages.error(request, "insufficient balance")
         return render(request, 'events.html')
