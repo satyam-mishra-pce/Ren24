@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% block content %}
+<h2>Profile Details</h2>
+<p><b>First Name: </b>{{ user.first_name }}</p>
+<p><b>Last Name: </b>{{ user.last_name }}</p>
+<p><b>Email: </b>{{ user.email }}</p>
+  <p><img src="{{ profile.image.url }}" alt="Profile image"></p>
+  <p><b>Phone:</b> {{ profile.phone }}</p>
+  <p><b>DOB:</b> {{ profile.dob }}</p>
+  <p><b>Sem:</b> {{ profile.sem }}</p>
+  <p><b>College:</b> {{ profile.college }}</p>
+  <p><b>Address:</b> {{ profile.address }}</p>
+<a href="{%url 'editprofile' %}"><button>Edit Profile</button></a>
+{% endblock %}
+</body>
+</html>
+

@@ -1,10 +1,12 @@
 from email.message import EmailMessage
 from django.shortcuts import get_object_or_404, render,redirect
+from account.forms import ProfileForm
 from config import settings
 from .models import *
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password,check_password
 from django.contrib.auth import login, logout,authenticate
+from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -132,3 +134,32 @@ def activate(request, uidb64, token):
     
     else:
         return render(request, 'activation_failed.html')
+    
+    
+@login_required
+def profile_view(request):
+    # get the current user's profile or create a new one
+    profile = Profile.objects.get(user=request.user)
+    # render the template with the profile data
+    return render(request, 'profile.html', {'profile': profile})
+
+@login_required
+def editprofile(request):
+    # get the current user's profile or create a new one
+    profile= Profile.objects.get(user=request.user)
+    # if the request method is POST, process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        # check whether the form is valid
+        if form.is_valid():
+            # save the form data to the database
+            form.save()
+            # redirect to the same page
+            return redirect('profile')
+    # if the request method is GET, display the form with the profile data
+    else:
+        # create a form instance with the profile data
+        form = ProfileForm(instance=profile)
+    # render the template with the form and the profile data
+    return render(request, 'editprofile.html', {'form': form, 'profile': profile})
