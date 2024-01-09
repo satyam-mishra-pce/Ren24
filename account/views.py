@@ -139,7 +139,7 @@ def activate(request, uidb64, token):
 @login_required
 def profile_view(request):
     # get the current user's profile or create a new one
-    profile = Profile.objects.get(user=request.user)
+    profile, created = Profile.objects.get_or_create(user=request.user)
     # render the template with the profile data
     return render(request, 'profile.html', {'profile': profile})
 
