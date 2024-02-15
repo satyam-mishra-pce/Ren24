@@ -3,10 +3,10 @@ from django.db import models
 from account.models import User
 # Create your models here.
 
-_types = [
-    ('debit',"Debit"),
-    ('credit',"Credit"),
-]
+# _types = [
+#     ('debit',"Debit"),
+#     ('credit',"Credit"),
+# ]
 
 _eventTypes = [
     ('cultural',"Cultural"),
@@ -21,10 +21,10 @@ class Transaction(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     order_id=models.CharField(max_length=200)
     amount=models.IntegerField(null=True)
-    type=models.CharField(max_length=6,choices=_types,blank=False)
+    # type=models.CharField(max_length=6,choices=_types,blank=False)
     is_paid = models.BooleanField(default=False)
     
-class Event(models.Model):
+class Events(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=8,choices=_eventTypes)
@@ -39,7 +39,7 @@ class Event(models.Model):
 class Ticket(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    event = models.ForeignKey(Events, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True, blank=True)
     # qr_code = models.ImageField(upload_to='passes/qr', blank=True)
 

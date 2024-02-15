@@ -21,9 +21,9 @@ class TicketAdmin(admin.ModelAdmin):
         return f'{obj.user.first_name} {obj.user.last_name}'
     
     get_date.short_description = "Date & Time"
-    get_date.admin_order_field = "event__date"
+    get_date.admin_order_field = "events__date"
     get_price.short_description = "Price"
-    get_price.admin_order_field = "event__cost"
+    get_price.admin_order_field = "events__cost"
     get_email.short_description = "Email"
     get_email.admin_order_field = "user__email"
     get_username.short_description = "Name"
@@ -31,5 +31,5 @@ class TicketAdmin(admin.ModelAdmin):
     
 
 admin.site.register(Transaction)
-admin.site.register(Event,EventAdmin)
+admin.site.register(Events,EventAdmin)
 admin.site.register(Ticket,TicketAdmin)

@@ -24,7 +24,7 @@ class AccountAdmin(UserAdmin):
     
     list_display=('id','first_name','last_name','email','last_login')
     search_fields = ["email","id","first_name"]
-    readonly_fields = ['userid',"date_joined","last_login"]
+    readonly_fields = ['id',"date_joined","last_login"]
     filter_horizontal = ()
     list_filter = ()
     fieldsets = ()
@@ -48,4 +48,5 @@ class WalletAdmin(admin.ModelAdmin):
 
 admin.site.register(User,AccountAdmin)
 admin.site.register(Profile)
-admin.site.register(Wallet,WalletAdmin)
+admin.site.register(Passes)
+# admin.site.register(Wallet,WalletAdmin)

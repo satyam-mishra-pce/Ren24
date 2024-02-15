@@ -1,6 +1,4 @@
 from datetime import timedelta
-import datetime
-import uuid
 from django.db import models
 from account.manager import UserManager
 from django.contrib.auth.models import AbstractUser
@@ -9,8 +7,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     username=None
     id = models.BigAutoField(primary_key=True)
-    userid=models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    email=models.EmailField(max_length=200)
+    phone=models.CharField(max_length=10)
     first_name=models.CharField(max_length=200)
     last_name=models.CharField(max_length=200)
     # is_verified=models.BooleanField(default=False,editable=True)
@@ -27,16 +24,22 @@ class User(AbstractUser):
 class Profile(models.Model):
     userid=models.ForeignKey(User,on_delete=models.CASCADE)
     image = models.ImageField(upload_to='user_images/')
-    phone=models.CharField(max_length=10)
+    email=models.EmailField(max_length=200)
     dob=models.DateField()
     sem=models.IntegerField()
     college=models.CharField(max_length=200)
     address=models.CharField(max_length=200)
 
-class Wallet(models.Model):
-    # userid=models.ForeignKey(User, on_delete=models.CASCADE)
-    user = models.OneToOneField(to='User',on_delete=models.CASCADE)
-    walletid=models.UUIDField(default=uuid.uuid4,primary_key=True,unique=True,editable=False)
-    balance = models.IntegerField(default=0)
-    def __str__(self) -> str:
-        return self.user.email
+# class Wallet(models.Model):
+#     # userid=models.ForeignKey(User, on_delete=models.CASCADE)
+#     user = models.OneToOneField(to='User',on_delete=models.CASCADE)
+#     walletid=models.UUIDField(default=uuid.uuid4,primary_key=True,unique=True,editable=False)
+#     balance = models.IntegerField(default=0)
+#     def __str__(self) -> str:
+#         return self.user.email
+
+class Passes(models.Model):
+    phone = models.CharField(max_length=10,null=False,blank=False)
+    technical1 =models.ForeignKey(to="ticket.Events",on_delete=models.CASCADE,related_name="Technical_Event_1")
+    technical2 =models.ForeignKey(to="ticket.Events",on_delete=models.CASCADE,related_name="Technical_Event_2")
+    Splash =models.ForeignKey(to="ticket.Events",on_delete=models.CASCADE,related_name="Splash_Event")
