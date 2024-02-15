@@ -15,7 +15,7 @@ class TicketAdmin(admin.ModelAdmin):
         return obj.event.cost 
     
     def get_email(self,obj):
-        return obj.user.email 
+        return obj.user.profile.email 
     
     def get_username(self,obj):
         return f'{obj.user.first_name} {obj.user.last_name}'
@@ -25,7 +25,7 @@ class TicketAdmin(admin.ModelAdmin):
     get_price.short_description = "Price"
     get_price.admin_order_field = "events__cost"
     get_email.short_description = "Email"
-    get_email.admin_order_field = "user__email"
+    # get_email.admin_order_field = "user__email"
     get_username.short_description = "Name"
     get_username.admin_order_field = "user__first_name"
     

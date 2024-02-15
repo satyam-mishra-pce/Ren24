@@ -6,18 +6,14 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 class User(AbstractUser):
     username=None
-    id = models.BigAutoField(primary_key=True)
-    phone=models.CharField(max_length=10)
-    first_name=models.CharField(max_length=200)
-    last_name=models.CharField(max_length=200)
-    # is_verified=models.BooleanField(default=False,editable=True)
+    phone=models.CharField(max_length=10,unique=True)
     
     objects = UserManager()
     
-    USERNAME_FIELD='id'
-    REQUIRED_FEILDS=['email']
+    USERNAME_FIELD='phone'
+    REQUIRED_FEILDS=[]
     def __str__(self):
-        return str(self.userid)
+        return str(self.id)
     
 
 
@@ -39,7 +35,7 @@ class Profile(models.Model):
 #         return self.user.email
 
 class Passes(models.Model):
-    phone = models.CharField(max_length=10,null=False,blank=False)
+    phone = models.CharField(max_length=10,unique=True,null=False,blank=False)
     technical1 =models.ForeignKey(to="ticket.Events",on_delete=models.CASCADE,related_name="Technical_Event_1")
     technical2 =models.ForeignKey(to="ticket.Events",on_delete=models.CASCADE,related_name="Technical_Event_2")
     Splash =models.ForeignKey(to="ticket.Events",on_delete=models.CASCADE,related_name="Splash_Event")

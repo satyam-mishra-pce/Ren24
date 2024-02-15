@@ -9,4 +9,4 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         # specify the fields you want to include in the form
-        fields = ['image', 'phone', 'dob', 'sem', 'college', 'address']
+        fields = ['image', 'email', 'dob', 'sem', 'college', 'address']
