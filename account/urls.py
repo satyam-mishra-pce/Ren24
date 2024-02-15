@@ -8,4 +8,6 @@ urlpatterns = [
     path('signin',signin,name='signin'),
     path('signout',signout,name='signout'),
     path('activate/<uidb64>/<token>',activate,name='activate'),
+    path('profile',profile_view,name='profile'),
+    path('editprofile',editprofile,name='editprofile'),
 ]

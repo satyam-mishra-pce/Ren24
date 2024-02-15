@@ -22,11 +22,11 @@ class User(AbstractUser):
 
 
 class Profile(models.Model):
-    userid=models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.OneToOneField(to='User',on_delete=models.CASCADE)
     image = models.ImageField(upload_to='user_images/')
     email=models.EmailField(max_length=200)
-    dob=models.DateField()
-    sem=models.IntegerField()
+    dob=models.DateField(null=True)
+    sem=models.IntegerField(null=True)
     college=models.CharField(max_length=200)
     address=models.CharField(max_length=200)
 

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% block content %}
+<h1>Edit Profile</h1>
+<p><b>First Name: </b>{{ user.first_name }}</p>
+<p><b>Last Name: </b>{{ user.last_name }}</p>
+<p><b>Email: </b>{{ user.email }}</p>
+<form method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  {{ form.as_p }}
+  <button type="submit">Save</button>
+</form>
+{% endblock %}
+</body>
+</html>
