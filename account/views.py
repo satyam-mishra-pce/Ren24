@@ -2,6 +2,7 @@ from email.message import EmailMessage
 from django.shortcuts import get_object_or_404, render,redirect
 from account.forms import ProfileForm
 from config import settings
+from ticket.models import Ticket
 from .models import *
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password,check_password
@@ -15,10 +16,22 @@ from django.utils.encoding import force_bytes,force_str
 from .tokens import generate_token
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 # Create your views here.
-
-def home(request):
-    return render(request,'index.html')
-
+import math, random
+ 
+# function to generate OTP
+def generateOTP() :
+ 
+    # Declare a digits variable  
+    # which stores all digits 
+    digits = "0123456789"
+    OTP = ""
+ 
+   # length of password can be changed
+   # by changing value in range
+    for i in range(4) :
+        OTP += digits[math.floor(random.random() * 10)]
+ 
+    return OTP
 
 def register(request):
     """Create a new user account and send a confirmation email."""
@@ -27,19 +40,19 @@ def register(request):
         # get the input data from the request
         fname = request.POST['fname']
         lname = request.POST['lname']
-        email = request.POST['email']
+        phone = request.POST['phone']
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
         
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "Email Already Registered!!")
+        if User.objects.filter(phone=phone).exists():
+            messages.error(request, "Phone Already Registered!!")
             return redirect('home')
         
         if pass1 != pass2:
             messages.error(request, "Passwords didn't matched!!")
             return redirect('home')
         
-        myuser = User.objects.create_user(email=email, 
+        myuser = User.objects.create_user(phone=phone, 
                                           first_name=fname,
                                           last_name=lname,
                                           password=pass1,
@@ -47,45 +60,74 @@ def register(request):
         myuser.save()
         
         # return a success message
-        messages.success(request, "Your Account has been created succesfully!! Please check your email to confirm your email address in order to activate your account.")
+        messages.success(request, "Your Account has been created succesfully!!")
+        otp_obj,created = OTP.objects.get_or_create(user=myuser)
+        otp_obj.otp = generateOTP()
+        print("\n")
+        print("\n")
+        print(otp_obj.otp)
+        print("\n")
+        print("\n")
+        otp_obj.save()
         
-        #Welcome Email
-        subject="Welcome to Ren2024"
-        message="Hello " + myuser.first_name + "!! \n" +"Welcome to Renaissance 2024 website. \n Thank you for your valuable registration. \n We have also send to a confirmation mail please verify yor email address to get started. \n Thanks regards, \n JECRC "
-        from_email=settings.EMAIL_HOST_USER
-        recipient_list=[myuser.email]
-        send_mail(subject,message,from_email,recipient_list,fail_silently=True)
+        # #Welcome Email
+        # subject="Welcome to Ren2024"
+        # message="Hello " + myuser.first_name + "!! \n" +"Welcome to Renaissance 2024 website. \n Thank you for your valuable registration. \n We have also send to a confirmation mail please verify yor email address to get started. \n Thanks regards, \n JECRC "
+        # from_email=settings.EMAIL_HOST_USER
+        # recipient_list=[myuser.email]
+        # send_mail(subject,message,from_email,recipient_list,fail_silently=True)
         
         
-        # Email Address Confirmation Email
-        current_site = get_current_site(request)
-        email_subject = "Confirm your Email @Ren2024"
-        message2 = render_to_string('email_confirmation.html',{
-            'name': myuser.first_name,
-            'domain': current_site.domain,
-            'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
-            'token': generate_token.make_token(myuser)
-        })
-        email = EmailMessage(
-        email_subject,
-        message2,
-        settings.EMAIL_HOST_USER,
-        [myuser.email],
-        )
-        email.fail_silently = True
-        email.send()
-        return redirect('signin')
+        # # Email Address Confirmation Email
+        # current_site = get_current_site(request)
+        # email_subject = "Confirm your Email @Ren2024"
+        # message2 = render_to_string('email_confirmation.html',{
+        #     'name': myuser.first_name,
+        #     'domain': current_site.domain,
+        #     'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
+        #     'token': generate_token.make_token(myuser)
+        # })
+        # email = EmailMessage(
+        # email_subject,
+        # message2,
+        # settings.EMAIL_HOST_USER,
+        # [myuser.email],
+        # )
+        # email.fail_silently = True
+        # email.send()
+        return redirect('verify')
     
     # if the request is not a POST method, render a template with a form
     else:
         return render(request, 'register.html')
     
+def verify(request):
+    if request.method == 'POST':
+        otp = request.POST.get('otp')
+        otp_obj = OTP.objects.filter(otp = otp)
+        if otp_obj.exists():
+            otp_obj =otp_obj.first()
+            # print(datetime.now(),otp_obj.first().expiry)
+            # if ((datetime.now())-otp_obj.first().expiry)>0:
+            otp_obj.user.is_active = True
+            otp_obj.user.save()
+            login(request,otp_obj.user)
+            return redirect('home')
+            # else:
+            #     messages.error(request,'OTP expired')
+            #     return render(request, 'verify.html') 
+        else:
+            messages.error(request,'Wrong OTP')
+            return render(request, 'verify.html') 
+            
+    else:
+        return render(request, 'verify.html') 
 
 def signin(request):
     if request.method=="POST":
-        email = request.POST.get('email')
+        phone = request.POST.get('phone')
         password = request.POST.get('pass1')
-        user=User.objects.filter(email=email)
+        user=User.objects.filter(phone=phone)
         
         if user.exists():
             user = user.first()
@@ -127,7 +169,7 @@ def activate(request, uidb64, token):
     if myuser is not None and generate_token.check_token(myuser,token):
         myuser.is_active=True
         myuser.save()
-        Wallet.objects.create(user=myuser)
+        # Wallet.objects.create(user=myuser)
         login(request,myuser)
         messages.success(request, "Your Account has been activated!!")
         return redirect('signin')
@@ -138,28 +180,15 @@ def activate(request, uidb64, token):
     
 @login_required
 def profile_view(request):
-    # get the current user's profile or create a new one
-    profile, created = Profile.objects.get_or_create(user=request.user)
-    # render the template with the profile data
-    return render(request, 'profile.html', {'profile': profile})
-
-@login_required
-def editprofile(request):
-    # get the current user's profile or create a new one
-    profile= Profile.objects.get(user=request.user)
-    # if the request method is POST, process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request
-        form = ProfileForm(request.POST, request.FILES, instance=profile)
-        # check whether the form is valid
-        if form.is_valid():
-            # save the form data to the database
-            form.save()
-            # redirect to the same page
-            return redirect('profile')
-    # if the request method is GET, display the form with the profile data
-    else:
-        # create a form instance with the profile data
-        form = ProfileForm(instance=profile)
-    # render the template with the form and the profile data
-    return render(request, 'editprofile.html', {'form': form, 'profile': profile})
+    if request.method == 'GET':
+        # get the current user's profile or create a new one
+        profile, created = Profile.objects.get_or_create(user=request.user)
+        # render the template with the profile data
+        tickets = Ticket.objects.filter(user=request.user)
+        context = {
+            'profile':profile,
+            'tickets':tickets
+        }
+        return render(request, 'profile.html',context)
+    elif request.method == 'POST':
+        return 

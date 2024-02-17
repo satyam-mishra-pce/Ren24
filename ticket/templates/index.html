@@ -12,7 +12,8 @@
             <a href="#">Home</a>
             <a href="#">About</a>
             <a href="#">Services</a>
-            <a href="{% url 'balance' %}">Balance</a>
+            <a href="{% url 'events' %}">Events</a>
+            <a href="{% url 'view_cart'%}">Cart</a>
             <a href="{% url 'profile' %}">Profile</a>
         </div>
     </header>
@@ -33,12 +34,12 @@
     {% if request.user.is_authenticated %}
     <h3>Hello {{request.user.first_name}}!</h3>
     <h4>You're successfully logged in.</h4>
-    <button type="submit"><a href="/signout">SignOut</a></button>
+    <button type="submit"><a href="{% url "logout" %}">SignOut</a></button>
     {% else %}
-    <button type="submit"><a href="/register">SignUp</a></button>
+    <button type="submit"><a href="{% url "register" %}">SignUp</a></button>
     <br/>
     <br/>
-    <button type="submit"><a href="/signin">SignIn</a></button>
+    <button type="submit"><a href="{% url "login" %}">SignIn</a></button>
     {% endif %}
 </body>
 </html>

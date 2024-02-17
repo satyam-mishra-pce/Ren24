@@ -1,6 +1,6 @@
 import json
 import time
-from django.http import HttpResponseBadRequest,HttpResponse
+from django.http import HttpResponseBadRequest,HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from account.models import User
 from django.contrib.auth.decorators import login_required
@@ -16,6 +16,10 @@ from io import  BytesIO
 import base64
 from PIL import ImageDraw, ImageFont
 # Create your views here.
+
+
+def home(request):
+    return render(request,'index.html')
 
 # @login_required
 # def balance(request):
@@ -176,3 +180,16 @@ def qr(request,ticketId):
 def event(request):
     events = Events.objects.all()
     return render(request, 'events.html', {'events': events})
+
+def getEvent(request):
+    data = json.loads(request.body)
+    event_id = data['event_id']
+    event = Events.objects.get(id=event_id)
+    context = {
+        'id':event.id,
+        'name':event.name,
+        'desc':event.description,
+        'amount':event.amount,
+        'includedInPass':event.includedInPass,
+    }
+    return JsonResponse(context)

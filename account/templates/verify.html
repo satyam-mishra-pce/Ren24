@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balance</title>
+    <title>Verify</title>
 </head>
 <body>
+
     {% for message in messages %}
     <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
         <strong>Message:</strong> {{ message }}
@@ -14,13 +16,16 @@
   </button>
     </div>
     {% endfor %}
-    <h1>Balance</h1>
-    {% if request.user.is_authenticated  %}
-    <p>Hi, {{request.user.first_name }}</p>
-    <br>
-    <br>
-    <p>Your balance is:  {{request.user.wallet.balance}}</p>
-    <a href="{% url 'payment' %}">Add balance</a>
-    {% endif %}
+    
+    <h3>Verify your account!</h3>
+    <form method="post" class="mb-2">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="text">OTP</label>
+            <input type="text" class="form-control" id="email" name="otp" placeholder="Enter Your Email" Required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Verify</button>
+    </form>
 </body>
 </html>

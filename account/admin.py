@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm,UserChangeForm
+from django.contrib.sessions.models import Session
+from import_export.admin import ExportActionMixin,ExportActionModelAdmin,ImportExportMixin
 from .models import *
 
 class UserCreateForm(UserCreationForm):
@@ -9,7 +11,7 @@ class UserCreateForm(UserCreationForm):
         model = User
         fields = '__all__'
 
-class AccountAdmin(UserAdmin):
+class AccountAdmin(ExportActionMixin,UserAdmin):
     add_form = UserCreateForm
     
     add_fieldsets = (
@@ -30,6 +32,11 @@ class AccountAdmin(UserAdmin):
     fieldsets = ()
     ordering =()
     
+class PassAdmin(ImportExportMixin,admin.ModelAdmin):
+    empty_value_display = "Not selected"
+    list_display=['phone','technical1','technical2','splash']
+    readonly_fields=['technical1','technical2','splash']
+
 # class WalletAdmin(admin.ModelAdmin):
 #     list_display=('get_username','get_email','walletid')
 #     readonly_fields=('user','walletid')
@@ -46,7 +53,15 @@ class AccountAdmin(UserAdmin):
 #     get_username.admin_order_field = "user__first_name"
 # Register your models here.
 
+class SessionAdmin(admin.ModelAdmin):
+    def _session_data(self, obj):
+        return obj.get_decoded()
+    list_display = ['session_key', '_session_data', 'expire_date']
+    
+
+
+admin.site.register(Session, SessionAdmin)
 admin.site.register(User,AccountAdmin)
 admin.site.register(Profile)
-admin.site.register(Passes)
+admin.site.register(Passes,PassAdmin)
 # admin.site.register(Wallet,WalletAdmin)

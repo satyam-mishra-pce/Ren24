@@ -1,0 +1,138 @@
+/* Lazy Load Styles */
+.cards-image {
+	display: block;
+	min-height: 20rem; /* layout hack */
+	background: #fff center center no-repeat;
+	background-size: cover;
+	filter: blur(3px); /* blur the lowres image */
+}
+
+.cards-image > img {
+	display: block;
+	width: 100%;
+	opacity: 0; /* visually hide the img element */
+}
+
+.cards-image.is-loaded {
+	filter: none; /* remove the blur on fullres image */
+	transition: filter 1s;
+}
+
+
+
+
+/* Layout Styles */
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	font-size: 16px;
+	font-family: sans-serif;
+}
+body{
+	background-image: url("../assets/images/web\ red\ background\ [Recovered]-01.png");
+	background-repeat: repeat-y;
+	background-size: cover;
+	background-attachment: fixed;
+	background-position-y: bottom ;
+}
+@media (max-width: 1000px){
+  body{
+    background-image: url("../assets/images/red\ background\ mobile-01.png");
+	background-repeat: repeat-y;
+	background-size: cover;
+	background-attachment: fixed;
+	background-position-y: bottom ;
+  }
+  .cards{
+	max-width: 23rem !important;
+  }
+}
+
+.cards-list {
+	display: block;
+	margin: 1rem auto;
+	padding: 0;
+	font-size: 0;
+	text-align: center;
+	list-style: none;
+}
+
+.cards {
+	display: inline-block;
+	width: 90%;
+	max-width: 20rem;
+	margin: 1rem;
+	font-size: 1rem;
+	text-decoration: none;
+	/* overflow: hidden; */
+	box-shadow: 0 0 3rem -1rem rgba(0,0,0,0.5);
+	transition: transform 0.1s ease-in-out, box-shadow 0.1s;
+	cursor: pointer;
+}
+@media screen and (max-width: 768px) {
+	.cards{
+		max-width: 25rem;
+	}
+	
+}
+
+.cards:hover {
+	transform: translateY(-0.5rem) scale(1.0125);
+	box-shadow: 0 0.5em 3rem -1rem rgba(0,0,0,0.5);
+}
+
+.cards-description {
+	display: block;
+	padding: 1em 0.5em;
+	color: #515151;
+	text-decoration: none;
+  background-color: #fff;
+}
+
+.cards-description > h2 {
+	margin: 0 0 0.5em;
+}
+
+.cards-description > p {
+	margin: 0;
+}
+/* Define styles for hidden section */
+.hidden-section {
+    display: none;
+    margin-top: 20px;
+    padding: 10px;
+    
+  }
+  
+  /* Define styles for visible section */
+.visible-section {
+    margin-top: 20px;
+    padding: 10px;
+}
+.heading{
+    display: flex;
+    justify-content: center;
+    padding-top: 7%;
+}
+.top-button{
+    margin: auto;
+    text-align: center;
+}
+.heading_img{
+  height: 20%;
+  width: 20%;
+  padding-bottom: 25px;
+}
+@media (max-width: 1000px){
+  .heading{
+    display: flex;
+    justify-content: center;
+    padding-top: 20%;
+    padding-bottom: 7%;
+  }
+  .heading_img{
+    height: 30%;
+    width: 30%;
+  }
+}
