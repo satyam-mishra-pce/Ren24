@@ -7,10 +7,9 @@ from cart.functions import getPass
 # Create your views here.
 def cart(request):
     if request.method == 'GET':
-        added_events = list(Cart(request).get())
-        total = 0
-        for event in added_events:
-            total += event.amount
+        cart = Cart(request)
+        added_events = list(cart.get())
+        total = cart.cart_total()
         discount = 0
         _pass = getPass(request.user)
         if _pass != None:
@@ -34,15 +33,12 @@ def cart(request):
                         break;
         nett_amount = total - discount
         context = {
-            'events':Cart(request).get(),
+            'events':cart.get(),
             'nett':nett_amount,
             'total':total,
             'discount':discount,
             'payment_required': True if discount !=0 else False
         }
-        print(context)
-        
-        # return HttpResponse(added_events)
         return render(request,'cart.html',context)
     
     

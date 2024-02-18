@@ -1,23 +1,50 @@
-// Get all the modal trigger elements
-const modalTriggers = document.querySelectorAll(".modal-trigger");
+/* 
+Dependecies:
+cart.js
+snackbar.js
+ */
 
-// Loop through each modal trigger element and add a click event listener to it
-modalTriggers.forEach(function(trigger) {
-  // Get the target modal element based on the data-target attribute of the trigger
-  const targetModal = document.getElementById(trigger.dataset.target);
-  
-  // Get the close button element inside the target modal
-  const closeBtn = targetModal.querySelector(".close");
 
-  // When the user clicks the trigger, open the target modal
-  trigger.addEventListener("click", function() {
-    targetModal.style.display = "block"; // Show the target modal
-  });
-
-  // When the user clicks the close button or anywhere outside the target modal, close it
-  targetModal.addEventListener("click", function(event) {
-    if (event.target === targetModal || event.target === closeBtn) {
-      targetModal.style.display = "none"; // Hide the target modal
+const showModalDialog = (eventid) => {
+  var csrf = document.getElementsByName("csrfmiddlewaretoken")[0];
+  csrf = csrf.value;
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/getevent', true);
+  xhr.setRequestHeader('X-CSRFToken', csrf);
+  xhr.setRequestHeader('enctype', 'multipart/form-data')
+  xhr.getResponseHeader('Content-type', 'application/json');
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log(this.responseText);
+      const data = JSON.parse(this.responseText);
+      const modal = document.getElementById('modal');
+      modal.style.display = 'block';
+      document.getElementById('event-name').innerText = data['name'];
+      document.getElementById('event-description').innerText = data['desc'];
+      document.getElementById('event-amount').innerText = data['amount'];
+      if (data['includedInPass'] == true) {
+        document.getElementById('event-access').innerText = "Included in ren pass";
+      }else{
+        document.getElementById('event-access').innerText = "";
+      }
+      document.getElementById('add-to-cart-btn').addEventListener('click',()=>{
+        addToCart(data['id']);
+        modal.style.display = 'none';
+      });
+      modal.addEventListener('click',(e)=>{
+        let closeBtn = document.getElementById('close-modal-btn');
+        if(e.target === modal || e.target === closeBtn){
+          modal.style.display = 'none';
+        }
+      });
+      // showSnackbar(this.responseText, 'success', document.body);
+    } else if (this.readyState == 4 && this.status != 200) {
+      console.error("Some error occured");
+      showSnackbar(this.responseText, 'error', document.body);
     }
-  });
-});
+  }
+  xhr.send(JSON.stringify({
+    "event_id": eventid
+  }));
+
+}

@@ -1,20 +1,20 @@
-from email.message import EmailMessage
+# from email.message import EmailMessage
 from django.shortcuts import get_object_or_404, render,redirect
-from account.forms import ProfileForm
+# from account.forms import ProfileForm
 from config import settings
 from ticket.models import Ticket
 from .models import *
 from django.contrib import messages
-from django.contrib.auth.hashers import make_password,check_password
+# from django.contrib.auth.hashers import make_password,check_password
 from django.contrib.auth import login, logout,authenticate
 from django.contrib.auth.decorators import login_required
-from django.core.mail import EmailMessage, send_mail
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes,force_str
-from .tokens import generate_token
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+# from django.core.mail import EmailMessage, send_mail
+# from django.contrib.sites.shortcuts import get_current_site
+# from django.template.loader import render_to_string
+# from django.utils.http import urlsafe_base64_encode
+# from django.utils.encoding import force_bytes,force_str
+# from .tokens import generate_token
+# from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 # Create your views here.
 import math, random
  
@@ -46,11 +46,11 @@ def register(request):
         
         if User.objects.filter(phone=phone).exists():
             messages.error(request, "Phone Already Registered!!")
-            return redirect('home')
+            return render(request, 'register.html')
         
         if pass1 != pass2:
             messages.error(request, "Passwords didn't matched!!")
-            return redirect('home')
+            return render(request, 'register.html')
         
         myuser = User.objects.create_user(phone=phone, 
                                           first_name=fname,
@@ -63,6 +63,7 @@ def register(request):
         messages.success(request, "Your Account has been created succesfully!!")
         otp_obj,created = OTP.objects.get_or_create(user=myuser)
         otp_obj.otp = generateOTP()
+        # TODO: Send OTP to phone number
         print("\n")
         print("\n")
         print(otp_obj.otp)
@@ -107,6 +108,7 @@ def verify(request):
         otp_obj = OTP.objects.filter(otp = otp)
         if otp_obj.exists():
             otp_obj =otp_obj.first()
+            # TODO: Add expiration check on otp
             # print(datetime.now(),otp_obj.first().expiry)
             # if ((datetime.now())-otp_obj.first().expiry)>0:
             otp_obj.user.is_active = True
@@ -132,7 +134,8 @@ def signin(request):
         if user.exists():
             user = user.first()
             if (user.is_active==True):
-                myuser=authenticate(id=user.id,password=password)
+                myuser=authenticate(request,id=user.id,password=password)
+                print(myuser,password,phone)
                 if myuser is not None:
                     login(request,user)
                     messages.success(request,"Logged IN Sucessfully")
@@ -159,23 +162,23 @@ def signout(request):
     messages.success(request, "Logged Out Sucessfully")
     return redirect('home')
 
-def activate(request, uidb64, token):
-    try:
-        uid=force_str(urlsafe_base64_decode(uidb64))
-        myuser = User.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-        myuser= None
+# def activate(request, uidb64, token):
+#     try:
+#         uid=force_str(urlsafe_base64_decode(uidb64))
+#         myuser = User.objects.get(pk=uid)
+#     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+#         myuser= None
         
-    if myuser is not None and generate_token.check_token(myuser,token):
-        myuser.is_active=True
-        myuser.save()
-        # Wallet.objects.create(user=myuser)
-        login(request,myuser)
-        messages.success(request, "Your Account has been activated!!")
-        return redirect('signin')
+#     if myuser is not None and generate_token.check_token(myuser,token):
+#         myuser.is_active=True
+#         myuser.save()
+#         # Wallet.objects.create(user=myuser)
+#         login(request,myuser)
+#         messages.success(request, "Your Account has been activated!!")
+#         return redirect('signin')
     
-    else:
-        return render(request, 'activation_failed.html')
+#     else:
+#         return render(request, 'activation_failed.html')
     
     
 @login_required

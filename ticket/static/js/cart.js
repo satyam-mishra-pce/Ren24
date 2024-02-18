@@ -6,12 +6,11 @@ const addToCart = function(event_id){
         xhr.setRequestHeader('X-CSRFToken', csrf);
         xhr.setRequestHeader('enctype', 'multipart/form-data')
         xhr.getResponseHeader('Content-type', 'application/json');
-        xhr.onload = () =>{
-            console.log("true");
-            if (this.status === 200) {
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
                 console.log(this.responseText);
                 showSnackbar(this.responseText,'success',document.body);
-            } else {
+            } else if (this.readyState == 4 && this.status != 200) {
                 console.error("Some error occured");
                 showSnackbar(this.responseText,'error',document.body);
             }
@@ -29,12 +28,12 @@ const deleteFromCart = function(event_id){
         xhr.setRequestHeader('X-CSRFToken', csrf);
         xhr.setRequestHeader('enctype', 'multipart/form-data')
         xhr.getResponseHeader('Content-type', 'application/json');
-        xhr.onload = () =>{
-            console.log("true");
-            if (this.status === 200) {
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
                 console.log(this.responseText);
                 showSnackbar(this.responseText,'success',document.body);
-            } else {
+                window.location.reload();
+            }  else if (this.readyState == 4 && this.status != 200) {
                 console.error("Some error occured");
                 showSnackbar(this.responseText,'error',document.body);
             }
@@ -42,15 +41,4 @@ const deleteFromCart = function(event_id){
         xhr.send(JSON.stringify({
             "event_id": event_id
         }));
-}
-
-const showSnackbar = function(message,tag,element){
-    const snackBar = document.createElement('div');
-    snackBar.classList.add(tag);
-    snackBar.id = 'snackbar';
-    snackBar.innerHTML = `${message}
-    <span class="btn-outline-${tag} btn-sm closebtn"
-      onclick="this.parentElement.style.display='none';">&times;
-    </span>`;
-    element.appendChild(snackBar);
 }
