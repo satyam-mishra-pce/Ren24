@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'account',
     'ticket',
     'cart',
+    'main',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,7 @@ TEMPLATES = [
         'DIRS': [os.path.join(BASE_DIR,"templates","account"),
                  os.path.join(BASE_DIR,"templates","ticket"),
                  os.path.join(BASE_DIR,"templates","cart"),
+                 os.path.join(BASE_DIR,"templates","main"),
                  ],
         'APP_DIRS': True,
         'OPTIONS': {

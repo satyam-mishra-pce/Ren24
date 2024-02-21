@@ -1,18 +1,15 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart</title>
+{% block head %}
     <link rel="stylesheet" href="{% static "css/cart_styles.css" %}">
     <link rel="stylesheet" href="{% static "css/snackbar.css" %}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    {% endblock head %}
+    {% comment %} <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
-<body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> {% endcomment %}
+{% block body %}
+<section class="body-section">
     <div class="card">
         <div class="row">
             <div class="col-md-8 cart">
@@ -82,8 +79,10 @@
             {% endif %}
         </div>
     </div>
+</section>
+{% endblock body %}
+{% block script %}
     <script src="{% static "js/snackbar.js" %}"></script>
     <script src="{% static "js/cart.js" %}"></script>
     {% csrf_token %}
-</body>
-</html>
+    {% endblock script %}

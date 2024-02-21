@@ -25,6 +25,7 @@ admin.site.index_title = "Welcome to Renaissance 2024 Admin Panel"
 
 urlpatterns = [
     path('',include('ticket.urls')),
+    path('',include('main.urls')),
     path('u/',include('account.urls')),
     path('cart/',include('cart.urls')),
     path('admin/', admin.site.urls),

@@ -1,0 +1,98 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: inherit;
+  /* color: white; */
+}
+
+:root {
+  /* --primary: #6c63ff; */
+  /* --primary: #a81e28; */
+  --primary: rgb(234, 178, 118);
+  --secondary: rgb(20, 18, 16, 0.9);
+  --secondary-opaque: rgba(9, 10, 16, 1);
+  --border-gray: rgba(100, 100, 100, 0.3);
+  --dark-workspace-bg: rgba(6, 12, 34, 0.8);
+  --accent-blue-dark: rgb(65, 157, 255);
+  --accent-green: rgb(34, 193, 74);
+  --accent-green-translucent: rgba(34, 193, 74, 0.2);
+  --roboto: Arial, Helvetica, sans-serif;
+  --bs-nav-link-color: rgb(234, 178, 118);
+  --bs-link-color: rgb(234, 178, 118);
+  --bs-link-hover-color: white;
+}
+
+
+
+html {
+  font-size: 16px;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+h2 {
+  font-size: 3rem;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.2rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+.mobile-only {
+  display: none;
+}
+
+.desktop-only {
+  display: block;
+}
+
+@media only screen and (max-width: 990px) {
+  html {
+    font-size: 12px;
+  }
+
+  .mobile-only {
+    display: block;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+
+}
+
+@media only screen and (max-width: 1280px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+
+.footer-logo {
+  height: 15rem;
+  width: 15rem;
+}
+
+.footer {
+  background-color: var(--secondary-opaque);
+}
