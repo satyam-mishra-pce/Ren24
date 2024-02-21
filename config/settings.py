@@ -67,9 +67,9 @@ LOGOUT_URL = 'u/signout'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,"account","templates"),
-                 os.path.join(BASE_DIR,"ticket","templates"),
-                 os.path.join(BASE_DIR,"cart","templates"),
+        'DIRS': [os.path.join(BASE_DIR,"templates","account"),
+                 os.path.join(BASE_DIR,"templates","ticket"),
+                 os.path.join(BASE_DIR,"templates","cart"),
                  ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -184,9 +184,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-                os.path.join(BASE_DIR,"account","static"),
-                os.path.join(BASE_DIR,"ticket","static"),
-                os.path.join(BASE_DIR,"cart","static"),
+                os.path.join(BASE_DIR,"static"),
+                # os.path.join(BASE_DIR,"ticket","static"),
+                # os.path.join(BASE_DIR,"cart","static"),
                 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
