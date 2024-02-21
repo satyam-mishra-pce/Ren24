@@ -134,7 +134,7 @@ def signin(request):
         if user.exists():
             user = user.first()
             if (user.is_active==True):
-                myuser=authenticate(request,id=user.id,password=password)
+                myuser=authenticate(request,phone=user.phone,password=password)
                 print(myuser,password,phone)
                 if myuser is not None:
                     login(request,user)
