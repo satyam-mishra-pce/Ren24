@@ -1,3 +1,4 @@
+from cart.functions import getPass
 from cart.models import CartItem
 from ticket.models import Ticket, Events
 
@@ -74,6 +75,30 @@ class Cart():
   
 	def generate_ticket(self):
 		user=self.user
+		_pass = getPass(user)
+		added_events=self.get()
+		if _pass != None:
+			if _pass.technical1 == None:
+				for event in added_events:
+					if event.type == 'tech' and event.includedInPass:
+						_pass.technical1=event
+						_pass.save()
+						added_events.remove(event)
+						break;
+			if _pass.technical2 == None:
+				for event in added_events:
+					if event.type == 'tech' and event.includedInPass:
+						_pass.technical2=event
+						_pass.save()
+						added_events.remove(event)
+						break;
+			if _pass.splash == None:
+				for event in added_events:
+					if event.type == 'splash' and event.includedInPass:
+						_pass.splash=event
+						_pass.save()
+						added_events.remove(event)
+						break;
 		for eventid in self.cart:
 			event=Events.objects.get(id=eventid)
 			obj = Ticket.objects.create(user=user,event=event)
