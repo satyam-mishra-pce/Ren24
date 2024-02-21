@@ -34,31 +34,40 @@ def home(request):
     
 @login_required
 def qr(request,ticketId):
-        try:
-            ticket = Ticket.objects.filter(user=request.user,id=ticketId)
-            if(ticket.exists()):
-                ticket = ticket.first()
-                qr_image = qrcode.make(str(ticket.id))
-                bg = Image.new("RGB", (300,400), "white")
-                bg.paste(qr_image,(50,50))
-                font = ImageFont.truetype(font='roboto',size=36)
-                text =f"{request.user.first_name} {request.user.first_name}"
-                # textwidth, textheight = draw.textsize(,font)
-                draw = ImageDraw.Draw(bg)
-                margin = 10
-                x = 100
-                y = 200
+    ticket = generate_ticket(ticketId)
+    
+    # context = {'qr_code': base64.b64encode(ticket).decode('utf-8')}
+    # return render(request, 'qr.html', context)
+    response = HttpResponse(ticket, content_type='image/png')
+    return response
+    
+# @login_required
+# def qr(request,ticketId):
+#         try:
+#             ticket = Ticket.objects.filter(user=request.user,id=ticketId)
+#             if(ticket.exists()):
+#                 ticket = ticket.first()
+#                 qr_image = qrcode.make(str(ticket.id))
+#                 bg = Image.new("RGB", (300,400), "white")
+#                 bg.paste(qr_image,(50,50))
+#                 font = ImageFont.truetype(font='roboto',size=36)
+#                 text =f"{request.user.first_name} {request.user.first_name}"
+#                 # textwidth, textheight = draw.textsize(,font)
+#                 draw = ImageDraw.Draw(bg)
+#                 margin = 10
+#                 x = 100
+#                 y = 200
 
-                # draw watermark in the bottom right corner
-                draw.text((x,y),text,font=font)
+#                 # draw watermark in the bottom right corner
+#                 draw.text((x,y),text,font=font)
                 
-                fp = BytesIO()
-                draw.save(fp, "PNG")
-                context = {'qr_code': base64.b64encode(fp.getvalue()).decode('utf-8')}
-                return render(request, 'qr.html', context)
-        except Ticket.DoesNotExist:
-            ticket = None
-            return HttpResponse("please purchase ticket")
+#                 fp = BytesIO()
+#                 draw.save(fp, "PNG")
+#                 context = {'qr_code': base64.b64encode(fp.getvalue()).decode('utf-8')}
+#                 return render(request, 'qr.html', context)
+#         except Ticket.DoesNotExist:
+#             ticket = None
+#             return HttpResponse("please purchase ticket")
         
 # @login_required
 # def purchase_ticket(request, event_id):

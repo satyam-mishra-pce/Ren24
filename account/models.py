@@ -14,14 +14,14 @@ class User(AbstractUser):
     USERNAME_FIELD='phone'
     REQUIRED_FEILDS=[]
     def __str__(self):
-        return str(self.id)
+        return self.phone
     
 
 
 class Profile(models.Model):
     user = models.OneToOneField(to='User',on_delete=models.CASCADE)
     image = models.ImageField(upload_to='user_images/')
-    email=models.EmailField(max_length=200)
+    # email=models.EmailField(max_length=200)
     dob=models.DateField(null=True)
     sem=models.IntegerField(null=True)
     college=models.CharField(max_length=200)

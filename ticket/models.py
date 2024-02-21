@@ -18,6 +18,7 @@ _eventTypes = [
     
 class Events(models.Model):
     name = models.CharField(max_length=100)
+    venue = models.CharField(max_length=100)
     type = models.CharField(max_length=8,choices=_eventTypes)
     description = models.TextField(max_length=500)
     amount = models.PositiveIntegerField(default=0)

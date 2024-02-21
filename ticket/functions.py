@@ -3,44 +3,40 @@ from django.http import HttpResponse
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 
-def generate_ticket(request, format):
+from ticket.models import Ticket
+
+def generate_ticket(ticket_id)->bytes:
+    ticket = Ticket.objects.get(id=ticket_id)
     # Generate QR code
-    qr = qrcode.QRCode(version=1, box_size=10, border=5)
-    data = "User: John Doe\nDate: 2024-02-16"  # Example data
-    qr.add_data(data)
+    qr = qrcode.QRCode(version=1, box_size=10, border=2)
+    qr.add_data(ticket_id)
     qr.make(fit=True)
     qr_img = qr.make_image(fill_color="black", back_color="white")
 
-    # Render ticket
-    user_name = "John Doe"
-    date = "2024-02-16"
+    # Create a blank image with white background
+    ticket_img = Image.new("RGB", (900, 300), "white")
+    draw = ImageDraw.Draw(ticket_img)
 
-    if format == 'pdf':
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="ticket.pdf"'
+    # Paste the QR code onto the image
+    qr_img = qr_img.resize((280, 280))  # Resize QR code image if necessary
+    ticket_img.paste(qr_img, (10, 10))
+    font_name = "/usr/share/fonts/truetype/dejavu/DejaVuMathTeXGyre.ttf"
 
-        # Generate PDF
-        buffer = BytesIO()
-        p = canvas.Canvas(buffer, pagesize=letter)
-        p.drawString(100, 750, "E-Ticket")
-        p.drawString(100, 730, f"User: {user_name}")
-        p.drawString(100, 710, f"Date: {date}")
-        p.drawImage(BytesIO(qr_img.tobytes()), 100, 600, width=200, height=200)
-        p.save()
+    # Draw user's name and date onto the image
+    font = ImageFont.truetype(font_name, 32)  # Use a suitable font
+    font_medium = ImageFont.truetype(font_name, 24)  # Use a suitable font
+    font_small = ImageFont.truetype(font_name, 16)  # Use a suitable font
+    draw.text((350, 25), f"Booking Id: {ticket.id}", fill="grey", font=font_small)
+    draw.text((350, 70), f"{ticket.user.first_name} {ticket.user.last_name}", fill="black", font=font)
+    draw.text((350, 120),ticket.event.name.upper(), fill="black", font=font)
+    draw.text((350, 170),f"Venue : {ticket.event.venue}", fill="grey", font=font_medium)
+    draw.text((350, 220),ticket.event.time.strftime("%-I:%M %p"), fill="black", font=font_medium)
+    draw.text((600, 220),ticket.event.date.strftime("%a, %d %b, %Y"), fill="black", font=font_medium)
 
-        pdf = buffer.getvalue()
-        buffer.close()
-        response.write(pdf)
-    elif format == 'png':
-        # Generate PNG
-        img_io = BytesIO()
-        qr_img.save(img_io, format='PNG')
-        img_io.seek(0)
-        response = HttpResponse(img_io.getvalue(), content_type='image/png')
-    else:
-        # Handle unsupported format
-        return HttpResponse("Unsupported format")
-
-    return response
+    # Save the image to a BytesIO buffer
+    img_io = BytesIO()
+    ticket_img.save(img_io, format='PNG')
+    img_io.seek(0)
+    return img_io.getvalue()

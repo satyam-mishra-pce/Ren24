@@ -1,0 +1,23 @@
+{% extends 'admin/base.html' %}
+
+{% block extrastyle %}{{ block.super }}
+<style>
+  html[data-theme="dark"],
+  html[data-theme="light"],
+:root {
+  //--body-bg
+  --primary: #42025d;
+  --breadcrumbs-bg:rgba(66,2,93,0.8);
+  --secondary: #42025d;
+  --selected-row: rgba(66,2,93,0.3);
+  --link-fg: #5e9bfd;
+  --link-selected-fg: #5e9bfd;
+  --header-branding-color: #fff;
+  --accent: #fff;
+}
+#branding h1 {
+	font-weight: 701;
+	font-size: 2.5rem;
+}
+</style>
+{% endblock %}

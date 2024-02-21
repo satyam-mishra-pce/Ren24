@@ -100,7 +100,7 @@ def register(request):
     
     # if the request is not a POST method, render a template with a form
     else:
-        return render(request, 'register.html')
+        return render(request, 'signup.html')
     
 def verify(request):
     if request.method == 'POST':
@@ -135,9 +135,8 @@ def signin(request):
             user = user.first()
             if (user.is_active==True):
                 myuser=authenticate(request,phone=user.phone,password=password)
-                print(myuser,password,phone)
                 if myuser is not None:
-                    login(request,user)
+                    login(request,myuser)
                     messages.success(request,"Logged IN Sucessfully")
                     return redirect('home')
                 else:

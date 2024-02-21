@@ -19,6 +19,7 @@ class AccountAdmin(ExportActionMixin,UserAdmin):
             'classes': ('wide',),
             'fields': ('first_name' , 
                   'last_name', 
+                  'email',
                   'phone',
                   'password' ),
         }),

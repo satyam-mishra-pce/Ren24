@@ -3,13 +3,15 @@ from django.contrib.auth.base_user import BaseUserManager
 class UserManager(BaseUserManager):
     use_in_migrations=True
 
-    def create_user(self,phone=None,password=None,**extra):
+    def create_user(self,phone=None,email=None,password=None,**extra):
         if not phone:
             raise ValueError('Phone is required')
         if len(phone) != 10:
             raise ValueError('Invalid Phone Number')
+        if not email:
+            email=""
         # email = self.normalize_email(email)
-        user = self.model(phone=phone,**extra)
+        user = self.model(phone=phone,email=email,**extra)
         user.set_password(password)
         user.save(using=self.db)
         return user

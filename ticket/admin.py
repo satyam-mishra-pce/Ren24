@@ -13,10 +13,10 @@ class TicketAdmin(ExportActionMixin,admin.ModelAdmin):
         return f"{obj.event.date} {obj.event.time}" 
     
     def get_price(self,obj):
-        return obj.event.cost 
+        return obj.event.amount 
     
     def get_email(self,obj):
-        return obj.user.profile.email 
+        return obj.user.email 
     
     def get_username(self,obj):
         return f'{obj.user.first_name} {obj.user.last_name}'

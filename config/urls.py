@@ -19,7 +19,9 @@ from django.urls import path,include
 from config import settings
 from django.conf.urls.static import static
 
-
+admin.site.site_header = "Renaissance Admin Panel"
+admin.site.site_title = "Renaissance Admin Panel"
+admin.site.index_title = "Welcome to Renaissance 2024 Admin Panel"
 
 urlpatterns = [
     path('',include('ticket.urls')),
