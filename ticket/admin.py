@@ -47,7 +47,7 @@ class CustomTicketAdmin(ExportActionMixin,admin.ModelAdmin):
         return f"http:1270/custom/{obj.id}" 
     get_link.short_description = "Link"
 
-admin.site.register(Transaction)
+
 admin.site.register(Events,EventAdmin)
 admin.site.register(Ticket,TicketAdmin)
 admin.site.register(CustomTicket,CustomTicketAdmin)

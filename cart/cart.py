@@ -5,6 +5,7 @@ class Cart():
 	def __init__(self, request):
 		# self.session = request.session
 		# Get request
+		self.user = request.user
 		self.request = request
 		# Get the current session key if it exists
 		cart = []
@@ -64,3 +65,16 @@ class Cart():
 		if self.request.user.is_anonymous ==  False:
 			CartItem.objects.get(event=Events.objects.get(id=event_id)).delete()
 		self.cart.remove(event_id)
+  
+	def emptycart(self):
+		"""Remove all items from the user's shopping cart."""
+		for eventid in self.cart:
+			Events.objects.get(id=eventid).delete()
+		self.cart.clear()
+  
+	def generate_ticket(self):
+		user=self.user
+		for eventid in self.cart:
+			event=Events.objects.get(id=eventid)
+			Ticket.objects.create(user=user,event=event)
+		self.emptycart()
