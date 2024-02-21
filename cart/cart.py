@@ -63,18 +63,19 @@ class Cart():
 	def delete(self, event_id:int):
 		# Delete from dictionary/cart
 		if self.request.user.is_anonymous ==  False:
-			CartItem.objects.get(event=Events.objects.get(id=event_id)).delete()
+			CartItem.objects.get(event=Events.objects.get(id=event_id),user=self.user).delete()
 		self.cart.remove(event_id)
   
 	def emptycart(self):
 		"""Remove all items from the user's shopping cart."""
 		for eventid in self.cart:
-			Events.objects.get(id=eventid).delete()
+			CartItem.objects.get(event=Events.objects.get(id=eventid),user=self.user).delete()
 		self.cart.clear()
   
 	def generate_ticket(self):
 		user=self.user
 		for eventid in self.cart:
 			event=Events.objects.get(id=eventid)
-			Ticket.objects.create(user=user,event=event)
+			obj = Ticket.objects.create(user=user,event=event)
+			print(event,obj)
 		self.emptycart()

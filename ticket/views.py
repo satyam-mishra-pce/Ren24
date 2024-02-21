@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
 from cart.cart import Cart
+from ticket.functions import generate_ticket
 from .models import *
 from config.settings import RAZORPAY_CLIENT,RAZOR_KEY_ID
 from django.contrib import messages
