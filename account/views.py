@@ -46,13 +46,13 @@ def register(request):
         
         if User.objects.filter(phone=phone).exists():
             messages.error(request, "Phone Already Registered!!")
-            return render(request, 'register.html')
+            return render(request, 'signup.html')
         
         if pass1 != pass2:
             messages.error(request, "Passwords didn't matched!!")
             return render(request, 'register.html')
         
-        myuser = User.objects.create_user(phone=phone, 
+        myuser = User.objects.create(phone=phone, 
                                           first_name=fname,
                                           last_name=lname,
                                           password=pass1,
@@ -96,7 +96,7 @@ def register(request):
         # )
         # email.fail_silently = True
         # email.send()
-        return redirect('verify')
+        return render(request,'verify.html')
     
     # if the request is not a POST method, render a template with a form
     else:
@@ -135,12 +135,16 @@ def signin(request):
             user = user.first()
             if (user.is_active==True):
                 myuser=authenticate(request,phone=user.phone,password=password)
+                print(myuser)
                 if myuser is not None:
+                    print('sahi baat hai')
                     login(request,myuser)
                     messages.success(request,"Logged IN Sucessfully")
+                    print('done')
                     return redirect('home')
                 else:
-                    # return Response({"message": "Incorrect password!"}, status=400)      
+                    # return Response({"message": "Incorrect password!"}, status=400) 
+                    print('kuch bhi')     
                     messages.error(request, "Incorrect Password")
                     return render(request,"login.html")
             else:
@@ -148,6 +152,7 @@ def signin(request):
                 messages.error(request, "User not verified")
                 return render(request,"login.html")
         else:
+            print('aaye')
             # return Response({"message": "User does not exist!"}, status=400)
             messages.error(request, "User does not exist")
             return render(request,"login.html")
