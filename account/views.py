@@ -1,9 +1,6 @@
 # from email.message import EmailMessage
-<<<<<<< HEAD
-from django.http import HttpResponse
-=======
 import base64
->>>>>>> 7c891fd2f690c3619b628ea2f212dae8892001b4
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render,redirect
 import pytz
 # from account.forms import ProfileForm
@@ -99,15 +96,9 @@ def signin(request):
                     messages.success(request, "Logged in successfully")
                     request.session['id'] = user.pk
                     return redirect('home')
-<<<<<<< HEAD
-                else:
-                    messages.error(request, "Incorrect password")
-                    return render(request, "login.html")
-=======
                 else:   
                     messages.error(request, "Incorrect Password")
                     return render(request,"login.html")
->>>>>>> 7c891fd2f690c3619b628ea2f212dae8892001b4
             else:
                 messages.error(request, "User not verified")
                 request.session['id'] = user.pk
