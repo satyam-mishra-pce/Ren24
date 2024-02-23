@@ -1,27 +1,28 @@
 from datetime import datetime, timedelta
 from django.db import models
+import pytz
 from account.manager import UserManager
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 class User(AbstractUser):
     username=None
-    phone=models.CharField(max_length=10,unique=True)
+    email=models.EmailField(max_length=200,unique=True)
     _pass =models.OneToOneField(to='Passes',on_delete=models.SET_NULL,null=True)
     
     objects = UserManager()
     
-    USERNAME_FIELD='phone'
-    REQUIRED_FEILDS=[]
+    USERNAME_FIELD='id'
+    REQUIRED_FEILDS=['username']
     def __str__(self):
-        return self.phone
+        return self.email
     
 
 
 class Profile(models.Model):
     user = models.OneToOneField(to='User',on_delete=models.CASCADE)
     image = models.ImageField(upload_to='user_images/')
-    # email=models.EmailField(max_length=200)
+    phone=models.CharField(max_length=10,unique=True)
     dob=models.DateField(null=True)
     sem=models.IntegerField(null=True)
     college=models.CharField(max_length=200)
@@ -36,7 +37,7 @@ class Profile(models.Model):
 #         return self.user.email
 
 class Passes(models.Model):
-    phone = models.CharField(max_length=10,unique=True,null=False,blank=False)
+    email = models.EmailField(max_length=200,unique=True,null=False,blank=False)
     technical1 =models.ForeignKey(to="ticket.Events",on_delete=models.SET_NULL,null=True,blank=True,related_name="Technical_Event_1")
     technical2 =models.ForeignKey(to="ticket.Events",on_delete=models.SET_NULL,null=True,blank=True,related_name="Technical_Event_2")
     splash =models.ForeignKey(to="ticket.Events",on_delete=models.SET_NULL,null=True,blank=True,related_name="Splash_Event")
@@ -51,4 +52,5 @@ class Passes(models.Model):
 class OTP(models.Model):
     user = models.OneToOneField(to="User",on_delete=models.CASCADE)
     otp = models.PositiveIntegerField(null=True,blank=True)
-    expiry = models.DateTimeField(default=datetime.now()+timedelta(minutes=10))
+    created = models.DateTimeField(default=datetime.now(pytz.UTC))
+    expire=models.DateTimeField(default=(datetime.now(pytz.UTC)+timedelta(seconds=30)))

@@ -20,13 +20,12 @@ class AccountAdmin(ExportActionMixin,UserAdmin):
             'fields': ('first_name' , 
                   'last_name', 
                   'email',
-                  'phone',
                   'password' ),
         }),
     )
     
-    list_display=('id','first_name','last_name','phone','last_login')
-    search_fields = ["phone","id","first_name"]
+    list_display=('id','first_name','last_name','email','last_login')
+    search_fields = ["email","id","first_name"]
     readonly_fields = ['id',"date_joined","last_login"]
     filter_horizontal = ()
     list_filter = ()
@@ -35,7 +34,7 @@ class AccountAdmin(ExportActionMixin,UserAdmin):
     
 class PassAdmin(ImportExportMixin,admin.ModelAdmin):
     empty_value_display = "Not selected"
-    list_display=['phone','technical1','technical2','splash']
+    list_display=['email','technical1','technical2','splash']
     readonly_fields=['technical1','technical2','splash']
 
 # class WalletAdmin(admin.ModelAdmin):
@@ -65,4 +64,5 @@ admin.site.register(Session, SessionAdmin)
 admin.site.register(User,AccountAdmin)
 admin.site.register(Profile)
 admin.site.register(Passes,PassAdmin)
+admin.site.register(OTP)
 # admin.site.register(Wallet,WalletAdmin)

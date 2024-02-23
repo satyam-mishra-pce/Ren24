@@ -1,5 +1,7 @@
 # from email.message import EmailMessage
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render,redirect
+import pytz
 # from account.forms import ProfileForm
 from config import settings
 from ticket.models import Ticket
@@ -8,6 +10,8 @@ from django.contrib import messages
 # from django.contrib.auth.hashers import make_password,check_password
 from django.contrib.auth import login, logout,authenticate
 from django.contrib.auth.decorators import login_required
+import pyotp
+import datetime
 # from django.core.mail import EmailMessage, send_mail
 # from django.contrib.sites.shortcuts import get_current_site
 # from django.template.loader import render_to_string
@@ -23,36 +27,31 @@ def generateOTP() :
  
     # Declare a digits variable  
     # which stores all digits 
-    digits = "0123456789"
-    OTP = ""
- 
-   # length of password can be changed
-   # by changing value in range
-    for i in range(4) :
-        OTP += digits[math.floor(random.random() * 10)]
- 
-    return OTP
+    secret=pyotp.random_base32()
+    otp = pyotp.TOTP(secret)
+    return otp.now()
+
 
 def register(request):
     """Create a new user account and send a confirmation email."""
     # check if the request is a POST method
     if request.method == "POST":
         # get the input data from the request
-        fname = request.POST['fname']
-        lname = request.POST['lname']
-        phone = request.POST['phone']
-        pass1 = request.POST['pass1']
-        pass2 = request.POST['pass2']
+        fname = request.POST.get('fname')
+        lname = request.POST.get('lname')
+        email = request.POST.get('email')
+        pass1 = request.POST.get('pass1')
+        pass2 = request.POST.get('pass2')
         
-        if User.objects.filter(phone=phone).exists():
-            messages.error(request, "Phone Already Registered!!")
+        user_exist=User.objects.filter(email=email)
+        if  (len(user_exist)>0):
+            messages.error(request, "Email Already Registered!!")
             return render(request, 'signup.html')
         
         if pass1 != pass2:
             messages.error(request, "Passwords didn't matched!!")
-            return render(request, 'register.html')
-        
-        myuser = User.objects.create(phone=phone, 
+            return render(request, 'signup.html')
+        myuser = User.objects.create(email=email, 
                                           first_name=fname,
                                           last_name=lname,
                                           password=pass1,
@@ -69,7 +68,10 @@ def register(request):
         print(otp_obj.otp)
         print("\n")
         print("\n")
+        otp_obj.created = datetime.datetime.now(pytz.UTC)
+        otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(seconds=30)
         otp_obj.save()
+        request.session['id']=myuser.pk
         
         # #Welcome Email
         # subject="Welcome to Ren2024"
@@ -96,68 +98,54 @@ def register(request):
         # )
         # email.fail_silently = True
         # email.send()
-        return render(request,'verify.html')
+        # return render(request,'verify.html')
+        return redirect('verify')
     
     # if the request is not a POST method, render a template with a form
     else:
         return render(request, 'signup.html')
-    
-def verify(request):
-    if request.method == 'POST':
-        otp = request.POST.get('otp')
-        otp_obj = OTP.objects.filter(otp = otp)
-        if otp_obj.exists():
-            otp_obj =otp_obj.first()
-            # TODO: Add expiration check on otp
-            # print(datetime.now(),otp_obj.first().expiry)
-            # if ((datetime.now())-otp_obj.first().expiry)>0:
-            otp_obj.user.is_active = True
-            otp_obj.user.save()
-            login(request,otp_obj.user)
-            return redirect('home')
-            # else:
-            #     messages.error(request,'OTP expired')
-            #     return render(request, 'verify.html') 
-        else:
-            messages.error(request,'Wrong OTP')
-            return render(request, 'verify.html') 
-            
-    else:
-        return render(request, 'verify.html') 
+
+
+
 
 def signin(request):
-    if request.method=="POST":
-        phone = request.POST.get('phone')
+    if request.method == "POST":
+        email = request.POST.get('email')
         password = request.POST.get('pass1')
-        user=User.objects.filter(phone=phone)
-        
-        if user.exists():
-            user = user.first()
-            if (user.is_active==True):
-                myuser=authenticate(request,phone=user.phone,password=password)
-                print(myuser)
+        user = User.objects.filter(email=email).first()  # Use .first() instead of .exists()
+
+        if user:
+            if user.is_active:
+                myuser = authenticate(request, id=user.id, password=password)
                 if myuser is not None:
-                    print('sahi baat hai')
-                    login(request,myuser)
-                    messages.success(request,"Logged IN Sucessfully")
-                    print('done')
+                    login(request, user)
+                    messages.success(request, "Logged in successfully")
+                    request.session['id'] = user.pk
                     return redirect('home')
                 else:
-                    # return Response({"message": "Incorrect password!"}, status=400) 
-                    print('kuch bhi')     
-                    messages.error(request, "Incorrect Password")
-                    return render(request,"login.html")
+                    messages.error(request, "Incorrect password")
+                    return render(request, "login.html")
             else:
-                # return Response({"message": "User is not verified!"}, status=200)
                 messages.error(request, "User not verified")
-                return render(request,"login.html")
+                request.session['id'] = user.pk
+                otp_obj,created = OTP.objects.get_or_create(user=user.pk)
+                otp_obj.otp = generateOTP()  # Implement your OTP generation logic
+                # TODO: Send OTP to phone number
+                print("\n")
+                print("\n")
+                print(otp_obj.otp)
+                print("\n")
+                print("\n")
+                otp_obj.created = datetime.datetime.now(pytz.UTC)
+                otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(seconds=30)
+                otp_obj.save()
+                return redirect("verify")
         else:
-            print('aaye')
-            # return Response({"message": "User does not exist!"}, status=400)
             messages.error(request, "User does not exist")
-            return render(request,"login.html")
+            return render(request, "signup.html")
     else:
-        return render(request,"login.html")
+        return render(request, "login.html")
+
 
 
 
@@ -199,3 +187,43 @@ def profile_view(request):
         return render(request, 'profile.html',context)
     elif request.method == 'POST':
         return 
+
+
+def resendOTP(request):
+    myuser=User.objects.get(id=request.session.get("id"))
+    otp_obj= OTP.objects.get(user=myuser)
+    otp_obj.otp = generateOTP()
+    otp_obj.created = datetime.datetime.now(pytz.UTC)
+    otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(seconds=30)
+    otp_obj.save()
+    # TODO: Send OTP to phone number
+    print("\n")
+    print("\n")
+    print(otp_obj.otp)
+    print("\n")
+    print("\n")
+    otp_obj.save()
+    return redirect('verify')
+
+def verify(request):
+    if request.method == 'POST':
+        otp = request.POST.get('otp')
+        user = User.objects.get(id=request.session.get("id"))  # Use get() to avoid KeyError
+        otp_obj = OTP.objects.filter(user=user).first()  # Use filter() to handle None case
+        check_otp=str(otp_obj.otp)
+        if otp==check_otp:  
+            if datetime.datetime.now(pytz.UTC) > otp_obj.expire:
+                messages.warning(request, "OTP has expired")
+                return redirect('login')
+            user.is_active=True
+            user.save()
+            login(request, user)
+            return redirect('home')
+            
+        else:
+            print(type(check_otp))
+            print(type(otp))
+            messages.error(request, 'Wrong OTP')
+    else:
+        return render(request, 'verify.html')
+    
