@@ -146,6 +146,11 @@
                     </form>
                 </div>
             </div>
+            <div class="card mb-4">
+                {% for ticket in tickets %}
+                <img class="m-2" src="data:image/png;base64,{{ticket}}" alt="Ticket">
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>

@@ -8,6 +8,7 @@
     <title>{% block title %}{% endblock title %}</title>
 
     <link rel="stylesheet" href="{% static "css/Nav_style.css" %}">
+    <link rel="stylesheet" href="{% static "css/snackbar.css" %}">
 
     <link rel="stylesheet" href="{% static "css/Footer_style.css" %}">
     <link rel="icon" type="image/png" href="assets/logo/REN 23 logo.png" />
@@ -65,12 +66,20 @@
         </div>
     </nav>
     {% block body %}{% endblock body %}
-
+{% if messages %}
+{% for message in messages %}
+<div id="snackbar" class="{{message.tags}}">
+    {{message}}
+    <span class="btn-outline-{{message.tags}} btn-sm closebtn"
+      onclick="this.parentElement.style.display='none';">&times;</span>
+  </div>
+{% endfor %}
+{% endif %}
         <footer id="footer" class="footer text-light mt-auto p-0">
             <div class="container-fluid px-5 py-4">
                 <div class="row justify-content-evenly">
                     <div class="col-xs-6 col-sm-3 column text-center d-flex flex-column">
-                        <div class="my-4"><img src="{% static "assets/logo/REN 23 logo.png" %}" class="footer-logo" /></div>
+                        <div class="my-4"><img src="{% static "assets/logo/Ren logo.png" %}" class="footer-logo" /></div>
 
                     </div>
                     <div class="col-xs-12 col-sm-3 column text-center d-flex flex-column">

@@ -1,9 +1,14 @@
 # from email.message import EmailMessage
+<<<<<<< HEAD
 from django.http import HttpResponse
+=======
+import base64
+>>>>>>> 7c891fd2f690c3619b628ea2f212dae8892001b4
 from django.shortcuts import get_object_or_404, render,redirect
 import pytz
 # from account.forms import ProfileForm
 from config import settings
+from ticket.functions import generate_ticket
 from ticket.models import Ticket
 from .models import *
 from django.contrib import messages
@@ -71,34 +76,6 @@ def register(request):
         otp_obj.created = datetime.datetime.now(pytz.UTC)
         otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(seconds=30)
         otp_obj.save()
-        request.session['id']=myuser.pk
-        
-        # #Welcome Email
-        # subject="Welcome to Ren2024"
-        # message="Hello " + myuser.first_name + "!! \n" +"Welcome to Renaissance 2024 website. \n Thank you for your valuable registration. \n We have also send to a confirmation mail please verify yor email address to get started. \n Thanks regards, \n JECRC "
-        # from_email=settings.EMAIL_HOST_USER
-        # recipient_list=[myuser.email]
-        # send_mail(subject,message,from_email,recipient_list,fail_silently=True)
-        
-        
-        # # Email Address Confirmation Email
-        # current_site = get_current_site(request)
-        # email_subject = "Confirm your Email @Ren2024"
-        # message2 = render_to_string('email_confirmation.html',{
-        #     'name': myuser.first_name,
-        #     'domain': current_site.domain,
-        #     'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
-        #     'token': generate_token.make_token(myuser)
-        # })
-        # email = EmailMessage(
-        # email_subject,
-        # message2,
-        # settings.EMAIL_HOST_USER,
-        # [myuser.email],
-        # )
-        # email.fail_silently = True
-        # email.send()
-        # return render(request,'verify.html')
         return redirect('verify')
     
     # if the request is not a POST method, render a template with a form
@@ -122,9 +99,15 @@ def signin(request):
                     messages.success(request, "Logged in successfully")
                     request.session['id'] = user.pk
                     return redirect('home')
+<<<<<<< HEAD
                 else:
                     messages.error(request, "Incorrect password")
                     return render(request, "login.html")
+=======
+                else:   
+                    messages.error(request, "Incorrect Password")
+                    return render(request,"login.html")
+>>>>>>> 7c891fd2f690c3619b628ea2f212dae8892001b4
             else:
                 messages.error(request, "User not verified")
                 request.session['id'] = user.pk
@@ -154,25 +137,6 @@ def signout(request):
     messages.success(request, "Logged Out Sucessfully")
     return redirect('home')
 
-# def activate(request, uidb64, token):
-#     try:
-#         uid=force_str(urlsafe_base64_decode(uidb64))
-#         myuser = User.objects.get(pk=uid)
-#     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-#         myuser= None
-        
-#     if myuser is not None and generate_token.check_token(myuser,token):
-#         myuser.is_active=True
-#         myuser.save()
-#         # Wallet.objects.create(user=myuser)
-#         login(request,myuser)
-#         messages.success(request, "Your Account has been activated!!")
-#         return redirect('signin')
-    
-#     else:
-#         return render(request, 'activation_failed.html')
-    
-    
 @login_required
 def profile_view(request):
     if request.method == 'GET':
@@ -180,9 +144,12 @@ def profile_view(request):
         profile, created = Profile.objects.get_or_create(user=request.user)
         # render the template with the profile data
         tickets = Ticket.objects.filter(user=request.user)
+        ticket_img = []
+        for ticket in tickets:
+            ticket_img.append(base64.b64encode(generate_ticket(ticket.id)).decode('utf-8'))
         context = {
             'profile':profile,
-            'tickets':tickets
+            'tickets':ticket_img
         }
         return render(request, 'profile.html',context)
     elif request.method == 'POST':
