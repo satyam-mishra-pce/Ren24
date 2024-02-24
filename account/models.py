@@ -13,7 +13,7 @@ class User(AbstractUser):
     objects = UserManager()
     
     USERNAME_FIELD='id'
-    REQUIRED_FEILDS=['']
+    REQUIRED_FEILDS=[]
     def __str__(self):
         return self.email
     
@@ -43,7 +43,7 @@ class Passes(models.Model):
     splash =models.ForeignKey(to="ticket.Events",on_delete=models.SET_NULL,null=True,blank=True,related_name="Splash_Event")
     
     def __str__(self):
-        return self.phone
+        return self.email
     
     class Meta:
         verbose_name = 'Pass'

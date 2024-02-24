@@ -4,10 +4,9 @@ class UserManager(BaseUserManager):
     use_in_migrations=True
 
     def create_user(self,email=None,password=None,**extra):
+        print("Print here")
         if not email:
-            raise ValueError('Phone is required')
-        if not email:
-            email=""
+            raise ValueError('Email is required')
         # email = self.normalize_email(email)
         user = self.model(email=email,**extra)
         user.set_password(password)

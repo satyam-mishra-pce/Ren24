@@ -9,19 +9,19 @@ class UserCreateForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['email','password']
+        
 
 class AccountAdmin(ExportActionMixin,UserAdmin):
-    add_form = UserCreateForm
-    
+    # add_form = UserCreateForm
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('first_name' , 
-                  'last_name', 
+            'fields': (
                   'email',
                   'password1',
-                  'password2'),
+                  'password2' 
+                  ),
         }),
     )
     
