@@ -44,3 +44,11 @@ def getEvent(request):
     }
     return JsonResponse(context)
 
+def custom(request,ticketId):
+    ticket = CustomTicket.objects.filter(id=ticketId)
+    if ticket.exists():
+        ticket = ticket.first()
+        return
+    else:
+        return
+

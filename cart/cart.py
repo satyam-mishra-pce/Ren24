@@ -76,7 +76,7 @@ class Cart():
 	def generate_ticket(self):
 		user=self.user
 		_pass = getPass(user)
-		added_events=self.get()
+		added_events=list(self.get())
 		if _pass != None:
 			if _pass.technical1 == None:
 				for event in added_events:

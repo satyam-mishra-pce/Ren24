@@ -88,7 +88,7 @@ def checkout(request):
         "netTotal":nett_amount,
         }
         Cart(request).generate_ticket()
-        return 
+        return redirect('profile')
     return redirect(paymentpage)
 
 

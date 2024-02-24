@@ -1,4 +1,9 @@
 {% extends 'admin/base.html' %}
+{% load static %}
+
+{% block extrahead %}{{ block.super }}
+<link rel="icon" type="image/png" href="{% static "assets/logo/Ren logo.png" %}" />
+{% endblock extrahead%}
 
 {% block extrastyle %}{{ block.super }}
 <style>
@@ -6,8 +11,11 @@
   html[data-theme="light"],
 :root {
   //--body-bg
-  --primary: #42025d;
-  --breadcrumbs-bg:rgba(66,2,93,0.8);
+  //--primary: #42025d;
+  --primary: rgba(65,0,82,0.8);
+  --header-bg: rgba(65,0,82,0.8);
+  //--breadcrumbs-bg:rgba(66,2,93,0.8);
+  --breadcrumbs-bg:rgba(113,64,125,0.8);
   --secondary: #42025d;
   --selected-row: rgba(66,2,93,0.3);
   --link-fg: #5e9bfd;
@@ -19,5 +27,12 @@
 	font-weight: 701;
 	font-size: 2.5rem;
 }
+body{
+  background-image: url({%static 'assets/bg/background blur.png'%});            background-repeat: repeat-y;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position-y: bottom;
+  overflow-x: hidden;
+}
 </style>
-{% endblock %}
+{% endblock extrastyle%}

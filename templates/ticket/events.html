@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% block head %}
-<link rel="stylesheet" href="{% static "css/main.css" %}" />
-  <link rel="stylesheet" href="{% static "css/snackbar.css" %}" />
+{% comment %} <link rel="stylesheet" href="{% static "css/main.css" %}" /> {% endcomment %}
+  {% comment %} <link rel="stylesheet" href="{% static "css/snackbar.css" %}" /> {% endcomment %}
 
   <link rel="stylesheet" href="{% static "css/activities.css" %}" />
   <link rel="stylesheet" href="{% static "css/button.css" %}" />
@@ -45,7 +45,7 @@
 
 {% block body %}
   <!-- navbar end -->
-  <section id="background_img body-section">
+  <section class="body-section">
     <div class="top-button">
       <button class="button-top cultural-btn" onclick="addAnimation()" id="show-tech">TECHNICAL</button>
       <button class="button-top tech-btn" onclick="addAnimation2()" id="show-cultural">CULTURAL</button>

@@ -68,4 +68,10 @@
 .close-btn {
     color: red !important;
     font-size: 20px;
+    cursor: pointer;
+}
+
+button{
+    cursor: pointer;
+    border: none;
 }

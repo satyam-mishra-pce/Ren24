@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Login Page</title>
+    <title>Register Page</title>
 
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -15,7 +15,19 @@
         integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
     <!--Custom styles-->
-    <link rel="stylesheet" type="text/css" href="{% static "css/signup.css" %}" 
+    
+    <link rel="stylesheet" href="{% static "css/snackbar.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/signup.css" %}">
+    <style>
+        html,body {
+            background-image: url({%static 'assets/bg/background color-03.png'%});            background-repeat: repeat-y;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position-y: bottom;
+            overflow-x: hidden;
+            height:100%;
+        }
+    </style>
 </head>
 
 
@@ -98,6 +110,15 @@
             </div>
         </div>
     </div>
+    {% if messages %}
+{% for message in messages %}
+<div id="snackbar" class="{{message.tags}}">
+    {{message}}
+    <span class="btn-outline-{{message.tags}} btn-sm closebtn"
+      onclick="this.parentElement.style.display='none';">&times;</span>
+  </div>
+{% endfor %}
+{% endif %}
 </body>
 
 </html>

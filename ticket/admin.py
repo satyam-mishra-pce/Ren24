@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import *
 from import_export.admin import ExportActionMixin
+from config.settings import BASE_URL
 # Register your models here.
 
 class EventAdmin(ExportActionMixin,admin.ModelAdmin):
@@ -44,7 +45,7 @@ class CustomTicketAdmin(ExportActionMixin,admin.ModelAdmin):
             }),
     )
     def get_link(self,obj):
-        return f"http:1270/custom/{obj.id}" 
+        return f"{BASE_URL}/custom/{obj.id}" 
     get_link.short_description = "Link"
 
 
