@@ -91,9 +91,9 @@ def signin(request):
 
         if user:
             if user.is_active:
-                myuser = authenticate(request, id=user.id, password=password)
+                myuser = authenticate(request, id=user.id, password=password,)
                 if myuser is not None:
-                    login(request, user)
+                    login(request, user,backend="django.contrib.auth.backends.ModelBackend")
                     messages.success(request, "Logged in successfully")
                     request.session['id'] = user.pk
                     return redirect('home')
@@ -177,7 +177,7 @@ def verify(request):
                 return resendOTP(request)
             user.is_active=True
             user.save()
-            login(request, user)
+            login(request, user,backend="django.contrib.auth.backends.ModelBackend")
             return redirect('home')
             
         else:

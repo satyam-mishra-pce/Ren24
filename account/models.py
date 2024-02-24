@@ -22,7 +22,7 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(to='User',on_delete=models.CASCADE)
     image = models.ImageField(upload_to='user_images/')
-    phone=models.CharField(max_length=10,blank=True)
+    phone=models.CharField(max_length=10,unique=True,null=True)
     dob=models.DateField(null=True)
     sem=models.IntegerField(null=True)
     college=models.CharField(max_length=200)

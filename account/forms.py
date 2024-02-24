@@ -1,5 +1,7 @@
 from django import forms
-from .models import Profile
+from .models import Profile, User
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate
 
 class ProfileForm(forms.ModelForm):
     # define any extra fields or widgets here
@@ -9,4 +11,9 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         # specify the fields you want to include in the form
-        fields = ['image', 'email', 'dob', 'sem', 'college', 'address']
+        fields = ['image', 'phone', 'dob', 'sem', 'college', 'address']
+
+
+class LoginForm(AuthenticationForm):
+    username = forms.EmailField(label="Email")
+    
