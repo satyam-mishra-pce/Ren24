@@ -145,7 +145,7 @@ def profile_view(request):
         }
         return render(request, 'profile.html',context)
     elif request.method == 'POST':
-        return 
+        return  
 
 
 def resendOTP(request):
@@ -173,7 +173,8 @@ def verify(request):
         if otp==check_otp:  
             if datetime.datetime.now(pytz.UTC) > otp_obj.expire:
                 messages.warning(request, "OTP has expired")
-                return redirect('login')
+                # return redirect('')
+                return resendOTP(request)
             user.is_active=True
             user.save()
             login(request, user)
