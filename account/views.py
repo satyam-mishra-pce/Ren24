@@ -48,7 +48,7 @@ def register(request):
         user_exist=User.objects.filter(email=email)
         if  (len(user_exist)>0):
             messages.error(request, "Email Already Registered!!")
-            return render(request, 'signup.html')
+            return render(request, 'login.html')
         
         if pass1 != pass2:
             messages.error(request, "Passwords didn't matched!!")
@@ -59,6 +59,7 @@ def register(request):
                                           password=pass1,
                                           is_active=False)
         myuser.save()
+        request.session['id'] = myuser.id
         
         # return a success message
         messages.success(request, "Your Account has been created succesfully!!")
@@ -179,9 +180,8 @@ def verify(request):
             return redirect('home')
             
         else:
-            print(type(check_otp))
-            print(type(otp))
             messages.error(request, 'Wrong OTP')
+            return redirect('signup')
     else:
         return render(request, 'verify.html')
     
