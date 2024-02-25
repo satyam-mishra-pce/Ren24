@@ -76,31 +76,34 @@
 {% block body %}
 <section class="body-section">
 <div class="container-xl px-4 mt-4">
-    <div class="row">
+    <form class="row" method="post" enctype="multipart/form-data">
         <div class="col-md-4">
             <!-- Profile picture card-->
-            <form action="{% url 'image_upload' %}" method="post">
-                {% csrf_token %}
+            {% comment %} <form method="post">
+                {% csrf_token %} {% endcomment %}
             <div class="card mb-4 mb-md-0">
                 <div class="card-header">Profile Picture</div>
-                <input type="file" name="image">
+                <input type="file" name="image" id="profileImage" hidden>
                 <div class="card-body text-center">
                     {% if profile.image %}
                     <!-- Profile picture image-->
-                    <img class="img-account-profile rounded-circle mb-2" src="{{profile.image.url}}" alt="Profile" >
+                    <img id="thumbnail" class="img-account-profile rounded-circle mb-2" src="{{profile.image.url}}" alt="Profile" >
+                    {% else %}
+
+                    <img id="thumbnail" class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="">
                     {% endif %}
                     <!-- Profile picture help block-->
-                    <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                    <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 2 MB</div>
                     <!-- Profile picture upload button-->
-                    <button class="btn btn-primary" type="submit" >  Upload new image</button>
+                    <label for="profileImage" class="btn btn-info" >  Upload new image</label>
                 </div>
             </div>
-        </form>
+        {% comment %} </form> {% endcomment %}
         </div>
         
         <div class="col-md-8">
             <!-- Account details card-->
-            <form action="{% url 'profile' %}" method="post">
+            {% comment %} <form action="{% url 'profile' %}" method="post"> {% endcomment %}
                 {% csrf_token %}
             <div class="card mb-4">
                 <div class="card-header">Account Details</div>
@@ -122,13 +125,13 @@
                         <div class="row gx-3 mb-3">
                             <!-- Form Group (organization name)-->
                             <div class="col-md-6">
-                                <label class="small mb-1" for="inputOrgName">Organization name</label>
-                                <input class="form-control" name="college" id="inputOrgName" type="text" placeholder="Enter your organization name" value="{{profile.college}}">
+                                <label class="small mb-1" for="inputOrgName">Institute name</label>
+                                <input class="form-control" name="college" id="inputOrgName" type="text" placeholder="Enter your Institute name" value="{{profile.college}}">
                             </div>
                             <!-- Form Group (location)-->
                             <div class="col-md-6">
-                                <label class="small mb-1" for="inputLocation">Location</label>
-                                <input class="form-control" name="address" id="inputLocation" type="text" placeholder="Enter your location" value="{{profile.address}}">
+                                <label class="small mb-1" for="inputLocation">Address</label>
+                                <input class="form-control" name="address" id="inputLocation" type="text" placeholder="Enter your address" value="{{profile.address}}">
                             </div>
                         </div>
                         <!-- Form Group (email address)-->
@@ -138,6 +141,22 @@
                         </div>
                         <!-- Form Row-->
                         <div class="row gx-3 mb-3">
+                            <!-- Form Group (organization name)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputRollno">University Roll Number</label>
+                                <input class="form-control" name="rollno" id="inputRollno" type="text" maxlength="16" placeholder="Enter your Roll Number" value="{{profile.rollno}}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1">Gender</label>
+                                <select name="gender" id="gender" required class="form-control">
+                                    <option value="">Select</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
                             <!-- Form Group (phone number)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputPhone">Phone number</label>
@@ -146,13 +165,13 @@
                             <!-- Form Group (birthday)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputBirthday">Birthday</label>
-                                <input class="form-control" name="dob" id="inputBirthday" type="date"  placeholder="Enter your birthday" value="{{profile.dob}}">
+                                <input class="form-control" name="dob" id="inputBirthday" type="date"  placeholder="Enter your birthday" value="{{dob}}">
                             </div>
                         </div>
                         <!-- Save changes button-->
                         <button class="btn btn-primary" type="submit">Save changes</button>
                 </div>
-            </form>
+            {% comment %} </form> {% endcomment %}
             </div>
             <div class="card mb-4">
                 {% for ticket in tickets %}
@@ -160,7 +179,26 @@
                 {% endfor %}
             </div>
         </div>
-    </div>
+    </form>
 </div>
 </section>
 {% endblock body %}
+
+{% block script %}
+<script>
+    document.getElementById("gender").value = "{{profile.get_gender_display}}";
+    image = document.getElementById("profileImage");
+  img = document.getElementById("thumbnail");
+  image.addEventListener("change", function () {
+    file = this.files[0]
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const result = reader.result;
+        img.src = result;
+      }
+      reader.readAsDataURL(file);
+    }
+  });
+</script>
+{% endblock script %}

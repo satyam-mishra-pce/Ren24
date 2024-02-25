@@ -134,35 +134,46 @@ def signout(request):
 def profile_view(request):
     if request.method == 'GET':
         # get the current user's profile or create a new one
-        profile, created = Profile.objects.get_or_create(user=request.user)
+        profile= Profile.objects.filter(user=request.user)
+        if profile.exists():
+            profile = profile.first()
         # render the template with the profile data
-        tickets = Ticket.objects.filter(user=request.user)
-        ticket_img = []
-        for ticket in tickets:
-            ticket_img.append(base64.b64encode(generate_ticket(ticket.id)).decode('utf-8'))
-        context = {
-            'profile':profile,
-            'tickets':ticket_img
-        }
-        return render(request, 'profile.html',context)
+            tickets = Ticket.objects.filter(user=request.user)
+            ticket_img = []
+            for ticket in tickets:
+                ticket_img.append(base64.b64encode(generate_ticket(ticket.id)).decode('utf-8'))
+            context = {
+                'profile':profile,
+                'dob':profile.dob.strftime("%Y-%m-%d"),
+                'tickets':ticket_img
+            }
+            return render(request, 'profile.html',context)
+        else:
+            return render(request, 'profile.html')
     else:
         first_name=request.POST.get("fname")
         last_name=request.POST.get("lname")
         phone=request.POST.get("phone")
         dob=request.POST.get("dob")
-        sem=request.POST.get("sem")
+        rollno=request.POST.get("rollno")
+        gender=request.POST.get("gender")
         college=request.POST.get("college")
         address=request.POST.get("address")
-        user_obj=User.objects.get(id=request.session.get("id"))
-        profile_obj=Profile.objects.get(user=user_obj)
+        image = request.FILES.get("image")
+        user_obj=request.user
+        profile_obj,created=Profile.objects.get_or_create(user=user_obj)
         user_obj.first_name=first_name
         user_obj.last_name=last_name
         profile_obj.phone=phone
         profile_obj.dob=dob
-        profile_obj.sem=sem
+        profile_obj.rollno=rollno
+        profile_obj.gender= genders.get(gender)
         profile_obj.college=college
         profile_obj.address=address
-        profile_obj.user
+        # profile_obj.user
+        print(image)
+        if image is not None and image != "":
+            profile_obj.image = image
         profile_obj.save()
         user_obj.save()
         profile =request.user.profile
@@ -173,6 +184,7 @@ def profile_view(request):
             ticket_img.append(base64.b64encode(generate_ticket(ticket.id)).decode('utf-8'))
         context = {
             'profile':profile,
+            'dob':profile.dob.strftime("%Y-%m-%d"),
             'tickets':ticket_img
         }
         messages.success(request,"Profile updated Sucessfully")
@@ -218,28 +230,28 @@ def verify(request):
     else:
         return render(request, 'verify.html')
     
-def image_upload(request):
-    if request.method=='POST':
-        profile= Profile.objects.get(user=request.user)
-    # if the request method is POST, process the form data
-        # create a form instance and populate it with data from the request
-        form = ProfileForm(request.POST, request.FILES, instance=profile)
-        # check whether the form is valid
-        if form.is_valid():
-            # save the form data to the database
-            form.save()
-            # redirect to the same page
-            return redirect('profile')
-        # render the template with the profile data
-        tickets = Ticket.objects.filter(user=request.user)
-        ticket_img = []
-        for ticket in tickets:
-            ticket_img.append(base64.b64encode(generate_ticket(ticket.id)).decode('utf-8'))
-        context = {
-            'profile':profile,
-            'tickets':ticket_img
-        }
-        messages.success(request,"Profile updated Sucessfully")
-        return render(request,"profile.html",context)
-    else:
-        return render(request,"profile.html")
+# def image_upload(request):
+#     if request.method=='POST':
+#         profile= Profile.objects.get(user=request.user)
+#     # if the request method is POST, process the form data
+#         # create a form instance and populate it with data from the request
+#         form = ProfileForm(request.POST, request.FILES, instance=profile)
+#         # check whether the form is valid
+#         if form.is_valid():
+#             # save the form data to the database
+#             form.save()
+#             # redirect to the same page
+#             return redirect('profile')
+#         # render the template with the profile data
+#         tickets = Ticket.objects.filter(user=request.user)
+#         ticket_img = []
+#         for ticket in tickets:
+#             ticket_img.append(base64.b64encode(generate_ticket(ticket.id)).decode('utf-8'))
+#         context = {
+#             'profile':profile,
+#             'tickets':ticket_img
+#         }
+#         messages.success(request,"Profile updated Sucessfully")
+#         return render(request,"profile.html",context)
+#     else:
+#         return render(request,"profile.html")

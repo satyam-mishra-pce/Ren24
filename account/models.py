@@ -4,6 +4,16 @@ import pytz
 from account.manager import UserManager
 from django.contrib.auth.models import AbstractUser
 
+_genders = [("m","Male"),
+           ("f","Female"),
+           ("o","Other")]
+
+genders = {
+    'Male':'m',
+    'Female':'f',
+    'Other':'o',
+}
+
 # Create your models here.
 class User(AbstractUser):
     username=None
@@ -23,8 +33,9 @@ class Profile(models.Model):
     user = models.OneToOneField(to='User',on_delete=models.CASCADE)
     image = models.ImageField(upload_to='user_images/')
     phone=models.CharField(max_length=10,unique=True,null=True)
+    gender=models.CharField(max_length=1,null=True,blank=True,choices=_genders)
+    rollno=models.CharField(max_length=16,unique=True,null=True)
     dob=models.DateField(null=True)
-    sem=models.IntegerField(null=True)
     college=models.CharField(max_length=200)
     address=models.CharField(max_length=200)
 
