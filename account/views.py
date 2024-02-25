@@ -3,6 +3,7 @@ import base64
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render,redirect
 import pytz
+from account.forms import ProfileForm
 # from account.forms import ProfileForm
 from config import settings
 from ticket.functions import generate_ticket
@@ -144,8 +145,39 @@ def profile_view(request):
             'tickets':ticket_img
         }
         return render(request, 'profile.html',context)
-    elif request.method == 'POST':
-        return  
+    else:
+        first_name=request.POST.get("fname")
+        last_name=request.POST.get("lname")
+        phone=request.POST.get("phone")
+        dob=request.POST.get("dob")
+        sem=request.POST.get("sem")
+        college=request.POST.get("college")
+        address=request.POST.get("address")
+        user_obj=User.objects.get(id=request.session.get("id"))
+        profile_obj=Profile.objects.get(user=user_obj)
+        user_obj.first_name=first_name
+        user_obj.last_name=last_name
+        profile_obj.phone=phone
+        profile_obj.dob=dob
+        profile_obj.sem=sem
+        profile_obj.college=college
+        profile_obj.address=address
+        profile_obj.user
+        profile_obj.save()
+        user_obj.save()
+        profile =request.user.profile
+        # render the template with the profile data
+        tickets = Ticket.objects.filter(user=request.user)
+        ticket_img = []
+        for ticket in tickets:
+            ticket_img.append(base64.b64encode(generate_ticket(ticket.id)).decode('utf-8'))
+        context = {
+            'profile':profile,
+            'tickets':ticket_img
+        }
+        messages.success(request,"Profile updated Sucessfully")
+        return render(request,"profile.html",context)
+          
 
 
 def resendOTP(request):
@@ -186,3 +218,28 @@ def verify(request):
     else:
         return render(request, 'verify.html')
     
+def image_upload(request):
+    if request.method=='POST':
+        profile= Profile.objects.get(user=request.user)
+    # if the request method is POST, process the form data
+        # create a form instance and populate it with data from the request
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        # check whether the form is valid
+        if form.is_valid():
+            # save the form data to the database
+            form.save()
+            # redirect to the same page
+            return redirect('profile')
+        # render the template with the profile data
+        tickets = Ticket.objects.filter(user=request.user)
+        ticket_img = []
+        for ticket in tickets:
+            ticket_img.append(base64.b64encode(generate_ticket(ticket.id)).decode('utf-8'))
+        context = {
+            'profile':profile,
+            'tickets':ticket_img
+        }
+        messages.success(request,"Profile updated Sucessfully")
+        return render(request,"profile.html",context)
+    else:
+        return render(request,"profile.html")

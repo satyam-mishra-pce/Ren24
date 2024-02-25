@@ -15,4 +15,5 @@ urlpatterns = [
     path('forgot',reset.forgotpassword,name='forgotpassword'),
     path('forgot/verify',reset.verify,name='resetpass_verify'),
     path('forgot/resendotp',reset.resendOTP,name= 'resetpass_resendotp'),
+    path('image_upload',image_upload,name="image_upload"),
 ]
