@@ -58,13 +58,17 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
+AUTHENTICATION_BACKENDS = [
+    'account.authentication.EmailBackend',
+    "django.contrib.auth.backends.ModelBackend"
+    ]
+ADMIN_AUTHENTICATION_METHOD = 'account.authentication.EmailBackend'
 
 ROOT_URLCONF = 'config.urls'
 AUTH_USER_MODEL = 'account.User'
 
-LOGIN_URL = 'u/signin'
-LOGOUT_URL = 'u/signout'
+LOGIN_URL = 'u/login'
+LOGOUT_URL = 'u/logout'
 
 TEMPLATES = [
     {

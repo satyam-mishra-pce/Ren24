@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from django.contrib.auth import views
 from config import settings
 from django.conf.urls.static import static
+from account.forms import LoginForm
 
 admin.site.site_header = "Renaissance Admin Panel"
 admin.site.site_title = "Renaissance Admin Panel"
@@ -28,5 +30,13 @@ urlpatterns = [
     path('',include('main.urls')),
     path('u/',include('account.urls')),
     path('cart/',include('cart.urls')),
+    # path(
+    #     'admin/login/',
+    #     views.LoginView.as_view(
+    #         # template_name="login.html",
+    #         authentication_form=LoginForm
+    #         ),
+    #     name='login'
+    # ),
     path('admin/', admin.site.urls),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

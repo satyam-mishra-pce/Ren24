@@ -3,4 +3,5 @@ from main import views
 
 urlpatterns = [
     path('',views.home,name='home'),
+    path('itinerary',views.itinerary,name='itinerary')
 ]

@@ -22,7 +22,7 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(to='User',on_delete=models.CASCADE)
     image = models.ImageField(upload_to='user_images/')
-    phone=models.CharField(max_length=10,blank=True)
+    phone=models.CharField(max_length=10,unique=True,null=True)
     dob=models.DateField(null=True)
     sem=models.IntegerField(null=True)
     college=models.CharField(max_length=200)
@@ -54,3 +54,10 @@ class OTP(models.Model):
     otp = models.PositiveIntegerField(null=True,blank=True)
     created = models.DateTimeField(default=datetime.now(pytz.UTC))
     expire=models.DateTimeField(default=(datetime.now(pytz.UTC)+timedelta(seconds=30)))
+    
+    def __str__(self):
+        return self.user.email
+    
+    class Meta:
+        verbose_name = 'OTP'
+        verbose_name_plural = 'OTP(s)'

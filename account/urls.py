@@ -1,7 +1,10 @@
 from django.contrib import admin
 from django.urls import path,include
+from account.forms import LoginForm
 from .views import *
 import account.resetpass as reset
+
+admin.site.login_form = LoginForm
 
 urlpatterns = [
     # path('',home,name='home'),
