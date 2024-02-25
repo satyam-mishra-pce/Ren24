@@ -13,7 +13,7 @@ def generate_ticket(ticket_id)->bytes:
     BASE_DIR = Path(__file__).resolve().parent
     ticket = Ticket.objects.get(id=ticket_id)
     # Generate QR code
-    logo = Image.open(path.join(BASE_DIR,'Ren logo.png'))
+    logo = Image.open(path.join(BASE_DIR,'assets','Ren logo.png'))
     logo = logo.resize((70, 70))
     qr = qrcode.QRCode(
         version=1, 
@@ -29,13 +29,13 @@ def generate_ticket(ticket_id)->bytes:
 
     # Create a blank image with white background
     # ticket_img = Image.new("RGB", (900, 300), "white")
-    ticket_img = Image.open(path.join(BASE_DIR,'ticket-01.png'),'r')
+    ticket_img = Image.open(path.join(BASE_DIR,'assets','ticket-01.png'),'r')
     ticket_img = ticket_img.resize((900,300))
     draw = ImageDraw.Draw(ticket_img)
 
     # Paste the QR code onto the image
     ticket_img.paste(qr_img, (15, 15),qr_img)
-    font_name = "/usr/share/fonts/truetype/dejavu/DejaVuMathTeXGyre.ttf"
+    font_name = path.join(BASE_DIR,'assets','Ubuntu_Mono','UbuntuMono-Regular.ttf')
 
     # Draw user's name and date onto the image
     font = ImageFont.truetype(font_name, 32)  # Use a suitable font

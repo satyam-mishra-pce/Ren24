@@ -13,23 +13,18 @@ from .models import *
 from config.settings import RAZORPAY_CLIENT,RAZOR_KEY_ID
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
-from PIL import Image
-import qrcode
-from io import  BytesIO
-import base64
-from PIL import ImageDraw, ImageFont
 # Create your views here.
 
-  
-@login_required
+
 def qr(request,ticketId):
     ticket = generate_ticket(ticketId)
     response = HttpResponse(ticket, content_type='image/png')
     return response
     
 def event(request):
-    events = Events.objects.all()
-    return render(request, 'events.html', {'events': events})
+    if request.method == 'get':
+        events = Events.objects.all()
+        return render(request, 'events.html', {'events': events})
 
 def getEvent(request):
     data = json.loads(request.body)

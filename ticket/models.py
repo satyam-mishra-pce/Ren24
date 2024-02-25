@@ -39,6 +39,7 @@ class Ticket(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     event = models.ForeignKey(Events, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True, blank=True)
+    used = models.BooleanField(default=False)
     # qr_code = models.ImageField(upload_to='passes/qr', blank=True)
 
     def __str__(self):

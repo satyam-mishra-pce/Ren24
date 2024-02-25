@@ -62,7 +62,12 @@
         <h4 class="my-2">Amount</h4>
         <span id="event-amount"></span>
         <h4 style="color:red" id="event-access"></h4>
-        <br><button class="btn-primary" id="add-to-cart-btn">Add to cart</button>
+        <br>
+        {% if request.user.is_authenticated %}
+        <button class="btn-primary" id="add-to-cart-btn">Add to cart</button>
+        {% else %}
+        <a class="btn btn-primary" href="{% url 'login' %}">Login to buy Ticket</a>
+        {% endif %}
       </div>
     </div>
     <!-- =-=-=-=-=-=-=-=-=-=-=- Modal end here =-=--=-=--=-=-=-=- -->

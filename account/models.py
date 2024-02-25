@@ -54,3 +54,10 @@ class OTP(models.Model):
     otp = models.PositiveIntegerField(null=True,blank=True)
     created = models.DateTimeField(default=datetime.now(pytz.UTC))
     expire=models.DateTimeField(default=(datetime.now(pytz.UTC)+timedelta(seconds=30)))
+    
+    def __str__(self):
+        return self.user.email
+    
+    class Meta:
+        verbose_name = 'OTP'
+        verbose_name_plural = 'OTP(s)'
