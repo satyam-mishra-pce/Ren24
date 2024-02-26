@@ -1,10 +1,12 @@
-{% block title %}{% endblock title %}
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Itinerary{% endblock title %}
 {% block head %}
     <link rel="stylesheet" href="{% static "css/itinerary.css" %}">
 {% endblock head %}
 
 {% block body %}
-    <section class="timeline">
+    <section class="timeline body-section">
         <div class="days">
             <a href="">
                 <div class="day"><b>Day1</b></div>
