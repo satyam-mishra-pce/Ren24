@@ -16,7 +16,7 @@ from django.http import HttpResponseBadRequest,HttpResponse, JsonResponse
 from ticket.views import qr
 
 # Create your views here.
-@profile_required
+@profile_required('/u/profile')
 @login_required
 def cart(request):
     if request.method == 'GET':
@@ -82,7 +82,7 @@ def cart_delete(request):
             print(e)
             return HttpResponse("Unexpected error occured !",status=500)
 
-@profile_required
+@profile_required('/u/profile')
 @login_required
 def checkout(request):
     events = Cart(request).get()

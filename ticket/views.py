@@ -22,7 +22,7 @@ def qr(request,ticketId):
     return response
     
 def event(request):
-    if request.method == 'get':
+    if request.method == 'GET':
         events = Events.objects.all()
         return render(request, 'events.html', {'events': events})
 
