@@ -1,4 +1,6 @@
 import json
+
+from account.decorators import profile_required
 from .models import *
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -14,6 +16,8 @@ from django.http import HttpResponseBadRequest,HttpResponse, JsonResponse
 from ticket.views import qr
 
 # Create your views here.
+@profile_required
+@login_required
 def cart(request):
     if request.method == 'GET':
         cart = Cart(request)
@@ -78,7 +82,8 @@ def cart_delete(request):
             print(e)
             return HttpResponse("Unexpected error occured !",status=500)
 
-
+@profile_required
+@login_required
 def checkout(request):
     events = Cart(request).get()
     nett_amount = request.session.get('nett_amount')

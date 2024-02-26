@@ -83,7 +83,6 @@
                 {% csrf_token %} {% endcomment %}
             <div class="card mb-4 mb-md-0">
                 <div class="card-header">Profile Picture</div>
-                <input type="file" name="image" id="profileImage" hidden>
                 <div class="card-body text-center">
                     {% if profile.image %}
                     <!-- Profile picture image-->
@@ -95,6 +94,12 @@
                     <!-- Profile picture help block-->
                     <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 2 MB</div>
                     <!-- Profile picture upload button-->
+                    {% if profile.image %}
+                    <!-- Profile picture image-->
+                    <input type="file" name="image" id="profileImage" hidden>
+                    {% else %}
+                    <input type="file" name="image" id="profileImage" hidden required>
+                    {% endif %}
                     <label for="profileImage" class="btn btn-info" >  Upload new image</label>
                 </div>
             </div>
@@ -113,12 +118,12 @@
                             <!-- Form Group (first name)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputFirstName">First name</label>
-                                <input class="form-control" name="fname" id="inputFirstName" type="text" placeholder="Enter your first name" value="{{request.user.first_name}}">
+                                <input class="form-control" name="fname" id="inputFirstName" type="text" placeholder="Enter your first name" value="{{request.user.first_name}}" required>
                             </div>
                             <!-- Form Group (last name)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputLastName">Last name</label>
-                                <input class="form-control" name="lname" id="inputLastName" type="text" placeholder="Enter your last name" value="{{request.user.last_name}}">
+                                <input class="form-control" name="lname" id="inputLastName" type="text" placeholder="Enter your last name" value="{{request.user.last_name}}" required>
                             </div>
                         </div>
                         <!-- Form Row        -->
@@ -126,12 +131,12 @@
                             <!-- Form Group (organization name)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputOrgName">Institute name</label>
-                                <input class="form-control" name="college" id="inputOrgName" type="text" placeholder="Enter your Institute name" value="{{profile.college}}">
+                                <input class="form-control" name="college" id="inputOrgName" type="text" placeholder="Enter your Institute name" value="{{profile.college}}" required>
                             </div>
                             <!-- Form Group (location)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputLocation">Address</label>
-                                <input class="form-control" name="address" id="inputLocation" type="text" placeholder="Enter your address" value="{{profile.address}}">
+                                <input class="form-control" name="address" id="inputLocation" type="text" placeholder="Enter your address" value="{{profile.address}}" required>
                             </div>
                         </div>
                         <!-- Form Group (email address)-->
@@ -144,7 +149,7 @@
                             <!-- Form Group (organization name)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputRollno">University Roll Number</label>
-                                <input class="form-control" name="rollno" id="inputRollno" type="text" maxlength="16" placeholder="Enter your Roll Number" value="{{profile.rollno}}">
+                                <input class="form-control" name="rollno" id="inputRollno" type="text" maxlength="16" placeholder="Enter your Roll Number" value="{{profile.rollno}}" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="small mb-1">Gender</label>
@@ -160,12 +165,12 @@
                             <!-- Form Group (phone number)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputPhone">Phone number</label>
-                                <input class="form-control" name="phone" id="inputPhone" type="tel" placeholder="Enter your phone number" value="{{profile.phone}}">
+                                <input class="form-control" name="phone" id="inputPhone" type="tel" placeholder="Enter your phone number" value="{{profile.phone}}" required>
                             </div>
                             <!-- Form Group (birthday)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputBirthday">Birthday</label>
-                                <input class="form-control" name="dob" id="inputBirthday" type="date"  placeholder="Enter your birthday" value="{{dob}}">
+                                <input class="form-control" name="dob" id="inputBirthday" type="date"  placeholder="Enter your birthday" value="{{dob}}" required>
                             </div>
                         </div>
                         <!-- Save changes button-->
