@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+from config import env
 
 # import razorpay
 
@@ -159,21 +160,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-PRODUCTION = os.getenv('PRODUCTION') == 'TRUE'
+PRODUCTION = env.getParameter('PRODUCTION') == 'TRUE'
 # USE_S3 = True
-print(f"Production : {os.getenv('PRODUCTION')}")
+print(f"Production : {env.getParameter('PRODUCTION')}")
 
 if PRODUCTION:
     
-    BASE_URL = os.getenv('DOMAIN')
-    # RAZOR_KEY_ID= os.getenv('RAZOR_KEY_ID')
-    # RAZOR_KEY_SECRET=os.getenv('RAZOR_KEY_SECRET')
+    BASE_URL = env.getParameter('DOMAIN')
+    # RAZOR_KEY_ID= env.getParameter('RAZOR_KEY_ID')
+    # RAZOR_KEY_SECRET=env.getParameter('RAZOR_KEY_SECRET')
 
     # RAZORPAY_CLIENT = razorpay.Client(
     #     auth=(RAZOR_KEY_ID, RAZOR_KEY_SECRET))
 
     # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = os.getenv('SECRET_KEY')
+    SECRET_KEY = env.getParameter('SECRET_KEY')
 
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = False
@@ -195,11 +196,11 @@ if PRODUCTION:
         }
     }
     # aws settings
-    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_ACCESS_KEY_ID = env.getParameter('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env.getParameter('AWS_SECRET_ACCESS_KEY')
     # AWS_ACCESS_KEY_ID = "AKIA3WO4ZFTK7JW4U6XT"
     # AWS_SECRET_ACCESS_KEY = "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"
-    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+    AWS_STORAGE_BUCKET_NAME = env.getParameter('AWS_STORAGE_BUCKET_NAME')
     # AWS_STORAGE_BUCKET_NAME = "ren24-cdn"
     # AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
