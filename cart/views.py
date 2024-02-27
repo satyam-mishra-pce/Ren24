@@ -7,7 +7,7 @@ from django.shortcuts import render
 from cart.cart import Cart
 from cart.functions import getPass
 from django.contrib.auth.decorators import login_required
-from config.settings import RAZORPAY_CLIENT,RAZOR_KEY_ID
+# from config.settings import RAZORPAY_CLIENT,RAZOR_KEY_ID
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 import time
@@ -85,110 +85,114 @@ def cart_delete(request):
 @profile_required('/u/profile')
 @login_required
 def checkout(request):
-    events = Cart(request).get()
+    _cart = Cart(request)
+    events = _cart.get()
     nett_amount = request.session.get('nett_amount')
     if nett_amount==0:
         context = {
         "events":events,
         "netTotal":nett_amount,
         }
-        Cart(request).generate_ticket()
+        _cart.generate_ticket()
         return redirect('profile')
-    return redirect(paymentpage)
-
-
-
-@login_required
-def paymentpage(request):
-    currency = 'INR'
-    amount =  request.session.get('nett_amount') # Rs. 200
-    amount=int(float(amount)*100)
-
-    # Create a Razorpay Order
-    razorpay_order = RAZORPAY_CLIENT.order.create(dict(amount=amount,
-                                                    currency=currency,
-                                                    payment_capture='0'))
-    Transaction.objects.create(order_id=razorpay_order['id'],
-                                    amount=amount//100,
-                                    user=request.user,
-                                    )
-    # order id of newly created order.
-    razorpay_order_id = razorpay_order['id']
-    callback_url = 'paymenthandler/'
-
-    # we need to pass these details to frontend.
-    context = {}
-    context['razorpay_order_id'] = razorpay_order_id
-    context['razorpay_merchant_key'] = RAZOR_KEY_ID
-    context['razorpay_amount'] = amount
-    context['currency'] = currency
-    context['callback_url'] = callback_url 
-    # render the payment.html template with the context
-    return render(request, 'razorpay.html', context=context)
-
-
-
-
-
-# we need to csrf_exempt this url as
-# POST request will be made by Razorpay
-# and it won't have the csrf token.
-@login_required
-@csrf_exempt
-def paymenthandler(request):
-
-    # only accept POST request.
-    if request.method == "POST":
-        try:
-        
-            # get the required parameters from post request.
-            payment_id = request.POST.get('razorpay_payment_id', '')
-            razorpay_order_id = request.POST.get('razorpay_order_id', '')
-            signature = request.POST.get('razorpay_signature', '')
-            params_dict = {
-                'razorpay_order_id': razorpay_order_id,
-                'razorpay_payment_id': payment_id,
-                'razorpay_signature': signature
-            }
-
-            # verify the payment signature.
-            result = RAZORPAY_CLIENT.utility.verify_payment_signature(params_dict)
-            if result is True:
-                paymentobj = Transaction.objects.get(order_id=razorpay_order_id)
-                amount=paymentobj.amount*100
-                try:
-                    # # get the user's wallet
-                    # user_wallet = Wallet.objects.get(user=request.user)
-                    # # update the wallet balance
-                    # user_wallet.balance += amount//100
-                    # user_wallet.save()
-                    
-                    # capture the payment
-                    RAZORPAY_CLIENT.payment.capture(payment_id, amount)
-                    
-                    # render success page on successful capture of payment
-                    paymentobj.is_paid=True
-                    paymentobj.save()
-                    messages.success(request,"Payment Sucessful!!")
-                    Cart(request).generate_ticket()
-                    return redirect('home')
-            
-                except Exception as e:
-
-                    # if there is an error while capturing payment.
-                    print(e)
-                    messages.success(request,"Payment Fail!!")
-                    return redirect('home')
-            else:
-
-                # if signature verification fails.
-                messages.success(request,"Payment Fail!!")
-                return redirect('home')
-        except:
-
-            # if we don't find the required parameters in POST data
-            return HttpResponseBadRequest()
     else:
-        # if other than POST request is made.
-        return HttpResponseBadRequest()
+        _cart.emptycart()
+        #TODO: Redirect to google form
+        # return redirect(paymentpage)
+
+
+
+# @login_required
+# def paymentpage(request):
+#     currency = 'INR'
+#     amount =  request.session.get('nett_amount') # Rs. 200
+#     amount=int(float(amount)*100)
+
+#     # Create a Razorpay Order
+#     razorpay_order = RAZORPAY_CLIENT.order.create(dict(amount=amount,
+#                                                     currency=currency,
+#                                                     payment_capture='0'))
+#     Transaction.objects.create(order_id=razorpay_order['id'],
+#                                     amount=amount//100,
+#                                     user=request.user,
+#                                     )
+#     # order id of newly created order.
+#     razorpay_order_id = razorpay_order['id']
+#     callback_url = 'paymenthandler/'
+
+#     # we need to pass these details to frontend.
+#     context = {}
+#     context['razorpay_order_id'] = razorpay_order_id
+#     context['razorpay_merchant_key'] = RAZOR_KEY_ID
+#     context['razorpay_amount'] = amount
+#     context['currency'] = currency
+#     context['callback_url'] = callback_url 
+#     # render the payment.html template with the context
+#     return render(request, 'razorpay.html', context=context)
+
+
+
+
+
+# # we need to csrf_exempt this url as
+# # POST request will be made by Razorpay
+# # and it won't have the csrf token.
+# @login_required
+# @csrf_exempt
+# def paymenthandler(request):
+
+#     # only accept POST request.
+#     if request.method == "POST":
+#         try:
+        
+#             # get the required parameters from post request.
+#             payment_id = request.POST.get('razorpay_payment_id', '')
+#             razorpay_order_id = request.POST.get('razorpay_order_id', '')
+#             signature = request.POST.get('razorpay_signature', '')
+#             params_dict = {
+#                 'razorpay_order_id': razorpay_order_id,
+#                 'razorpay_payment_id': payment_id,
+#                 'razorpay_signature': signature
+#             }
+
+#             # verify the payment signature.
+#             result = RAZORPAY_CLIENT.utility.verify_payment_signature(params_dict)
+#             if result is True:
+#                 paymentobj = Transaction.objects.get(order_id=razorpay_order_id)
+#                 amount=paymentobj.amount*100
+#                 try:
+#                     # # get the user's wallet
+#                     # user_wallet = Wallet.objects.get(user=request.user)
+#                     # # update the wallet balance
+#                     # user_wallet.balance += amount//100
+#                     # user_wallet.save()
+                    
+#                     # capture the payment
+#                     RAZORPAY_CLIENT.payment.capture(payment_id, amount)
+                    
+#                     # render success page on successful capture of payment
+#                     paymentobj.is_paid=True
+#                     paymentobj.save()
+#                     messages.success(request,"Payment Sucessful!!")
+#                     Cart(request).generate_ticket()
+#                     return redirect('home')
+            
+#                 except Exception as e:
+
+#                     # if there is an error while capturing payment.
+#                     print(e)
+#                     messages.success(request,"Payment Fail!!")
+#                     return redirect('home')
+#             else:
+
+#                 # if signature verification fails.
+#                 messages.success(request,"Payment Fail!!")
+#                 return redirect('home')
+#         except:
+
+#             # if we don't find the required parameters in POST data
+#             return HttpResponseBadRequest()
+#     else:
+#         # if other than POST request is made.
+#         return HttpResponseBadRequest()
             

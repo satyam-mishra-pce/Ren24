@@ -8,7 +8,7 @@ class EventAdmin(ExportActionMixin,admin.ModelAdmin):
     list_display=('name','type','amount','date','time')
     
 class TicketAdmin(ExportActionMixin,admin.ModelAdmin):
-    list_display=('get_username','get_email','get_price','get_date')
+    list_display=('get_username','get_link' ,'get_email','get_price','get_date')
     
     def get_date(self,obj):
         return f"{obj.event.date} {obj.event.time}" 
@@ -21,6 +21,10 @@ class TicketAdmin(ExportActionMixin,admin.ModelAdmin):
     
     def get_username(self,obj):
         return f'{obj.user.first_name} {obj.user.last_name}'
+    
+    def get_link(self,obj):
+        return f"{BASE_URL}/qr/{obj.id}" 
+    get_link.short_description = "Link"
     
     get_date.short_description = "Date & Time"
     get_date.admin_order_field = "events__date"
@@ -51,4 +55,4 @@ class CustomTicketAdmin(ExportActionMixin,admin.ModelAdmin):
 
 admin.site.register(Events,EventAdmin)
 admin.site.register(Ticket,TicketAdmin)
-admin.site.register(CustomTicket,CustomTicketAdmin)
+# admin.site.register(CustomTicket,CustomTicketAdmin)

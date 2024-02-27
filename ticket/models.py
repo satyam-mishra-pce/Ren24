@@ -60,15 +60,15 @@ class Ticket(models.Model):
     #     style.close()
     #     super().save(*args, **kwargs)
     
-class CustomTicket(models.Model):
-    id = models.UUIDField(default=uuid.uuid4,editable=False,primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
-    event = models.ForeignKey(Events, on_delete=models.CASCADE)
-    amount = models.PositiveIntegerField(default=0)
-    comment = models.TextField(null=True,blank=True)
-    is_paid = models.BooleanField(default=False)
-    date = models.DateTimeField(auto_now_add=False, blank=True,null=True)
-    # qr_code = models.ImageField(upload_to='passes/qr', blank=True)
+# class CustomTicket(models.Model):
+#     id = models.UUIDField(default=uuid.uuid4,editable=False,primary_key=True)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
+#     event = models.ForeignKey(Events, on_delete=models.CASCADE)
+#     amount = models.PositiveIntegerField(default=0)
+#     comment = models.TextField(null=True,blank=True)
+#     is_paid = models.BooleanField(default=False)
+#     date = models.DateTimeField(auto_now_add=False, blank=True,null=True)
+#     # qr_code = models.ImageField(upload_to='passes/qr', blank=True)
 
-    def __str__(self):
-        return str(self.id)
+#     def __str__(self):
+#         return str(self.id)

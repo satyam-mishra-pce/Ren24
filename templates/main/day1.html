@@ -1,0 +1,419 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Itinerary - Day 1{% endblock title %}
+{% block head %}
+    <link rel="stylesheet" href="{% static "css/itinerary.css" %}">
+{% endblock head %}
+
+{% block body %}
+    <section class="timeline body-section">
+        <div class="days">
+            <a href="#">
+                <div class="day"><b>Day1</b></div>
+            </a>
+            <a href="{% url "itinerary" %}/2">
+                <div class="day"><b>Day2</b></div>
+            </a>
+            <a href="{% url "itinerary" %}/3">
+                <div class="day"><b>Day3</b></div>
+            </a>
+        </div>
+        <ul>
+            <li>
+                <!-- <div>
+                    <time>1687</time>
+                    <div class="discovery">
+                        <h1>Discovery</h1>
+                        <p>
+                            Laws of motion
+                        </p>
+                    </div>
+                    <div class="scientist">
+                        <h1>Scientist</h1>
+                        <span>Newton</span>
+                    </div>
+                </div> -->
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">9:00 AM TO 10.30 AM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Inaugral Ceremony</h1>
+                        <b>
+                            <p> Central Lawn </p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">9:00 AM TO 11.00 AM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>SaReGa</h1>
+                        <b>
+                            <p> A-Block Audi </p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">9:00 AM TO 1.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Gully Cricket</h1>
+                        <b>
+                            <p> BH-2 Lane </p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">10:00 AM TO 12.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Blink It</h1>
+                        <b>
+                            <p> D-block conference hall </p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">10:00 AM TO 2.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Hardware Bites</h1>
+                        <b>
+                            <p>A-block Quardangle</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">10:00 AM TO 3.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Formula zero</h1>
+                        <b>
+                            <p>In Frount of BH-1</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">11:00 AM TO 1.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>RapZap(R1)</h1>
+                        <b>
+                            <p>C-Block Stage</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">11:00 AM TO 1.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Tech Probe</h1>
+                        <b>
+                            <p>A-block labs</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">11:00 AM TO 2.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Dexterity</h1>
+                        <b>
+                            <p>Basement C-block</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">11:30 AM TO 2.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Treasure Hunt</h1>
+                        <b>
+                            <p>C-Block Stairs</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">12.00 PM TO 2.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Technical Poster Making</h1>
+                        <b>
+                            <p>BLG-06</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">12.00 PM TO 2.30 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Shor Bazzar</h1>
+                        <b>
+                            <p>A-Block Quadrangle</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">12.30 PM TO 3.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>LAN Gaming</h1>
+                        <b>
+                            <p>Seminar Hall C-Block</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">01.00 PM TO 3.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Campus Kart Clash</h1>
+                        <b>
+                            <p>A-block to C-block Road</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">01.00 PM TO 3.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Knowledge Knockout</h1>
+                        <b>
+                            <p>DF-08</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">02.00 PM TO 3.30 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Chess</h1>
+                        <b>
+                            <p>DF-03</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">02.00 PM TO 4.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Cad Darshan</h1>
+                        <b>
+                            <p>CP-19,20</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div class="contant">
+                    <b><time class="time">02.30 PM TO 03.30 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Web3 Idea-Thon</h1>
+                        <b>
+                            <p> Conference Hall D-Block </p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1></h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">05.00 PM TO 06.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>RapZap Finals</h1>
+                        <b>
+                            <p>Main Stage</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">06.15 PM TO 08.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>DJ War</h1>
+                        <b>
+                            <p>Main Stage</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">08.00 PM TO 10.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Guest Band</h1>
+
+                        <b>
+                            <p> Main Stage</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+
+
+
+
+
+
+        </ul>
+
+    </section>
+    {% endblock body %}
+
+
+
+{% block script %}
+
+<script>
+    var items = document.querySelectorAll(".timeline li");
+
+    function isElementInViewport(el) {
+        var rect = el.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+
+    function callbackFunc() {
+        for (var i = 0; i < items.length; i++) {
+            if (isElementInViewport(items[i])) {
+                if (!items[i].classList.contains("in-view")) {
+                    items[i].classList.add("in-view");
+                }
+            } else if (items[i].classList.contains("in-view")) {
+                items[i].classList.remove("in-view");
+            }
+        }
+    }
+
+    window.addEventListener("load", callbackFunc);
+    window.addEventListener("scroll", callbackFunc);
+
+</script>
+
+{% endblock script %}
