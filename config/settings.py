@@ -160,9 +160,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-PRODUCTION = env.getParameter('PRODUCTION') == 'TRUE'
+PRODUCTION = env.getParameter('PRODUCTION') == 'True'
 # USE_S3 = True
-print(f"Production : {env.getParameter('PRODUCTION')}")
+print(f"Production type : {type(env.getParameter('PRODUCTION'))}")
+print(f"Production : {PRODUCTION}")
 
 if PRODUCTION:
     
@@ -179,28 +180,35 @@ if PRODUCTION:
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = False
 
-    ALLOWED_HOSTS = [BASE_URL]
+    ALLOWED_HOSTS = ['43.204.102.170']
 
     # Database
     # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+    # DATABASES = {
+    #     'default': {
+    #         # 'ENGINE': 'django.db.backends.mysql',
+    #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #         'NAME': env.getParameter('RDS_DB_NAME'),
+    #         'USER': env.getParameter('RDS_USERNAME'),
+    #         'PASSWORD': env.getParameter('RDS_PASSWORD'),
+    #         'HOST': env.getParameter('RDS_HOSTNAME'),
+    #         'PORT': env.getParameter('RDS_PORT'),
+    #     }
+    # }
     DATABASES = {
         'default': {
-            # 'ENGINE': 'django.db.backends.mysql',
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
-            'PASSWORD': os.environ['RDS_PASSWORD'],
-            'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT'],
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+    
     # aws settings
-    AWS_ACCESS_KEY_ID = env.getParameter('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = env.getParameter('AWS_SECRET_ACCESS_KEY')
+    AWS_ACCESS_KEY_ID = env.getParameter('ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env.getParameter('SECRET_ACCESS_KEY')
     # AWS_ACCESS_KEY_ID = "AKIA3WO4ZFTK7JW4U6XT"
     # AWS_SECRET_ACCESS_KEY = "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"
-    AWS_STORAGE_BUCKET_NAME = env.getParameter('AWS_STORAGE_BUCKET_NAME')
+    AWS_STORAGE_BUCKET_NAME = env.getParameter('STORAGE_BUCKET_NAME')
     # AWS_STORAGE_BUCKET_NAME = "ren24-cdn"
     # AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
