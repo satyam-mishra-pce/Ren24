@@ -15,6 +15,7 @@ from django.contrib.auth import login, logout,authenticate
 from django.contrib.auth.decorators import login_required
 import pyotp
 import datetime
+from .email_otp import send_otp
 # from django.core.mail import EmailMessage, send_mail
 # from django.contrib.sites.shortcuts import get_current_site
 # from django.template.loader import render_to_string
@@ -69,12 +70,13 @@ def register(request):
         # TODO: Send OTP to phone number
         print("\n")
         print("\n")
-        print(otp_obj.otp)
+        otp=otp_obj.otp
         print("\n")
         print("\n")
         otp_obj.created = datetime.datetime.now(pytz.UTC)
-        otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(seconds=30)
+        otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(minutes=10)
         otp_obj.save()
+        send_otp(email,otp)
         return redirect('verify')
     
     # if the request is not a POST method, render a template with a form
@@ -104,17 +106,19 @@ def signin(request):
             else:
                 messages.error(request, "User not verified")
                 request.session['id'] = user.pk
-                otp_obj,created = OTP.objects.get_or_create(user=user.pk)
+                otp_obj,created = OTP.objects.get_or_create(user=User.objects.get(email=email))
                 otp_obj.otp = generateOTP()  # Implement your OTP generation logic
                 # TODO: Send OTP to phone number
                 print("\n")
                 print("\n")
+                otp=otp_obj.otp
                 print(otp_obj.otp)
                 print("\n")
                 print("\n")
                 otp_obj.created = datetime.datetime.now(pytz.UTC)
-                otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(seconds=30)
+                otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(minutes=10)
                 otp_obj.save()
+                send_otp(email,otp)   
                 return redirect("verify")
         else:
             messages.error(request, "User does not exist")
@@ -184,7 +188,7 @@ def profile_view(request):
             ticket_img.append(base64.b64encode(generate_ticket(ticket.id)).decode('utf-8'))
         context = {
             'profile':profile,
-            'dob':profile.dob.strftime("%Y-%m-%d"),
+            # 'dob':profile.dob.strftime("%Y-%m-%d"),
             'tickets':ticket_img
         }
         messages.success(request,"Profile updated Sucessfully")
@@ -194,11 +198,14 @@ def profile_view(request):
 
 def resendOTP(request):
     myuser=User.objects.get(id=request.session.get("id"))
+    email=myuser.email
     otp_obj= OTP.objects.get(user=myuser)
     otp_obj.otp = generateOTP()
     otp_obj.created = datetime.datetime.now(pytz.UTC)
-    otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(seconds=30)
+    otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(minutes=10)
+    otp=otp_obj.otp
     otp_obj.save()
+    send_otp(email,otp)
     # TODO: Send OTP to phone number
     print("\n")
     print("\n")
@@ -206,6 +213,7 @@ def resendOTP(request):
     print("\n")
     print("\n")
     otp_obj.save()
+    messages.sucess(request,"OTP sent sucessfully")
     return redirect('verify')
 
 def verify(request):
@@ -226,7 +234,7 @@ def verify(request):
             
         else:
             messages.error(request, 'Wrong OTP')
-            return redirect('signup')
+            return redirect('register')
     else:
         return render(request, 'verify.html')
     
