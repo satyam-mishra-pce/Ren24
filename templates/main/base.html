@@ -28,7 +28,7 @@
             min-height:100vh;
         }
         body {
-            background-image: url({%static 'assets/bg/background color-04.png'%});            background-repeat: repeat-y;
+            background-image: url({%static 'assets/bg/landscape/background color-04.png'%});            background-repeat: repeat-y;
             background-size: cover;
             background-attachment: fixed;
             background-position-y: bottom;
@@ -40,7 +40,7 @@
 
 <body>
     <nav class="navbar">
-        <div class="logo">Logo</div>
+        <img class="logo" src="{% static "assets/logo/Ren logo.png" %}" alt="LOGO">
         <button class="toggle-btn" onclick="toggleNav()">
             <span></span>
             <span></span>
@@ -50,11 +50,36 @@
             <a href="{%url 'home' %}"><li class="active nav-item"><button>Home</button></li></a>
             <a href="#"><li class="nav-item"><button>Celebrity</button></li></a>
             <a href="{% url "events" %}"><li class="nav-item"><button>Events</button></li></a>
-            <li class="nav-item"><button>Itinerary</button></li>
+            <a href="{% url "itinerary" %}"><li class="nav-item"><button>Itinerary</button></li></a>
             <li class="nav-item"><button>Sponsors</button></li>
-            <li class="nav-item"><button>Contact</button></li>
+            <a href="#footer"><li class="nav-item"><button>Contact</button></li></a>
+            {% if request.user.is_authenticated %}
+            
+                <a href="{% url "profile" %}"><li class="nav-item"><button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                      </svg>
+                </button></li></a>
+            
+            
+                <a href="{% url "view_cart" %}"><li class="nav-item"><button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                      </svg>
+                </button></li></a>
+            
+            {% else %}
+            
+                <a href="{% url "login" %}"><li class="nav-item"><button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+                        <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                      </svg>
+                </button></li></a>     
+            {% endif %}
         </ul>
-        <div class="auth-links">
+        {% comment %} <div class="auth-links">
             {% if request.user.is_authenticated %}
             <div class="btn-1">
                 <a href="{% url "profile" %}">Profile</a>
@@ -70,6 +95,11 @@
                 <a href="{% url "register" %}">Register</a>
             </div>
             {% endif %}
+        </div> {% endcomment %}
+        <div class="auth-links">
+            <div class="btn-1">
+                <a href="https://forms.gle/4GkxCVzY9Jkp3KeXA" target="_blank">Register (without Ren Pass)</a>
+            </div>
         </div>
     </nav>
     {% block body %}{% endblock body %}

@@ -12,25 +12,15 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+from config import env
 
-import razorpay
+# import razorpay
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-BASE_URL = 'http:127.0.0.1:8000'
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3i-x6+f9gwr(4qxbtgwv-=7y27)ixgc)tp=29ne)@=a#&84khj'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -67,8 +57,8 @@ ADMIN_AUTHENTICATION_METHOD = 'account.authentication.EmailBackend'
 ROOT_URLCONF = 'config.urls'
 AUTH_USER_MODEL = 'account.User'
 
-LOGIN_URL = 'u/login'
-LOGOUT_URL = 'u/logout'
+LOGIN_URL = '/u/login'
+LOGOUT_URL = '/u/logout'
 
 TEMPLATES = [
     {
@@ -94,18 +84,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -166,14 +144,6 @@ AUTH_PASSWORD_VALIDATORS = [
 #     },
 # }
 
-# PASSWORD_HASHERS = [
-#     "django.contrib.auth.hashers.PBKDF2PasswordHasher",
-#     "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
-#     "django.contrib.auth.hashers.Argon2PasswordHasher",
-#     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
-#     "django.contrib.auth.hashers.ScryptPasswordHasher",
-# ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -190,33 +160,105 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-                os.path.join(BASE_DIR,"static"),
-                # os.path.join(BASE_DIR,"ticket","static"),
-                # os.path.join(BASE_DIR,"cart","static"),
-                ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+PRODUCTION = env.getParameter('PRODUCTION') == 'TRUE'
+# USE_S3 = True
+print(f"Production : {env.getParameter('PRODUCTION')}")
+
+if PRODUCTION:
+    
+    BASE_URL = env.getParameter('DOMAIN')
+    # RAZOR_KEY_ID= env.getParameter('RAZOR_KEY_ID')
+    # RAZOR_KEY_SECRET=env.getParameter('RAZOR_KEY_SECRET')
+
+    # RAZORPAY_CLIENT = razorpay.Client(
+    #     auth=(RAZOR_KEY_ID, RAZOR_KEY_SECRET))
+
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = env.getParameter('SECRET_KEY')
+
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = False
+
+    ALLOWED_HOSTS = [BASE_URL]
+
+    # Database
+    # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+    DATABASES = {
+        'default': {
+            # 'ENGINE': 'django.db.backends.mysql',
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'],
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT'],
+        }
+    }
+    # aws settings
+    AWS_ACCESS_KEY_ID = env.getParameter('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env.getParameter('AWS_SECRET_ACCESS_KEY')
+    # AWS_ACCESS_KEY_ID = "AKIA3WO4ZFTK7JW4U6XT"
+    # AWS_SECRET_ACCESS_KEY = "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"
+    AWS_STORAGE_BUCKET_NAME = env.getParameter('AWS_STORAGE_BUCKET_NAME')
+    # AWS_STORAGE_BUCKET_NAME = "ren24-cdn"
+    # AWS_DEFAULT_ACL = 'public-read'
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # s3 static settings
+    AWS_LOCATION = 'static'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    PUBLIC_MEDIA_LOCATION = 'media'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+    DEFAULT_FILE_STORAGE = 'config.storage_backends.PublicMediaStorage'
+else:
+    
+    BASE_URL = 'http:127.0.0.1:8000'
+    
+    # RAZOR_KEY_ID='rzp_test_9JEwuZhaVvyqhU'
+    # RAZOR_KEY_SECRET='sXqXAI5Cz3PY4vmQEwgUzCxH'
+
+    # RAZORPAY_CLIENT = razorpay.Client(
+    #     auth=(RAZOR_KEY_ID, RAZOR_KEY_SECRET))
+
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = 'django-insecure-3i-x6+f9gwr(4qxbtgwv-=7y27)ixgc)tp=29ne)@=a#&84khj'
+
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = True
+
+    ALLOWED_HOSTS = ['*']
+
+    # Database
+    # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+    
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    
+STATICFILES_DIRS = [os.path.join(BASE_DIR,"static"),]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST='smtp.gmail.com'
+# EMAIL_PORT=587
+# EMAIL_HOST_USER='johngallio155@gmail.com'
+# EMAIL_HOST_PASSWORD='aegg eajy tumd ruxz'
+# EMAIL_USE_TLS=True
+# EMAIL_USE_SSL=False
 
-EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST='smtp.gmail.com'
-EMAIL_PORT=587
-EMAIL_HOST_USER='johngallio155@gmail.com'
-EMAIL_HOST_PASSWORD='aegg eajy tumd ruxz'
-EMAIL_USE_TLS=True
-EMAIL_USE_SSL=False
-
-RAZOR_KEY_ID='rzp_test_9JEwuZhaVvyqhU'
-RAZOR_KEY_SECRET='sXqXAI5Cz3PY4vmQEwgUzCxH'
-
-RAZORPAY_CLIENT = razorpay.Client(
-	auth=(RAZOR_KEY_ID, RAZOR_KEY_SECRET))

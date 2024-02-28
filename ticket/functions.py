@@ -1,10 +1,10 @@
 from pathlib import Path
 from os import path
 import qrcode
-from django.http import HttpResponse
+# from django.http import HttpResponse
 from io import BytesIO
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
+# from reportlab.lib.pagesizes import letter
+# from reportlab.pdfgen import canvas
 from PIL import Image, ImageDraw, ImageFont
 
 from ticket.models import Ticket
