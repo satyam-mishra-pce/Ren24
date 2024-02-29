@@ -12,7 +12,7 @@ def resendOTP(request):
     otp_obj= OTP.objects.get(user=myuser)
     otp_obj.otp = generateOTP()
     otp_obj.created = datetime.datetime.now(pytz.UTC)
-    otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(seconds=30)
+    otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(minutes=10)
     otp_obj.save()
     # TODO: Send OTP to phone number
     print("\n")
