@@ -1,6 +1,4 @@
-
-
-
+from .email_otp import send_otp
 import datetime
 from django.contrib import messages
 from django.shortcuts import redirect, render
@@ -23,6 +21,7 @@ def resendOTP(request):
     print("\n")
     print("\n")
     otp_obj.save()
+    send_otp(myuser.email,otp_obj.otp)
     return redirect('resetpass_verify')
 
 def verify(request):
@@ -35,7 +34,6 @@ def verify(request):
             if otp==check_otp:  
                 if datetime.datetime.now(pytz.UTC) > otp_obj.expire:
                     messages.warning(request, "OTP has expired")
-                    otp_obj.delete()
                     return redirect('login')
                 if otp_obj.user.is_active:
                     return render(request, 'newpass.html')
@@ -46,8 +44,7 @@ def verify(request):
                 messages.error(request, 'Wrong OTP')
         else:
             messages.error(request, 'Invalid OTP or user not found')  # Handle None case
-        messages.success(request, "Password changed successfully")
-        return redirect('forgotpassword')
+        return redirect('verify')
     else:
         return render(request, 'resetpass_verify.html')
 
