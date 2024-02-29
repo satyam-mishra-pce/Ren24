@@ -3,13 +3,15 @@ import boto3
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
+from threading import Thread
 
 from config import settings
 from ticket.models import Ticket
 
 def send_email_with_attachment(email, img_data):
     # Initialize SES client
-    ses_client = boto3.client('ses', region_name='ap-south-1',aws_access_key_id="AKIA3WO4ZFTK7JW4U6XT",aws_secret_access_key="qOabbapjbKMcPbxPh7HvflvV7ikMNSGktD80Dtf4")  # Replace with your desired region
+    ses_client = boto3.client('ses', region_name='ap-south-1', aws_access_key_id="AKIA3WO4ZFTK7JW4U6XT", aws_secret_access_key="qOabbapjbKMcPbxPh7HvflvV7ikMNSGktD80Dtf4")  # Replace with your desired region and credentials
+
     # Create a multipart message
     message = MIMEMultipart()
     message['Subject'] = 'Your ticket for Renissance 2k24'
@@ -36,8 +38,6 @@ def send_email_with_attachment(email, img_data):
     except Exception as e:
         print(f"Error sending email: {str(e)}")
 
-# Example usage
-recipient_email = 'recipient@example.com'
-# Replace with your actual image data (bytes)
-image_bytes = b'\x89PNG\r\n\x1a\n...'
-send_email_with_attachment(recipient_email, image_bytes)
+def send_email_thread(email, img_data):
+    t = Thread(target=send_email_with_attachment, args=(email, img_data))
+    t.start()

@@ -3,7 +3,7 @@ from cart.functions import getPass
 from cart.models import CartItem
 from ticket.functions import generate_ticket
 from ticket.models import Ticket, Events
-from ticket.send_ticket import send_email_with_attachment
+from ticket.send_ticket import send_email_thread
 class Cart():
 	def __init__(self, request):
 		# self.session = request.session
@@ -108,5 +108,5 @@ class Cart():
 			email=user_obj.email
 			print(event,obj)
 			img = generate_ticket(obj.id)
-			send_email_with_attachment(email,img)
+			send_email_thread(email,img)
 		self.emptycart()

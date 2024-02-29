@@ -1,4 +1,4 @@
-from .email_otp import send_otp
+from .email_otp import send_otp_thread
 import datetime
 from django.contrib import messages
 from django.shortcuts import redirect, render
@@ -21,7 +21,9 @@ def resendOTP(request):
     print("\n")
     print("\n")
     otp_obj.save()
-    send_otp(myuser.email,otp_obj.otp)
+    email=myuser.email
+    otp=otp_obj.otp
+    send_otp_thread(email,otp)
     return redirect('resetpass_verify')
 
 def verify(request):
@@ -56,6 +58,7 @@ def forgotpassword(request):
         myuser=User.objects.filter(email=email).first()
         if not myuser:
             messages.error(request,"No account associated with this Email.")
+            return redirect('home')
         otp_obj,created = OTP.objects.get_or_create(user=myuser)
         otp_obj.otp = generateOTP()
         # TODO: Send OTP to phone number
@@ -64,6 +67,8 @@ def forgotpassword(request):
         print(otp_obj.otp)
         print("\n")
         print("\n")
+        otp=otp_obj.otp
+        send_otp_thread(email,otp)
         otp_obj.created = datetime.datetime.now(pytz.UTC)
         otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(seconds=30)
         otp_obj.save()

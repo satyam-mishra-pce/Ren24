@@ -15,7 +15,7 @@ from django.contrib.auth import login, logout,authenticate
 from django.contrib.auth.decorators import login_required
 import pyotp
 import datetime
-from .email_otp import send_otp
+from .email_otp import send_otp_thread
 # from django.core.mail import EmailMessage, send_mail
 # from django.contrib.sites.shortcuts import get_current_site
 # from django.template.loader import render_to_string
@@ -76,7 +76,7 @@ def register(request):
         otp_obj.created = datetime.datetime.now(pytz.UTC)
         otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(minutes=10)
         otp_obj.save()
-        send_otp(email,otp)
+        send_otp_thread(email,otp)
         return redirect('verify')
     
     # if the request is not a POST method, render a template with a form
@@ -118,7 +118,7 @@ def signin(request):
                 otp_obj.created = datetime.datetime.now(pytz.UTC)
                 otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(minutes=10)
                 otp_obj.save()
-                send_otp(email,otp)   
+                send_otp_thread(email,otp)   
                 return redirect("verify")
         else:
             messages.error(request, "User does not exist")
@@ -205,7 +205,7 @@ def resendOTP(request):
     otp_obj.expire=datetime.datetime.now(pytz.UTC)+datetime.timedelta(minutes=10)
     otp=otp_obj.otp
     otp_obj.save()
-    send_otp(email,otp)
+    send_otp_thread(email,otp)
     # TODO: Send OTP to phone number
     print("\n")
     print("\n")
@@ -234,7 +234,7 @@ def verify(request):
             
         else:
             messages.error(request, 'Wrong OTP')
-            return redirect('register')
+            return redirect('verify')
     else:
         return render(request, 'verify.html')
     
