@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 # Create your views here.
 
 def home(request):
-    return render(request,'index.html')
+    return render(request,'index (1).html')
 
 def itinerary(request):
     return render(request,'day1.html')

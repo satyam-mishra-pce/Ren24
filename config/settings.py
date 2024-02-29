@@ -161,56 +161,43 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 PRODUCTION = env.getParameter('PRODUCTION') == 'True'
-# USE_S3 = True
-print(f"Production type : {type(env.getParameter('PRODUCTION'))}")
-print(f"Production : {PRODUCTION}")
+# PRODUCTION = False
 
 if PRODUCTION:
     
     BASE_URL = env.getParameter('DOMAIN')
-    # RAZOR_KEY_ID= env.getParameter('RAZOR_KEY_ID')
-    # RAZOR_KEY_SECRET=env.getParameter('RAZOR_KEY_SECRET')
-
-    # RAZORPAY_CLIENT = razorpay.Client(
-    #     auth=(RAZOR_KEY_ID, RAZOR_KEY_SECRET))
-
+    
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = env.getParameter('SECRET_KEY')
 
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = False
 
-    ALLOWED_HOSTS = ['43.204.102.170']
+    ALLOWED_HOSTS = ['ec2-13-201-19-183.ap-south-1.compute.amazonaws.com', 
+                     '13.235.239.6',
+                     'jecrcrenaissance.co.in'
+                     ]
 
     # Database
     # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-    # DATABASES = {
-    #     'default': {
-    #         # 'ENGINE': 'django.db.backends.mysql',
-    #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #         'NAME': env.getParameter('RDS_DB_NAME'),
-    #         'USER': env.getParameter('RDS_USERNAME'),
-    #         'PASSWORD': env.getParameter('RDS_PASSWORD'),
-    #         'HOST': env.getParameter('RDS_HOSTNAME'),
-    #         'PORT': env.getParameter('RDS_PORT'),
-    #     }
-    # }
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+            'ENGINE': 'django.db.backends.mysql',
+            # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': env.getParameter('RDS_DB_NAME'),
+            'USER': env.getParameter('RDS_USERNAME'),
+            'PASSWORD': env.getParameter('RDS_PASSWORD'),
+            'HOST': env.getParameter('RDS_HOSTNAME'),
+            'PORT': env.getParameter('RDS_PORT'),
         }
     }
     
     # aws settings
     AWS_ACCESS_KEY_ID = env.getParameter('ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env.getParameter('SECRET_ACCESS_KEY')
-    # AWS_ACCESS_KEY_ID = "AKIA3WO4ZFTK7JW4U6XT"
-    # AWS_SECRET_ACCESS_KEY = "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"
     AWS_STORAGE_BUCKET_NAME = env.getParameter('STORAGE_BUCKET_NAME')
-    # AWS_STORAGE_BUCKET_NAME = "ren24-cdn"
-    # AWS_DEFAULT_ACL = 'public-read'
+    AWS_DEFAULT_ACL = None
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     # s3 static settings
@@ -224,11 +211,6 @@ else:
     
     BASE_URL = 'http:127.0.0.1:8000'
     
-    # RAZOR_KEY_ID='rzp_test_9JEwuZhaVvyqhU'
-    # RAZOR_KEY_SECRET='sXqXAI5Cz3PY4vmQEwgUzCxH'
-
-    # RAZORPAY_CLIENT = razorpay.Client(
-    #     auth=(RAZOR_KEY_ID, RAZOR_KEY_SECRET))
 
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = 'django-insecure-3i-x6+f9gwr(4qxbtgwv-=7y27)ixgc)tp=29ne)@=a#&84khj'

@@ -27,10 +27,14 @@ const showModalDialog = (eventid) => {
       }else{
         document.getElementById('event-access').innerText = "";
       }
-      document.getElementById('add-to-cart-btn').addEventListener('click',()=>{
-        addToCart(data['id']);
-        modal.style.display = 'none';
-      });
+      try{
+        document.getElementById('add-to-cart-btn').addEventListener('click',()=>{
+          addToCart(data['id']);
+          modal.style.display = 'none';
+        });
+      }catch(e){
+        console.log(e);
+      }
       modal.addEventListener('click',(e)=>{
         let closeBtn = document.getElementById('close-modal-btn');
         if(e.target === modal || e.target === closeBtn){

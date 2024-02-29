@@ -33,6 +33,11 @@
     overflow-wrap: anywhere;
     scrollbar-width: none;
   }
+  body{
+      background-image: url("{% static "assets/bg/landscape/background color-01.png" %}");
+  }
+  <style>
+</style>
 </style>
 {% endblock head %}
   {% comment %} <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" />
@@ -63,11 +68,15 @@
         <span id="event-amount"></span>
         <h4 style="color:red" id="event-access"></h4>
         <br>
-        {% if request.user.is_authenticated %}
-        <button class="btn-primary" id="add-to-cart-btn">Add to cart</button>
-        {% else %}
-        <a class="btn btn-primary" href="{% url 'login' %}">Login to buy Ticket</a>
-        {% endif %}
+        <div class="d-flex justify-content-evenly">
+          {% if request.user.is_authenticated %}
+          <button class="btn btn-primary" id="add-to-cart-btn">Add to cart</button>
+          <a class="btn btn-outline-primary" href="https://forms.gle/4GkxCVzY9Jkp3KeXA" target="_blank">Register (without Ren Pass)</a>
+          {% else %}
+          <a class="btn btn-primary" href="{% url 'login' %}">Login to buy Ticket</a>
+          <a class="btn btn-outline-primary" href="https://forms.gle/4GkxCVzY9Jkp3KeXA" target="_blank">Register (without Ren Pass)</a>
+          {% endif %}
+        </div>
       </div>
     </div>
     <!-- =-=-=-=-=-=-=-=-=-=-=- Modal end here =-=--=-=--=-=-=-=- -->

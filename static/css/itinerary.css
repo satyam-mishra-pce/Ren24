@@ -25,7 +25,7 @@ body {
     display: flex;
     justify-content: space-evenly;
     position: absolute;
-    top: 80px;
+    top: 100px;
     left: 37.5%;
     right: 375%;
     width: 25%;
@@ -188,7 +188,7 @@ body {
         display: flex;
         justify-content: space-evenly;
         position: absolute;
-        top: 18px;
+        top: 100px;
         left: 40px;
 
         width: calc(100vw - 100px);
@@ -264,10 +264,6 @@ body {
                         justify-content: center;
                         align-items: center;
                         /* letter-spacing: 1px; */
-                    }
-
-                    .time {
-                        /* border: 2px solid black; */
                     }
 
                     div {
@@ -354,7 +350,7 @@ body {
         display: flex;
         justify-content: space-evenly;
         position: absolute;
-        top: 18px;
+        top: 100px;
         left: 40px;
 
         width: calc(100vw - 100px);

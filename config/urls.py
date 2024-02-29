@@ -30,13 +30,5 @@ urlpatterns = [
     path('',include('main.urls')),
     path('u/',include('account.urls')),
     path('cart/',include('cart.urls')),
-    # path(
-    #     'admin/login/',
-    #     views.LoginView.as_view(
-    #         # template_name="login.html",
-    #         authentication_form=LoginForm
-    #         ),
-    #     name='login'
-    # ),
     path('admin/', admin.site.urls),
-]#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
