@@ -7,7 +7,7 @@ from ticket.models import CustomTicket, Ticket
 
 
 #TODO : Update this Date
-day1 = datetime.strptime('2024-3-1','%Y-%m-%d').date()
+day1 = datetime.strptime('2024-3-2','%Y-%m-%d').date()
 day2 = datetime.strptime('2024-3-20','%Y-%m-%d').date()
 day3 = datetime.strptime('2024-3-21','%Y-%m-%d').date()
 
@@ -94,7 +94,7 @@ def verify_custom(request):
             if ticket_id is not None:
                 ticket = CustomTicket.objects.get(id=ticket_id)
                 # today = datetime.today().date()
-                today = datetime.strptime('2024-3-1','%Y-%m-%d').date()
+                today = datetime.strptime('2024-3-2','%Y-%m-%d').date()
                 # if ticket.day1 == True and today == day1:
                 #     return HttpResponse('Ticket used or not for today',status=404)
                 # if ticket.day2 == True and today == day2:
@@ -130,7 +130,7 @@ def permit_custom(request):
             if ticket_id is not None:
                 ticket = CustomTicket.objects.get(id=ticket_id)
                 # today = datetime.today().date()
-                today = datetime.strptime('2024-3-1','%Y-%m-%d').date()
+                today = datetime.strptime('2024-3-2','%Y-%m-%d').date()
                 if ticket.used == True and ticket.event.date.date() != today:
                     return HttpResponse('Ticket used or not for today',status=404)
                 else:

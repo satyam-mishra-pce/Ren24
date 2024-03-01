@@ -1,0 +1,211 @@
+.glass-button {
+    backdrop-filter: blur(20px); /* Adjust the blur level as needed */
+    background-color: rgba(225, 154, 235, 0.5); /* Adjust the opacity as needed */
+    border-radius: 10px;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    background-size: cover;
+    box-shadow: 2px2px
+    #333;
+
+    background-color: rgba(122, 108, 108, 0.1);
+    border-radius: 1rem;
+    backdrop-filter: blur(1rem);
+    border: 1px solid transparent;
+    box-shadow: 1.3rem 1.3rem 1.3rem rgba(0,0,0,0.3);
+    border-top-color: rgba(255, 255, 255, 0.5);
+    border-left-color: rgba(255, 255, 255,0.5);
+    border-right-color: rgba(255, 255, 255,0.2);
+    border-bottom-color: rgba(255, 255, 255,0.2);
+
+    /* width: 20px; */
+}
+
+.title{
+    display: flex;
+    justify-content: center;
+}
+
+.glass-button:hover {
+    background-color: rgba(255, 255, 255, 0.7); /* Adjust hover opacity as needed */
+}
+
+.btn-group {
+    display: flex;
+    /* width: 20px; */
+    
+}
+
+.radio-btn {
+    /* flex-grow: 1; */
+    font-size: 2em;
+    
+}
+
+
+.cardx{
+    /* border: 2px solid black; */
+    height: 500px;
+    /* background-color: rgb(110, 110, 224); */
+}
+
+
+.popup {
+    
+    width: 75vw;
+    background-color: #fff;
+    border-radius: 20px;
+    position: absolute;
+    
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1);
+    
+    text-align: center;
+    padding: 10px 30px 30px;
+    color: #333;
+    visibility: hidden;
+    transition: transform 0.4s, top 0.4s;
+    opacity: 0.9;
+
+    color: #fff !important;
+
+
+
+    border-radius: 25px;
+    padding: 1rem;
+    height: 50vh;
+    
+    color: black;
+    background-color: white;
+    
+    
+    width: 70vw;
+    overflow-y: auto;
+    overflow-wrap: anywhere;
+    scrollbar-width: none;
+display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: rgb(1, 1, 1);
+    justify-content: center;
+    font-style: var(--text-color);
+    
+    background-color: rgba(122, 108, 108, 0.1);
+    border-radius: 1rem;
+    backdrop-filter: blur(30rem);
+    border: 1px solid transparent;
+    box-shadow: 1.3rem 1.3rem 1.3rem rgba(0,0,0,0.3);
+    border-top-color: rgba(255, 255, 255, 0.5);
+    border-left-color: rgba(255, 255, 255,0.5);
+    border-right-color: rgba(255, 255, 255,0.2);
+    border-bottom-color: rgba(255, 255, 255,0.2);
+
+
+}
+
+.open-popup {
+    visibility: visible;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    z-index: 2;
+
+}
+
+@media screen and (max-width: 1200px){
+    p{
+        margin-top: 30%;
+        display: block;
+    }
+
+
+    .popup{
+
+        border-radius: 25px;
+        padding: 2rem;
+        min-height: 50vh;
+        display: block;
+        color: black;
+        margin: 5rem 1rem;
+        max-width: 700px;
+        max-height: 80vh;
+        width: 90vw;
+        left: 50%;
+        overflow-y: auto;
+        overflow-wrap: anywhere;
+        scrollbar-width: none;
+    
+    }
+}
+
+
+@media screen and (max-width: 426px) {
+    .popup{
+
+    border-radius: 25px;
+    padding: 2rem;
+    min-height: 50vh;
+    display: block;
+    color: black;
+    margin: 5rem 1rem;
+    max-width: 700px;
+    max-height: 80vh;
+    width: 90vw;
+    left: 50%;
+    overflow-y: auto;
+    overflow-wrap: anywhere;
+    scrollbar-width: none;
+
+}
+
+
+.btn-group{
+    font-size: 0.5em;
+    align-items: center;
+}
+
+.title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+  }
+
+
+
+.cardf{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+.img
+{
+    /* background-image: url(/events-pic/cultural/day1/Cultural\ event\ ren\ 24\ \(1\)-01-1.png); */
+    height: 100vh;
+    width: auto;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    opacity: 1;
+    /* margin-bottom: 2px; */
+
+}
+
+@media screen and (max-width: 600px) {
+    .img {
+      /* flex-direction: row; */
+      background-size: 100% 100%;
+
+    }
+  }
+
+.button{
+    background-color: rgb(37, 1, 81);
+    padding: 10px;
+    z-index: 3;
+    text-align: center;
+    /* font-size: 3em; */
+}
+

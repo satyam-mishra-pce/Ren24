@@ -1,31 +1,34 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Itinerary - Day 1{% endblock title %}
-{% block head %}
+    {% block title %}Itineary{% endblock title %} 
+    {% block head %}
     <link rel="stylesheet" href="{% static "css/itinerary.css" %}">
     <style>
-            body{
-                background-image: url("{% static "assets/bg/landscape/background color-03.png" %}");
-                background-size: cover;
-                background-attachment: fixed;
-                background-position-y: bottom;
-            }
+        body{
+            
+    background-image: url("{% static "assets/itinerary/background1.jpg" %}");
+        }
     </style>
-{% endblock head %}
-
-{% block body %}
-    <section class="timeline body-section">
+    {% endblock head %}
+    {% block body %}
+    <div class="headline">
         <div class="days">
             <a href="#">
-                <div class="day"><b>Day1</b></div>
+                <img src="{% static "assets/itinerary/single-mushroom-removebg-preview.png" %}" alt="">
+                <div class="day"><b>Day 1</b></div>
             </a>
             <a href="{% url "itinerary" %}/2">
-                <div class="day"><b>Day2</b></div>
+                <img src="{% static "assets/itinerary/double-mushroom-removebg-preview.png" %}" alt="">
+                <div class="day"><b>Day 2</b></div>
             </a>
             <a href="{% url "itinerary" %}/3">
-                <div class="day"><b>Day3</b></div>
-            </a>
+                <img src="{% static "assets/itinerary/triple-mushroom-removebg-preview.png" %}" alt="">
+                <div class="day"><b>Day 3</b></div>
+            </a> 
         </div>
+    </div>
+    <section class="timeline">
+        
         <ul>
             <li>
                 <!-- <div>
@@ -379,15 +382,19 @@
                     </div> -->
                 </div>
             </li>
+
+
+
+
+
+
         </ul>
 
     </section>
     {% endblock body %}
 
 
-
 {% block script %}
-
 <script>
     var items = document.querySelectorAll(".timeline li");
 

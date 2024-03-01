@@ -27,8 +27,17 @@ def qr(request,ticketId):
     
 def event(request):
     if request.method == 'GET':
-        events = Events.objects.all()
-        return render(request, 'events.html', {'events': events})
+        # events = Events.objects.all()
+        # return render(request, 'events.html', {'events': events})
+        events = Events.objects.filter(type='tech').only('id','poster')
+        return render(request,'event.html',{'events':events})
+    
+def event_type(request,type):
+    if request.method == 'GET':
+        # events = Events.objects.all()
+        # return render(request, 'events.html', {'events': events})
+        events = Events.objects.filter(type=type).only('id','poster')
+        return render(request,'event.html',{'events':events})
 
 def getEvent(request):
     data = json.loads(request.body)

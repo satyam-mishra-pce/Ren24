@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Events{% endblock title %}
+{% block head %}
+    <link rel="stylesheet" href="{% static "css/events.css" %}">
+    <link rel="stylesheet" href="{% static "css/events-codepen.css" %}">
+    <style>
+        body{
+            background-image: url("{% static "assets/bg/landscape/jon-arellano-ur-10.jpg" %}");
+            background-repeat: repeat-y;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position-y: bottom;
+        }
+        @media screen and (max-width: 600px) {
+            .img {
+              /* flex-direction: row; */
+              background-size: 100% 100%;
+        
+            }
+            
+            body{
+                
+            
+                background-image: url(jon-arellano-ur-10\ mobile.jpg);
+                background-repeat: repeat-y;
+                background-size: cover;
+                background-attachment: fixed;
+                background-position-y: bottom;
+                /* overflow-x: hidden; */
+            }
+          }
+        .modal-overlay {
+            display: none;
+            background-color: rgba(6, 12, 34, 0.8);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            z-index: 1050;
+          }
+        
+          .modal-body {
+            border-radius: 25px;
+            padding: 2rem;
+            min-height: 50vh;
+            display: block;
+            color: black;
+            color: white;
+            margin: 5rem auto;
+            max-width: 700px;
+            max-height: 80vh;
+            width: 90vw;
+            overflow-y: auto;
+            overflow-wrap: anywhere;
+            scrollbar-width: none;
+            background-color: rgba(122, 108, 108, 0.1);
+            backdrop-filter: blur(30rem);
+  border: 1px solid transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+  box-shadow: 1.3rem 1.3rem 1.3rem rgba(0,0,0,0.3);
+  border-top-color: rgba(255, 255, 255, 0.5);
+  border-left-color: rgba(255, 255, 255,0.5);
+  border-right-color: rgba(255, 255, 255,0.2);
+  border-bottom-color: rgba(255, 255, 255,0.2);
+            {% comment %} transform: translate(-50%, -50%) scale(0.1);
+            transition: transform 0.4s, top 0.4s; {% endcomment %}
+            opacity: 0.9;
+          }
+          a{
+            text-decoration: none;
+            color:black;
+          }
+    </style>
+    {% endblock head %}
+
+{% block body %}
+    <div class="container body-section">
+        <div class="title">
+            <div class="btn-group btn-group-lg" role="group" aria-label="Large size button group">
+                <a href="{% url "events" %}" type="button" class="radio-btn btn-outline-primary glass-button">Technical</a>
+                <a href="{% url "events" %}/splash" type="button" class="radio-btn btn-outline-info glass-button" >Splash</a>
+                <a href="{% url "events" %}/cultural" type="button" class="radio-btn btn-outline-info glass-button" >Cultural</a>
+            </div>
+        </div>
+
+
+        <div class="cardx-cultural">
+            <main id="app">
+                <section class="cards">
+                    {% if request.user.is_authenticated %}
+                    {% for event in events %}
+                    <div class="btn card animated img"
+                        style="background-image: url({{event.poster.url}});"
+                        onclick="showModalDialog({{event.id}},{{request.user.id}})">
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="btn card animated img"
+                        style="background-image: url({{event.poster.url}});"
+                        onclick="showAnonymousModalDialog({{event.id}})">
+                    </div>
+                    {% endif %}
+                    {% comment %} <div class="btn card animated img"
+                style="background-image: url('/events-pic/cultural/day1/Cultural\ event\ ren\ 24\ \(1\)-01-1.png');"
+                onclick="openPopup()">
+            </div>
+                    <div class="btn card animated img"
+                style="background-image: url('/events-pic/cultural/day1/Cultural\ event\ ren\ 24\ \(1\)-01-1.png');"
+                onclick="openPopup()">
+            </div> {% endcomment %}
+                </section>
+            </main>
+        </div>
+        </div>
+
+        {% comment %} <div class="popup" id="popup">
+
+                <h1>OPEN MIC</h1>
+
+                <h4>About the event:</h4>
+                <p>
+                Liberate your thoughts with an open mic and let the audience experience how you see the world, through their words. The Open mic event is a way to spark inspiration into the hearts of others. The solo event witnesses theperformance of participants in 4 categories: poetry,shayari, comedy and storytelling.
+
+                Rules and Regulations:
+                • The presentation will be in solo and the performance must consist of a single act with no blackouts.
+                • Miming is STRICTLY not allowed.
+                • Clothing or actions that could be perceived as obscene, lewd, vulgar, or plainly offensive is strictly prohibited.
+                • Duration limits: 3-5 minutes, Negative marks for exceeding the time limit.
+                • Only two Hand Props are allowed (need to be discussed with Core JECRC College).
+                • Language can be Bilingual, regional touch can be given.
+                • Electronic sound can be used as the background music to set out the tune and the theme of the play.
+                • Individuals should carry their background music in their respective Pen drives.
+                • Decision of judges will be final and non-disputable.
+                • Any adaptation from some original piece of work should be mentioned with the script.
+                • Participant will be judged based on voice modulation, flow of expression, acting skills and content and overall expression.
+                • Identity cards are mandatory for entry.
+                • Participants should report the venue 1 hour before event timings.
+                Registration:
+                Registration fee: - Rs. 500 Per person
+                Prize-
+                • 1st position- Rs 6000/-
+                • 2nd position- Rs 4000/-
+                • 3rd position- Rs 2500/-
+                Participation certificate to all other eligible teams.
+                For queries contact:
+                Vipin- 9983672198
+                Garvita- 7425840800</p>
+            <br>
+            <button type="button" onclick="closePopup()"> add to cart</button>
+        </div> {% endcomment %}
+    </div>
+    <div id ="modal" class="modal-overlay">
+        <div class="modal-body">
+          <div class="d-flex justify-content-between">
+            <h2 id="event-name"></h2>
+            <button class="btn btn-outline-danger my-auto" id="close-modal-btn">&times;</button>
+          </div>
+          <p id="event-description"></p>
+          <h4 class="my-2">Amount</h4>
+          <span id="event-amount"></span>
+          <h4 style="color:red" id="event-access"></h4>
+          <br>
+          <div class="d-flex justify-content-evenly">
+            {% if request.user.is_authenticated %}
+            <button class="btn btn-primary" id="buy-now-btn">Buy Now</button>
+            <a class="btn btn-outline-primary" href="https://forms.gle/4GkxCVzY9Jkp3KeXA" target="_blank">Register (without Ren Pass)</a>
+            {% else %}
+            <a class="btn btn-primary" href="{% url 'login' %}">Login to buy Ticket</a>
+            <a class="btn btn-outline-primary" href="https://forms.gle/4GkxCVzY9Jkp3KeXA" target="_blank">Register (without Ren Pass)</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endblock body %}
+
+{% block script %}
+<script src="{% static "js/modal.js" %}"></script>
+    {% csrf_token %}
+{% endblock script %}
+
+{% comment %} <script>
+    let popup = document.getElementById("popup");
+
+    function openPopup() {
+        popup.classList.add("open-popup");
+    }
+    function closePopup() {
+        popup.classList.remove("open-popup");
+    }
+</script>
+</html> {% endcomment %}

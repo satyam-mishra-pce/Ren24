@@ -36,7 +36,6 @@
         }
         .footer{
             background-image: url("{% static "assets/bg/footer.png" %}");
-            background-attachment: fixed;
             background-repeat: no-repeat;
             background-size: cover;
         }
@@ -54,7 +53,7 @@
         </button>
         <ul class="nav-list" id="navList">
             <a href="{%url 'home' %}"><li class="active nav-item"><button>Home</button></li></a>
-            <a href="#"><li class="nav-item"><button>Celebrity</button></li></a>
+            <a href="{% url "celebrity" %}"><li class="nav-item"><button>Celebrity</button></li></a>
             <a href="{% url "events" %}"><li class="nav-item"><button>Events</button></li></a>
             <a href="{% url "itinerary" %}"><li class="nav-item"><button>Itinerary</button></li></a>
             <li class="nav-item"><button>Sponsors</button></li>

@@ -1,5 +1,7 @@
 from django.shortcuts import redirect, render
 
+from ticket.models import Events
+
 # Create your views here.
 
 def home(request):
@@ -7,6 +9,13 @@ def home(request):
 
 def itinerary(request):
     return render(request,'day1.html')
+
+def celebrity(request):
+    return render(request,'celebrities.html')
+
+# def e(request):
+#     events = Events.objects.all().only('id','poster')
+#     return render(request,'event.html',{'events':events})
 
 def itinerary_day(request,day):
     if day == 1:
