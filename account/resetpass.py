@@ -44,6 +44,7 @@ def verify(request):
                 print(type(check_otp))
                 print(type(otp))
                 messages.error(request, 'Wrong OTP')
+                return redirect('verify')
         else:
             messages.error(request, 'Invalid OTP or user not found')  # Handle None case
         return redirect('verify')
@@ -96,8 +97,8 @@ def newpass(request):
         pass2=request.POST.get('pass2')
         email=request.session.get('email')
         if pass1 != pass2:
-                messages.error(request, "Passwords didn't matched!!")
-                return redirect('home')
+            messages.error(request, "Passwords didn't matched!!")
+            return redirect('home')
         
         myuser = User.objects.get(email).first()
         myuser.update(password=pass1)

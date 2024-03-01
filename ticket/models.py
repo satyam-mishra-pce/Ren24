@@ -52,6 +52,7 @@ class Ticket(models.Model):
     event = models.ForeignKey(Events, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True, blank=True)
     used = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True, blank=True,null=True)
     # qr_code = models.ImageField(upload_to='passes/qr', blank=True)
 
     def __str__(self):
@@ -78,8 +79,9 @@ class CustomTicket(models.Model):
     name = models.CharField(max_length=40)
     email = models.EmailField(max_length=200)
     phone_no = models.CharField(max_length=13, unique=True)
+    used = models.BooleanField(default=False)
     # amount = models.PositiveIntegerField(default=0)
-    # comment = models.TextField(null=True,blank=True)
+    note = models.TextField(null=True,blank=True)
     created = models.DateTimeField(auto_now_add=True, blank=True,null=True)
     def __str__(self):
         return str(self.id)

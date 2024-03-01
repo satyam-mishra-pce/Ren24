@@ -65,7 +65,7 @@ def generate_master_ticket(user)->bytes:
         border=2,
         error_correction=qrcode.constants.ERROR_CORRECT_H,
         )
-    qr.add_data(f"{settings.BASE_URL}/qr/{user._pass.id}")
+    qr.add_data(f"{settings.BASE_URL}/qr/{user._pass.psid}")
     qr.make(fit=True)
     qr_img = qr.make_image(fill_color=(0,0,0), back_color="transparent").convert('RGBA')
     qr_img = qr_img.resize((270, 270))  # Resize QR code image if necessary

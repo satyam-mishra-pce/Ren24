@@ -193,7 +193,7 @@ def profile_view(request):
             ticket_img.append(base64.b64encode(generate_ticket(ticket.id)).decode('utf-8'))
         context = {
             'profile':profile,
-            'dob':profile.dob.strftime("%Y-%m-%d"),
+            'dob':dob,
             'tickets':ticket_img
         }
         messages.success(request,"Profile updated Sucessfully")
@@ -221,6 +221,7 @@ def resendOTP(request):
     print("\n")
     print("\n")
     otp_obj.save()
+    send_otp_thread(email,otp)   
     messages.sucess(request,"OTP sent sucessfully")
     return redirect('verify')
 
@@ -245,32 +246,6 @@ def verify(request):
             return redirect('verify')
     else:
         return render(request, 'verify.html')
-    
-# def image_upload(request):
-#     if request.method=='POST':
-#         profile= Profile.objects.get(user=request.user)
-#     # if the request method is POST, process the form data
-#         # create a form instance and populate it with data from the request
-#         form = ProfileForm(request.POST, request.FILES, instance=profile)
-#         # check whether the form is valid
-#         if form.is_valid():
-#             # save the form data to the database
-#             form.save()
-#             # redirect to the same page
-#             return redirect('profile')
-#         # render the template with the profile data
-#         tickets = Ticket.objects.filter(user=request.user)
-#         ticket_img = []
-#         for ticket in tickets:
-#             ticket_img.append(base64.b64encode(generate_ticket(ticket.id)).decode('utf-8'))
-#         context = {
-#             'profile':profile,
-#             'tickets':ticket_img
-#         }
-#         messages.success(request,"Profile updated Sucessfully")
-#         return render(request,"profile.html",context)
-#     else:
-#         return render(request,"profile.html")
 
 @login_required
 @profile_required('/u/profile')

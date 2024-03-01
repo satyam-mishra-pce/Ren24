@@ -39,6 +39,9 @@ class Profile(models.Model):
     dob=models.DateField(null=True)
     college=models.CharField(max_length=200)
     address=models.CharField(max_length=200)
+    
+    def __str__(self):
+        return self.user.email
 
 # class Wallet(models.Model):
 #     # userid=models.ForeignKey(User, on_delete=models.CASCADE)
@@ -56,6 +59,7 @@ class Passes(models.Model):
     day1=models.BooleanField(default=False)
     day2=models.BooleanField(default=False)
     day3=models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True, blank=True,null=True)
     
     def __str__(self):
         return self.email

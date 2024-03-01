@@ -4,7 +4,7 @@ from django.http import HttpResponseBadRequest,HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from account.decorators import profile_required
 from account.functions import getPass
-from account.models import User
+from account.models import Passes, User
 from django.contrib.auth.decorators import login_required
 # from django.db import transaction
 from ticket.functions import generate_ticket,generate_master_ticket
@@ -17,7 +17,11 @@ from django.shortcuts import get_object_or_404
 
 
 def qr(request,ticketId):
-    ticket = generate_ticket(ticketId)
+    if request.user.is_authenticated():
+        ticket = generate_master_ticket(request.user)
+    else:
+        _pass = Passes.objects.get(psid=ticketId)
+        ticket = generate_master_ticket(User.objects.get(email=_pass.email))
     response = HttpResponse(ticket, content_type='image/png')
     return response
     

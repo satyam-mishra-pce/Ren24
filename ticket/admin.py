@@ -6,10 +6,12 @@ from config.settings import BASE_URL
 
 class EventAdmin(ExportActionMixin,admin.ModelAdmin):
     list_display=('name','type','amount','date','time')
+    search_fields = ['name']
     
 class TicketAdmin(ExportActionMixin,admin.ModelAdmin):
     list_display=('get_username','get_link' ,'get_email','get_price','get_date')
-    
+    readonly_fields = ['created']
+    autocomplete_fields = ['user',"event"]
     def get_date(self,obj):
         return f"{obj.event.date} {obj.event.time}" 
     
@@ -36,24 +38,30 @@ class TicketAdmin(ExportActionMixin,admin.ModelAdmin):
     get_username.admin_order_field = "user__first_name"
     
     
-# class CustomTicketAdmin(ExportActionMixin,admin.ModelAdmin):
-#     list_display = ['get_link','event','amount','comment']
-#     readonly_fields = ['user','date','is_paid']
-#     fieldsets = (
-#         (None, {
-#             'fields': ['event','amount'],
-#             'description': f"This will generate a custom ticket for the selected event & amount, The form can be accessed from the link on display"
-#         }),
-#         (None, {
-#             'fields': ['user','date','is_paid'],
-#             }),
-#     )
-#     def get_link(self,obj):
-#         return f"{BASE_URL}/custom/{obj.id}" 
-#     get_link.short_description = "Link"
+class CustomTicketAdmin(ExportActionMixin,admin.ModelAdmin):
+    list_display = ['id','email','event','note']
+    readonly_fields = ['id','created']
+    autocomplete_fields = ["event"]
+    
+    # def get_form(self, request, obj=None, **kwargs):
+    #     form = super(CustomTicketAdmin, self).get_form(request, obj, **kwargs)
+    #     form.base_fields['event'].queryset = Events.objects.filter(name__iexact='company')
+    #     return form
+    
+    # fieldsets = (
+    #     (None, {
+    #         'fields': ['event','amount'],
+    #         'description': f"This will generate a custom ticket for the selected event & amount, The form can be accessed from the link on display"
+    #     }),
+    #     (None, {
+    #         'fields': ['user','date','is_paid'],
+    #         }),
+    # )
+    # def get_link(self,obj):
+    #     return f"{BASE_URL}/custom/{obj.id}" 
+    # get_link.short_description = "Link"
 
 
 admin.site.register(Events,EventAdmin)
 admin.site.register(Ticket,TicketAdmin)
-admin.site.register(CustomTicket)
-# admin.site.register(CustomTicket,CustomTicketAdmin)
+admin.site.register(CustomTicket,CustomTicketAdmin)

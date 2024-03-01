@@ -2,9 +2,12 @@ from datetime import datetime
 import json
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from account.models import Passes
 from ticket.models import CustomTicket, Ticket
 
-day1 = datetime.strptime('2024-3-19','%Y-%m-%d').date()
+
+#TODO : Update this Date
+day1 = datetime.strptime('2024-3-1','%Y-%m-%d').date()
 day2 = datetime.strptime('2024-3-20','%Y-%m-%d').date()
 day3 = datetime.strptime('2024-3-21','%Y-%m-%d').date()
 
@@ -16,22 +19,22 @@ def verify(request):
             # event_id = request.POST.get('event_id')
             ticket_id = data.get('ticketId')
             if ticket_id is not None:
-                ticket = Ticket.objects.get(id=ticket_id)
+                ticket = Passes.objects.get(psid=ticket_id)
                 print(datetime.today())
                 # today = datetime.strptime('2024-3-2','%Y-%m-%d').date()
                 today = datetime.today().date()
-                if ticket.day1 == True or today == day1:
+                if ticket.day1 == True and today == day1:
                     return HttpResponse('Ticket used or not for today',status=404)
-                elif ticket.day2 == True or today == day2:
+                elif ticket.day2 == True and today == day2:
                     return HttpResponse('Ticket used or not for today',status=404)
-                elif ticket.day3 == True or today == day3:
+                elif ticket.day3 == True and today == day3:
                     return HttpResponse('Ticket used or not for today',status=404)
                 else:
                     context = {
                         'first_name':str(ticket.user.first_name),
                         'last_name':str(ticket.user.last_name),
                         'email':str(ticket.user.email),
-                        'date':str(ticket.date),
+                        'date':str(today),
                     }
                     return JsonResponse(context)
             else:
@@ -53,17 +56,22 @@ def permit(request):
             ticket_id = data.get('ticketId')
             if ticket_id is not None:
                 today = datetime.today().date()
-                ticket = Ticket.objects.get(id=ticket_id)
-                if ticket.day1 == True or today == day1:
+                ticket = Passes.objects.get(psid=ticket_id)
+                if ticket.day1 == True and today == day1:
                     return HttpResponse('Ticket used or not for today',status=404)
-                elif ticket.day2 == True or today == day2:
+                elif ticket.day2 == True and today == day2:
                     return HttpResponse('Ticket used or not for today',status=404)
-                elif ticket.day3 == True or today == day3:
+                elif ticket.day3 == True and today == day3:
                     return HttpResponse('Ticket used or not for today',status=404)
                 # if ticket.used == True :#or ticket.date != datetime.today():
                 #     return HttpResponse('Ticket used or not for today',status=404)
                 else:
-                    ticket.used = True
+                    if today == day1:
+                        ticket.day1 = True
+                    elif today == day2:
+                        ticket.day2 = True
+                    elif today == day3:
+                        ticket.day3 = True 
                     ticket.save()
                     return HttpResponse('Entry permitted',status=200)
             else:
@@ -85,18 +93,21 @@ def verify_custom(request):
             ticket_id = data.get('ticketId')
             if ticket_id is not None:
                 ticket = CustomTicket.objects.get(id=ticket_id)
-                today = datetime.today().date()
-                if ticket.day1 == True or today == day1:
-                    return HttpResponse('Ticket used or not for today',status=404)
-                if ticket.day2 == True or today == day2:
-                    return HttpResponse('Ticket used or not for today',status=404)
-                if ticket.day3 == True or today == day3:
+                # today = datetime.today().date()
+                today = datetime.strptime('2024-3-1','%Y-%m-%d').date()
+                # if ticket.day1 == True and today == day1:
+                #     return HttpResponse('Ticket used or not for today',status=404)
+                # if ticket.day2 == True and today == day2:
+                #     return HttpResponse('Ticket used or not for today',status=404)
+                # if ticket.day3 == True and today == day3:
+                #     return HttpResponse('Ticket used or not for today',status=404)
+                if ticket.used == True and ticket.event.date != today:
                     return HttpResponse('Ticket used or not for today',status=404)
                 context = {
-                    'first_name':str(ticket.user.first_name),
-                    'last_name':str(ticket.user.last_name),
-                    'email':str(ticket.user.email),
-                    'date':str(ticket.date),
+                    'first_name':str(ticket.name.split(' ')[0]),
+                    'last_name':str(ticket.name.split(' ')[-1]),
+                    'email':str(ticket.email),
+                    'date':str(ticket.event.date),
                 }
                 return JsonResponse(context)
             else:
@@ -117,8 +128,10 @@ def permit_custom(request):
             # event_id = request.POST.get('event_id')
             ticket_id = data.get('ticketId')
             if ticket_id is not None:
-                ticket = Ticket.objects.get(id=ticket_id)
-                if ticket.used == True :#or ticket.date != datetime.today():
+                ticket = CustomTicket.objects.get(id=ticket_id)
+                # today = datetime.today().date()
+                today = datetime.strptime('2024-3-1','%Y-%m-%d').date()
+                if ticket.used == True and ticket.event.date.date() != today:
                     return HttpResponse('Ticket used or not for today',status=404)
                 else:
                     ticket.used = True
