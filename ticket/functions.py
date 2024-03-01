@@ -7,6 +7,7 @@ from io import BytesIO
 # from reportlab.lib.pagesizes import letter
 # from reportlab.pdfgen import canvas
 from PIL import Image, ImageDraw, ImageFont
+from config import settings
 from ticket.models import Ticket
 
 def generate_ticket(ticket_id)->bytes:
@@ -29,7 +30,7 @@ def generate_ticket(ticket_id)->bytes:
 
     # Create a blank image with white background
     # ticket_img = Image.new("RGB", (900, 300), "white")
-    ticket_img = Image.open(path.join(BASE_DIR,'assets','ticket-01.png'),'r')
+    ticket_img = Image.open(path.join(BASE_DIR,'assets','ticket-02-02.png'),'r')
     ticket_img = ticket_img.resize((900,300))
     draw = ImageDraw.Draw(ticket_img)
 
@@ -64,7 +65,7 @@ def generate_master_ticket(user)->bytes:
         border=2,
         error_correction=qrcode.constants.ERROR_CORRECT_H,
         )
-    qr.add_data(user._pass.id)
+    qr.add_data(f"{settings.BASE_URL}/qr/{user._pass.id}")
     qr.make(fit=True)
     qr_img = qr.make_image(fill_color=(0,0,0), back_color="transparent").convert('RGBA')
     qr_img = qr_img.resize((270, 270))  # Resize QR code image if necessary
@@ -73,7 +74,7 @@ def generate_master_ticket(user)->bytes:
 
     # Create a blank image with white background
     # ticket_img = Image.new("RGB", (900, 300), "white")
-    ticket_img = Image.open(path.join(BASE_DIR,'assets','ticket-01.png'),'r')
+    ticket_img = Image.open(path.join(BASE_DIR,'assets','ticket-02-03.png'),'r')
     ticket_img = ticket_img.resize((900,300))
     draw = ImageDraw.Draw(ticket_img)
 

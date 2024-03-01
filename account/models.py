@@ -49,7 +49,7 @@ class Profile(models.Model):
 #         return self.user.email
 
 class Passes(models.Model):
-    id=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
+    psid=models.UUIDField(default=uuid.uuid4,editable=False)
     email = models.EmailField(max_length=200,unique=True,null=False,blank=False)
     technical =models.ForeignKey(to="ticket.Events",on_delete=models.SET_NULL,null=True,blank=True,related_name="Technical_Event")
     splash =models.ForeignKey(to="ticket.Events",on_delete=models.SET_NULL,null=True,blank=True,related_name="Splash_Event")

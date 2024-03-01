@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, render,redirect
 import pytz
 from account.decorators import profile_required
 from account.forms import ProfileForm
-from cart.functions import getPass
+from account.functions import getPass
 # from account.forms import ProfileForm
 from config import settings
 from ticket.functions import generate_master_ticket, generate_ticket
@@ -29,7 +29,7 @@ from PIL import Image
 # from .tokens import generate_token
 # from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 # Create your views here.
-import math, random
+# import math, random
  
 # function to generate OTP
 def generateOTP() :
@@ -127,7 +127,7 @@ def signin(request):
                 return redirect("verify")
         else:
             messages.error(request, "User does not exist")
-            return render(request, "signup.html")
+            return redirect('register')
     else:
         return render(request, "login.html")
 
@@ -197,6 +197,9 @@ def profile_view(request):
             'tickets':ticket_img
         }
         messages.success(request,"Profile updated Sucessfully")
+        next = request.GET.get("next")
+        if next:
+            return redirect(next)
         return render(request,"profile.html",context)
           
 
@@ -286,7 +289,7 @@ def send_ticket(request):
         pdf_buffer = io.BytesIO()
         img_rgb.save(pdf_buffer, 'PDF', resolution=100.0)
         send_email_thread(email,pdf_buffer)
-        messages.success(request,"Ticket Sent sucessfully")
+        messages.success(request,"Ticket has been sent to your registered email")
         return redirect('profile')
     messages.warning(request,"Something went wrong")
     return redirect('profile')

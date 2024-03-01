@@ -105,7 +105,7 @@ class CustomTicket(models.Model):
             border=2,
             error_correction=qrcode.constants.ERROR_CORRECT_H,
             )
-        qr.add_data(self.id)
+        qr.add_data(f"{settings.BASE_URL}/custom/{self.id}")
         qr.make(fit=True)
         qr_img = qr.make_image(fill_color=(0,0,0), back_color="transparent").convert('RGBA')
         qr_img = qr_img.resize((270, 270))  # Resize QR code image if necessary
@@ -114,7 +114,7 @@ class CustomTicket(models.Model):
 
         # Create a blank image with white background
         # ticket_img = Image.new("RGB", (900, 300), "white")
-        ticket_img = Image.open(path.join(BASE_DIR,'assets','ticket-01.png'),'r')
+        ticket_img = Image.open(path.join(BASE_DIR,'assets','ticket-02-01.png'),'r')
         ticket_img = ticket_img.resize((900,300))
         draw = ImageDraw.Draw(ticket_img)
 
@@ -126,10 +126,10 @@ class CustomTicket(models.Model):
         font = ImageFont.truetype(font_name, 32)  # Use a suitable font
         font_medium = ImageFont.truetype(font_name, 24)  # Use a suitable font
         font_small = ImageFont.truetype(font_name, 16)  # Use a suitable font
-        draw.text((350, 25), f"Booking Id: {self.id}", fill="white", font=font_small)
+        draw.text((350, 25), f"Booking Id: {self.id}", fill="black", font=font_small)
         draw.text((350, 70), f"{self.name} ", fill="black", font=font)
-        draw.text((350, 120),f"{self.email}", fill="white", font=font_medium)
-        draw.text((350, 170),f"{self.phone_no}", fill="white", font=font_medium)
+        draw.text((350, 120),f"{self.email}", fill="black", font=font_medium)
+        draw.text((350, 170),f"{self.phone_no}", fill="black", font=font_medium)
     
 
         # Save the image to a BytesIO buffer

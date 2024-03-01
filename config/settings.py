@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
-from config import env
+# from config import env
 
 # import razorpay
 
@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     'import_export',
     'account',
     'ticket',
-    'cart',
     'main',
 ]
 
@@ -77,7 +76,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
-                'cart.context_processors.cart',
             ],
         },
     },
@@ -156,12 +154,14 @@ USE_I18N = True
 
 USE_TZ = True
 
+Email='Renaissance@jecrc.ac.in'
+EMAIL_BACKEND = 'django_ses.SESBackend'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-PRODUCTION = env.getParameter('PRODUCTION') == 'True'
-# PRODUCTION = False
+# PRODUCTION = env.getParameter('PRODUCTION') == 'True'
+PRODUCTION = False
 
 if PRODUCTION:
     
@@ -172,9 +172,6 @@ if PRODUCTION:
 
     # TODO :SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
-    
-    Email='Renaissance@jecrc.ac.in'
-    EMAIL_BACKEND = 'django_ses.SESBackend'
 
     ALLOWED_HOSTS = ['ec2-13-201-19-183.ap-south-1.compute.amazonaws.com', 
                      '13.235.239.6',

@@ -70,7 +70,7 @@
         <br>
         <div class="d-flex justify-content-evenly">
           {% if request.user.is_authenticated %}
-          <button class="btn btn-primary" id="add-to-cart-btn">Add to cart</button>
+          <button class="btn btn-primary" id="buy-now-btn">Buy Now</button>
           <a class="btn btn-outline-primary" href="https://forms.gle/4GkxCVzY9Jkp3KeXA" target="_blank">Register (without Ren Pass)</a>
           {% else %}
           <a class="btn btn-primary" href="{% url 'login' %}">Login to buy Ticket</a>
@@ -89,11 +89,19 @@
       </div>
       <section id="day01" class="visible-section">
         <ul class="cards-list">
+          {% if  request.user.is_anonymous%} 
             {% for event in events %}
-          <li class="cards" onclick="showModalDialog({{event.id}})">
+          <li class="cards" onclick="showAnonymousModalDialog({{event.id}})">
             <img src="{{event.poster.url}}" alt=""/>
           </li>
           {% endfor %}
+          {% else %} 
+            {% for event in events %}
+          <li class="cards" onclick="showModalDialog({{event.id}},{{request.user.id}})">
+            <img src="{{event.poster.url}}" alt=""/>
+          </li>
+          {% endfor %}
+          {% endif %}
         </ul>
       </section>
     </section>
@@ -103,13 +111,7 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
       integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     <script src="{% static "js/snackbar.js" %}"></script>
-    <script src="{% static "js/cart.js" %}"></script>
-    {% comment %} <script src="{% static "js/activities.js" %}"></script> {% endcomment %}
-    <script>
-      function closeModal(element) {
-        element.parentElement.parentElement.parentElement.style.display = "none";
-      }
-    </script>
+    {% comment %} <script src="{% static "js/cart.js" %}"></script> {% endcomment %}
     <script src="{% static "js/modal.js" %}"></script>
     {% csrf_token %}
     {% endblock script %}
