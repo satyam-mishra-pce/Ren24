@@ -173,7 +173,7 @@ if PRODUCTION:
     # TODO :SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
     
-    Email='pranavpurohit73@gmail.com'
+    Email='Renaissance@jecrc.ac.in'
     EMAIL_BACKEND = 'django_ses.SESBackend'
 
     ALLOWED_HOSTS = ['ec2-13-201-19-183.ap-south-1.compute.amazonaws.com', 
@@ -218,7 +218,8 @@ else:
     
     BASE_URL = 'http:127.0.0.1:8000'
     
-
+    AWS_ACCESS_KEY_ID = "AKIA3WO4ZFTK7JW4U6XT"
+    AWS_SECRET_ACCESS_KEY = "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"
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = 'django-insecure-3i-x6+f9gwr(4qxbtgwv-=7y27)ixgc)tp=29ne)@=a#&84khj'
 

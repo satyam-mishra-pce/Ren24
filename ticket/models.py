@@ -140,7 +140,11 @@ class CustomTicket(models.Model):
         
 def send_custom_email_with_attachment(email,pdf_buffer):
     # Initialize SES client
-    ses_client = boto3.client('ses', region_name='ap-south-1', aws_access_key_id="AKIA3WO4ZFTK7JW4U6XT", aws_secret_access_key="qOabbapjbKMcPbxPh7HvflvV7ikMNSGktD80Dtf4")  # Replace with your desired region and credentials
+    ses_client = boto3.client('ses', 
+                              region_name='ap-south-1', 
+                              aws_access_key_id=settings.AWS_ACCESS_KEY_ID, 
+                              aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
+                              )  # Replace with your desired region and credentials
     
     name_obj=CustomTicket.objects.get(email=email)
     name=name_obj.name

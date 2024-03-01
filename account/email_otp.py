@@ -22,7 +22,11 @@ def send_otp(email,otp):
     </html>
                 """            
     CHARSET = "UTF-8"
-    client = boto3.client('ses',region_name=AWS_REGION,aws_access_key_id="AKIA3WO4ZFTK7JW4U6XT",aws_secret_access_key="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")
+    client = boto3.client('ses',
+                          region_name=AWS_REGION,
+                          aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                          aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                          )
     try:
         response = client.send_email(
             Destination={

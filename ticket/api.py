@@ -18,12 +18,9 @@ def verify(request):
                     return HttpResponse('Ticket used or not for today',status=404)
                 else:
                     context = {
-                        'avatar':"http://192.168.231.230:8000"+str(ticket.user.profile.image.url),
                         'first_name':str(ticket.user.first_name),
                         'last_name':str(ticket.user.last_name),
-                        'event_name':str(ticket.event),
-                        # 'time':ticket.time,
-                        'time':"14:00:00",
+                        'email':str(ticket.user.email),
                         'date':str(ticket.date),
                     }
                     return JsonResponse(context)
