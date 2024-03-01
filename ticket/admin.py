@@ -36,23 +36,24 @@ class TicketAdmin(ExportActionMixin,admin.ModelAdmin):
     get_username.admin_order_field = "user__first_name"
     
     
-class CustomTicketAdmin(ExportActionMixin,admin.ModelAdmin):
-    list_display = ['get_link','event','amount','comment']
-    readonly_fields = ['user','date','is_paid']
-    fieldsets = (
-        (None, {
-            'fields': ['event','amount'],
-            'description': f"This will generate a custom ticket for the selected event & amount, The form can be accessed from the link on display"
-        }),
-        (None, {
-            'fields': ['user','date','is_paid'],
-            }),
-    )
-    def get_link(self,obj):
-        return f"{BASE_URL}/custom/{obj.id}" 
-    get_link.short_description = "Link"
+# class CustomTicketAdmin(ExportActionMixin,admin.ModelAdmin):
+#     list_display = ['get_link','event','amount','comment']
+#     readonly_fields = ['user','date','is_paid']
+#     fieldsets = (
+#         (None, {
+#             'fields': ['event','amount'],
+#             'description': f"This will generate a custom ticket for the selected event & amount, The form can be accessed from the link on display"
+#         }),
+#         (None, {
+#             'fields': ['user','date','is_paid'],
+#             }),
+#     )
+#     def get_link(self,obj):
+#         return f"{BASE_URL}/custom/{obj.id}" 
+#     get_link.short_description = "Link"
 
 
 admin.site.register(Events,EventAdmin)
 admin.site.register(Ticket,TicketAdmin)
+admin.site.register(CustomTicket)
 # admin.site.register(CustomTicket,CustomTicketAdmin)

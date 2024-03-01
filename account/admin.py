@@ -35,8 +35,8 @@ class AccountAdmin(ExportActionMixin,UserAdmin):
     
 class PassAdmin(ImportExportMixin,admin.ModelAdmin):
     empty_value_display = "Not selected"
-    list_display=['email','technical1','technical2','splash']
-    readonly_fields=['technical1','technical2','splash']
+    list_display=['email','technical','splash']
+    readonly_fields=['technical','splash']
 
 # class WalletAdmin(admin.ModelAdmin):
 #     list_display=('get_username','get_email','walletid')

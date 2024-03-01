@@ -1,13 +1,17 @@
 # from email.message import EmailMessage
 import base64
+import io
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render,redirect
 import pytz
+from account.decorators import profile_required
 from account.forms import ProfileForm
+from cart.functions import getPass
 # from account.forms import ProfileForm
 from config import settings
-from ticket.functions import generate_ticket
+from ticket.functions import generate_master_ticket, generate_ticket
 from ticket.models import Ticket
+from ticket.send_ticket import send_email_thread
 from .models import *
 from django.contrib import messages
 # from django.contrib.auth.hashers import make_password,check_password
@@ -16,6 +20,7 @@ from django.contrib.auth.decorators import login_required
 import pyotp
 import datetime
 from .email_otp import send_otp_thread
+from PIL import Image
 # from django.core.mail import EmailMessage, send_mail
 # from django.contrib.sites.shortcuts import get_current_site
 # from django.template.loader import render_to_string
@@ -188,7 +193,7 @@ def profile_view(request):
             ticket_img.append(base64.b64encode(generate_ticket(ticket.id)).decode('utf-8'))
         context = {
             'profile':profile,
-            # 'dob':profile.dob.strftime("%Y-%m-%d"),
+            'dob':profile.dob.strftime("%Y-%m-%d"),
             'tickets':ticket_img
         }
         messages.success(request,"Profile updated Sucessfully")
@@ -263,3 +268,25 @@ def verify(request):
 #         return render(request,"profile.html",context)
 #     else:
 #         return render(request,"profile.html")
+
+@login_required
+@profile_required('/u/profile')
+def send_ticket(request):
+    if request.method=='POST':
+        user=request.user
+        _pass = getPass(user)
+        if not _pass:
+            messages.error(request,"You have not purchased any pass yet! Please register into event and try again later")
+            return redirect('profile')
+        email=user.email
+        img=generate_master_ticket(user)
+        image_buffer = io.BytesIO(img)
+        image=Image.open(image_buffer)
+        img_rgb=image.convert('RGB')
+        pdf_buffer = io.BytesIO()
+        img_rgb.save(pdf_buffer, 'PDF', resolution=100.0)
+        send_email_thread(email,pdf_buffer)
+        messages.success(request,"Ticket Sent sucessfully")
+        return redirect('profile')
+    messages.warning(request,"Something went wrong")
+    return redirect('profile')

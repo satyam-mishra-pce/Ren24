@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import uuid
 from django.db import models
 import pytz
 from account.manager import UserManager
@@ -48,10 +49,13 @@ class Profile(models.Model):
 #         return self.user.email
 
 class Passes(models.Model):
+    id=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
     email = models.EmailField(max_length=200,unique=True,null=False,blank=False)
-    technical1 =models.ForeignKey(to="ticket.Events",on_delete=models.SET_NULL,null=True,blank=True,related_name="Technical_Event_1")
-    technical2 =models.ForeignKey(to="ticket.Events",on_delete=models.SET_NULL,null=True,blank=True,related_name="Technical_Event_2")
+    technical =models.ForeignKey(to="ticket.Events",on_delete=models.SET_NULL,null=True,blank=True,related_name="Technical_Event")
     splash =models.ForeignKey(to="ticket.Events",on_delete=models.SET_NULL,null=True,blank=True,related_name="Splash_Event")
+    day1=models.BooleanField(default=False)
+    day2=models.BooleanField(default=False)
+    day3=models.BooleanField(default=False)
     
     def __str__(self):
         return self.email

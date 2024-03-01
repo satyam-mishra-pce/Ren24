@@ -4,6 +4,8 @@ from cart.models import CartItem
 from ticket.functions import generate_ticket
 from ticket.models import Ticket, Events
 from ticket.send_ticket import send_email_thread
+from PIL import Image
+import io
 class Cart():
 	def __init__(self, request):
 		# self.session = request.session
@@ -80,17 +82,10 @@ class Cart():
 		_pass = getPass(user)
 		added_events=list(self.get())
 		if _pass != None:
-			if _pass.technical1 == None:
+			if _pass.technical == None:
 				for event in added_events:
 					if event.type == 'tech' and event.includedInPass:
-						_pass.technical1=event
-						_pass.save()
-						added_events.remove(event)
-						break;
-			if _pass.technical2 == None:
-				for event in added_events:
-					if event.type == 'tech' and event.includedInPass:
-						_pass.technical2=event
+						_pass.technical=event
 						_pass.save()
 						added_events.remove(event)
 						break;
@@ -108,5 +103,10 @@ class Cart():
 			email=user_obj.email
 			print(event,obj)
 			img = generate_ticket(obj.id)
-			send_email_thread(email,img)
+			# image_buffer = io.BytesIO(img)
+			# image=Image.open(image_buffer)
+			# img_rgb=image.convert('RGB')
+			# pdf_buffer = io.BytesIO()
+			# img_rgb.save(pdf_buffer, 'PDF', resolution=100.0)
+			# send_email_thread(email,event,pdf_buffer)
 		self.emptycart()

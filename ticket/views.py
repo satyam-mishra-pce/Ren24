@@ -2,13 +2,12 @@ import json
 import time
 from django.http import HttpResponseBadRequest,HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
+from account.decorators import profile_required
 from account.models import User
 from django.contrib.auth.decorators import login_required
 # from django.db import transaction
-from django.views.decorators.csrf import csrf_exempt
-
-from cart.cart import Cart
-from ticket.functions import generate_ticket
+from ticket.functions import generate_ticket,generate_master_ticket
+from ticket.send_ticket import send_email_thread
 from .models import *
 # from config.settings import RAZORPAY_CLIENT,RAZOR_KEY_ID
 from django.contrib import messages
@@ -47,3 +46,5 @@ def getEvent(request):
 #     else:
 #         return
 
+
+        

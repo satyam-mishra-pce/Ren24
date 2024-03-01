@@ -26,13 +26,7 @@ def cart(request):
         discount = 0
         _pass = getPass(request.user)
         if _pass != None:
-            if _pass.technical1 == None:
-                for event in added_events:
-                    if event.type == 'tech' and event.includedInPass:
-                        discount += event.amount
-                        added_events.remove(event)
-                        break;
-            if _pass.technical2 == None:
+            if _pass.technical == None:
                 for event in added_events:
                     if event.type == 'tech' and event.includedInPass:
                         discount += event.amount

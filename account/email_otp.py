@@ -4,17 +4,20 @@ from botocore.exceptions import ClientError
 from requests import request
 from config import settings
 from collections.abc import Mapping
+from .models import User
 def send_otp(email,otp):
     SENDER = settings.Email
     RECIPIENT = email
     AWS_REGION = "ap-south-1"
-    SUBJECT = "OTP for Renaissance 2k24"
-    BODY_TEXT = (f"Your OTP is : {otp}")
+    user=User.objects.get(email=email)
+    name=user.first_name+" "+user.last_name
+    SUBJECT = "JECRC Renaissance OTP: Your Access Code"
+    BODY_TEXT = (f"Hi {name}, Your one-time password (OTP) for accessing the Renaissance is: {otp} This OTP is valid for 10 minutes.Please do not share it with anyone. We hope you have a great time at Renaissance!")
     BODY_HTML = f"""<html>
     <head></head>
     <body>
-    <h1>OTP for Renaissance 2k24</h1>
-    <p>Your OTP is : {otp} </p>
+    <h1></h1>
+    <p>Hi {name},<br> Your one-time password (OTP) for accessing the Renaissance is: <b>{otp}</b> . <br> This OTP is valid for 10 minutes.<br> Please do not share it with anyone. <br> We hope you have a great time at Renaissance!<br></p>
     </body>
     </html>
                 """            
