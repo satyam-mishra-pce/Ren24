@@ -8,7 +8,6 @@ defusedxml
 diff-match-patch
 Django
 django-import-export
-django-phonenumber-field
 django-storages
 et-xmlfile
 gunicorn
@@ -18,16 +17,14 @@ MarkupPy
 odfpy
 openpyxl
 packaging
-phonenumbers
 Pillow
+PyMySQL
 pyotp
 pypng
 python-dateutil
 pytz
 PyYAML
 qrcode
-razorpay
-reportlab
 requests
 s3transfer
 segno

@@ -1,9 +1,10 @@
 from datetime import datetime
 import json
 from django.http import JsonResponse,HttpResponse
-
+from django.views.decorators.csrf import csrf_exempt
 from ticket.models import Ticket
 
+@csrf_exempt
 def verify(request):
     if request.method == 'POST':
         try:
@@ -12,16 +13,18 @@ def verify(request):
             ticket_id = data.get('ticketId')
             if ticket_id is not None:
                 ticket = Ticket.objects.get(id=ticket_id)
-                if ticket.used == True or ticket.date != datetime.today():
+                print(datetime.today())
+                if ticket.used == True :#or ticket.date != datetime.today():
                     return HttpResponse('Ticket used or not for today',status=404)
                 else:
                     context = {
-                        'avatar':ticket.user.profile.avatar.url,
-                        'first_name':ticket.user.first_name,
-                        'last_name':ticket.user.last_name,
-                        'event':ticket.event,
-                        'time':ticket.time,
-                        'date':ticket.date,
+                        'avatar':"http://192.168.231.230:8000"+str(ticket.user.profile.image.url),
+                        'first_name':str(ticket.user.first_name),
+                        'last_name':str(ticket.user.last_name),
+                        'event_name':str(ticket.event),
+                        # 'time':ticket.time,
+                        'time':"14:00:00",
+                        'date':str(ticket.date),
                     }
                     return JsonResponse(context)
             else:
@@ -34,6 +37,7 @@ def verify(request):
     else:
         return HttpResponse('Method not allowed',status=400)
 
+@csrf_exempt
 def permit(request):
     if request.method == 'POST':
         try:
@@ -42,7 +46,7 @@ def permit(request):
             ticket_id = data.get('ticketId')
             if ticket_id is not None:
                 ticket = Ticket.objects.get(id=ticket_id)
-                if ticket.used == True or ticket.date != datetime.today():
+                if ticket.used == True :#or ticket.date != datetime.today():
                     return HttpResponse('Ticket used or not for today',status=404)
                 else:
                     ticket.used = True

@@ -170,13 +170,20 @@ if PRODUCTION:
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = env.getParameter('SECRET_KEY')
 
-    # SECURITY WARNING: don't run with debug turned on in production!
-    DEBUG = False
+    # TODO :SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = True
+    
+    Email='pranavpurohit73@gmail.com'
+    EMAIL_BACKEND = 'django_ses.SESBackend'
 
     ALLOWED_HOSTS = ['ec2-13-201-19-183.ap-south-1.compute.amazonaws.com', 
                      '13.235.239.6',
+                     'www.jecrcrenaissance.co.in',
                      'jecrcrenaissance.co.in'
                      ]
+    
+    CSRF_TRUSTED_ORIGINS = ['https://www.jecrcrenaissance.co.in','https://jecrcrenaissance.con.in']
+    CSRF_COOKIE_DOMAIN = 'jecrcrenaissance.co.in'
 
     # Database
     # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
