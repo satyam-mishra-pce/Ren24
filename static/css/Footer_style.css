@@ -23,7 +23,10 @@
   --bs-link-hover-color: white;
 }
 
-
+.footer{
+  background-color: rgba(255,255,255,0.3);
+  backdrop-filter: blur(5px);
+}
 
 html {
   font-size: 16px;
@@ -57,27 +60,11 @@ h6 {
   font-size: 1rem;
 }
 
-.mobile-only {
-  display: none;
-}
-
-.desktop-only {
-  display: block;
-}
 
 @media only screen and (max-width: 990px) {
   html {
     font-size: 12px;
   }
-
-  .mobile-only {
-    display: block;
-  }
-
-  .desktop-only {
-    display: none;
-  }
-
 
 }
 
@@ -85,10 +72,4 @@ h6 {
   html {
     font-size: 14px;
   }
-}
-
-
-.footer-logo {
-  height: 15rem;
-  width: 15rem;
 }

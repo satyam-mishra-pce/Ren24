@@ -1,0 +1,253 @@
+* {
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+#main {
+    position: relative;
+    overflow: hidden;
+}
+
+
+
+#page1 {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+#page1>video {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+
+}
+
+.bada_daba {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.daba {
+    border: 2px solid black;
+    width: 100%;
+}
+
+.card1,
+.card2,
+.card3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 4px solid yellow; */
+    height: 100%;
+    width: 33%;
+}
+
+#page11 {
+    /* border: 2px solid green; */
+    position: sticky;
+    height: 50em;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: a;
+    display: flex;
+    justify-content: center;
+}
+
+.page11-inner {
+    /* border: 2px solid green !important; */
+    display: inline;
+    border-radius: 1rem;
+    position: relative;
+    margin-bottom: 3vw;
+    height: 100%;
+    width: 100%;
+}
+
+.image {
+    /* border: 2px solid green; */
+    width: 100%;
+    padding: 4px;
+}
+
+.text {
+    /* border: 2px solid black; */
+    width: 60%;
+}
+
+.navigation {
+    display: none;
+}
+
+.page11-inner {
+    line-height: 1.5;
+    min-height: 50vh;
+    font-family: "Be Vietnam Pro",
+        sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile {
+    /* border: 2px solid red; */
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 3rem;
+    height: auto;
+    width: 80%;
+
+    color: black;
+
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(2px);
+    border-radius: 10px;
+    /* background-image: url(./profile_baground.jpg); */
+    border-radius: 16px;
+    position: relative;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    text-align: center;
+    overflow: hidden;
+
+}
+
+
+
+.profile:hover {
+    filter: drop-shadow(0 0 4px rgb(255, 255, 255));
+}
+
+.profile:after {
+    content: "";
+    display: block;
+    top: -3px;
+    left: -3px;
+    bottom: -3px;
+    right: -3px;
+    z-index: -1;
+    position: absolute;
+    border-radius: 16px;
+
+}
+
+.profile-image {
+    /* border: 2px solid red; */
+    border-radius: 10px;
+    overflow: hidden;
+    width: 20rem;
+    height: 11.25em;
+    top: -7%;
+    position: relative;
+
+}
+
+.profile-image img {
+    /* border: 2px solid blue; */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+
+}
+
+.username {
+    font-family: a;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-top: 0rem;
+}
+
+p {
+    font-family: a;
+    font-size: 1.4rem;
+    font-weight: 600;
+
+}
+
+
+a {
+    text-decoration: none;
+}
+
+
+@media only screen and (max-width: 440px) {
+
+    .profile {
+        padding: 2rem;
+
+    }
+
+    .page11-inner {
+        /* border: 2px solid green !important; */
+        display: flex;
+        flex-direction: column;
+        border-radius: 1rem;
+        position: relative;
+        margin-bottom: 3vw;
+        height: 100%;
+        width: 100%;
+    }
+
+    #page11 {
+        /* border: 2px solid green; */
+        position: sticky;
+        height: 100em;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-position-x:right;
+        background-size: cover;
+        font-family: a;
+        display: flex;
+        justify-content: center;
+    }
+
+    .card1,
+    .card2,
+    .card3 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* border: 4px solid yellow; */
+        height: 100%;
+        width: 100%;
+
+    }
+
+
+    .profile-image {
+        /* border: 2px solid red; */
+        border-radius: 10px;
+        overflow: hidden;
+        /* width: 20em; */
+        height: 18em;
+        top: -7%;
+        position: relative;
+
+    }
+
+    .profile-image>img {
+        /* border: 2px solid blue; */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90% !important;
+        height: 100%;
+
+    }
+
+}

@@ -28,23 +28,18 @@
             min-height:100vh;
         }
         body {
-            background-image: url({%static 'assets/bg/landscape/background color-04.png'%});            background-repeat: repeat-y;
+            background-image: url({%static 'assets/bg/landscape/jon-arellano-ur-10.jpg'%});            background-repeat: repeat-y;
             background-size: cover;
             background-attachment: fixed;
             background-position-y: bottom;
             overflow-x: hidden;
-        }
-        .footer{
-            background-image: url("{% static "assets/bg/footer.png" %}");
-            background-repeat: no-repeat;
-            background-size: cover;
         }
     </style>
     {% block head %}{% endblock head %}
 </head>
 
 <body>
-    <nav class="navbar">
+    {% comment %} <nav class="navbar">
         <img class="logo" src="{% static "assets/logo/Ren logo.png" %}" alt="LOGO">
         <button class="toggle-btn" onclick="toggleNav()">
             <span></span>
@@ -67,13 +62,6 @@
                       </svg>
                 </button></li></a>
             
-            
-                {% comment %} <a href="{% url "view_cart" %}"><li class="nav-item"><button>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                      </svg>
-                </button></li></a> {% endcomment %}
-            
             {% else %}
             
                 <a href="{% url "login" %}"><li class="nav-item"><button>
@@ -84,29 +72,47 @@
                 </button></li></a>     
             {% endif %}
         </ul>
-        {% comment %} <div class="auth-links">
-            {% if request.user.is_authenticated %}
-            <div class="btn-1">
-                <a href="{% url "profile" %}">Profile</a>
-            </div>
-            <div class="btn-1">
-                <a href="{% url "view_cart" %}">Cart</a>
-            </div>
-            {% else %}
-            <div class="btn-1">
-                <a href="{% url "login" %}">Login</a>
-            </div>
-            <div class="btn-1">
-                <a href="{% url "register" %}">Register</a>
-            </div>
-            {% endif %}
-        </div> {% endcomment %}
         <div class="auth-links">
             <div class="btn-1">
                 <a href="https://forms.gle/4GkxCVzY9Jkp3KeXA" target="_blank">Register (without Ren Pass)</a>
             </div>
         </div>
-    </nav>
+    </nav> {% endcomment %}
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+          {% comment %} <a class="navbar-brand" href="#">Navbar</a> {% endcomment %}
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            {% comment %} <span class="navbar-toggler-icon"></span> {% endcomment %} 
+            <img alt="icon" src="{% static "assets/logo/Ren logo.png" %}" width="50" height="50" />
+          </button>
+          <div class="collapse navbar-collapse justify-content-center" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link" href="/">Home</a>
+              <a class="nav-link" href="{% url "celebrity" %}">Celebrity</a>
+              <a class="nav-link" href="{% url "events" %}">Events</a>
+              <a class="nav-link" href="{% url "itinerary" %}">Itinerary</a>
+              <a class="nav-link" href="#footer">Contact</a>
+              {% if request.user.is_authenticated %}
+                <a class="nav-link" href="{% url "profile" %}">
+                    {% comment %} <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                      </svg> {% endcomment %}
+                      Profile
+                    </a>
+            {% else %}
+                <a href="{% url "login" %}">
+                    {% comment %} <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+                        <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                      </svg> {% endcomment %}
+                    Login
+                </a>     
+            {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
     {% block body %}{% endblock body %}
 {% if messages %}
 {% for message in messages %}
@@ -117,7 +123,7 @@
   </div>
 {% endfor %}
 {% endif %}
-        <footer id="footer" class="footer text-light mt-auto p-0">
+        {% comment %} <footer id="footer" class="footer text-light mt-auto p-0">
             <div class="container-fluid px-5 py-4">
                 <div class="row justify-content-evenly">
                     <div class="col-xs-6 col-sm-3 column text-center d-flex flex-column">
@@ -244,13 +250,111 @@
                   </p>
                 </div>-->
             </div>
+        </footer> {% endcomment %}
+        <footer id="footer" class="footer text-light mt-auto p-0">
+            <div class="container-fluid px-5 py-4">
+                <div class="row justify-content-evenly">
+                    {% comment %} <div class="col-xs-12 col-sm-3 text-center d-flex flex-column"> {% endcomment %}
+                        {% comment %} <h4>Follow Us</h4>
+                        <hr class="underline" /> {% endcomment %}
+
+                        <div class="col-sm-3 justify-content-center">
+                            <h6 class="my-3 text-center">JECRC Foundation</h6>
+                            <div class="d-flex justify-content-center">
+                                <div class="m-2">
+                                    <a rel="nofollow" target="_blank" class="navbar-brand"
+                                        href="https://www.youtube.com/@jecrcfoundation2150" title="Twitter">
+                                        <img loading="lazy" src="{% static "assets/icons/youtube.png" %}" height="40px" />
+                                    </a>
+                                </div>
+                                <div class="m-2">
+                                    <a rel="nofollow" target="_blank" class="navbar-brand"
+                                        href="https://www.facebook.com/JECRCfoundation/" title="Facebook">
+                                        <img loading="lazy" src="{% static "assets/icons/facebook.png" %}" height="40px" />
+                                    </a>
+                                </div>
+                                <div class="m-2">
+                                    <a target="_blank" rel="nofollow" class="navbar-brand"
+                                        href="https://www.instagram.com/jecrcfoundationofficial/" title="instagram">
+                                        <img loading="lazy" src="{% static "assets/icons/instagram.png" %}" height="40px" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 justify-content-center">
+                            <h6 class="my-3 text-center">JECRC Renaissance</h6>
+                            <div class="d-flex justify-content-center">
+                                <div class="m-2">
+                                    <a rel="nofollow" target="_blank" class="navbar-brand"
+                                        href="https://youtube.com/@TheJECRCRenaissance" title="Twitter">
+                                        <img loading="lazy" src="{% static "assets/icons/youtube.png" %}" height="40px" />
+                                    </a>
+                                </div>
+                                <div class="m-2">
+                                    <a rel="nofollow" target="_blank" class="navbar-brand"
+                                        href="https://www.facebook.com/jecrcrenaissance/" title="Facebook">
+                                        <img loading="lazy" src="{% static "assets/icons/facebook.png" %}" height="40px" />
+                                    </a>
+                                </div>
+                                <div class="m-2">
+                                    <a target="_blank" rel="nofollow" class="navbar-brand"
+                                        href="https://www.instagram.com/jecrcrenaissance/" title="instagram">
+                                        <img loading="lazy" src="{% static "assets/icons/instagram.png" %}" height="40px" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 justify-content-center">
+                            <h6 class="my-3 text-center">Media Partner</h6>
+                            <div class="d-flex justify-content-center">
+                                <div class="m-2">
+                                    <a rel="nofollow" target="_blank" class="navbar-brand"
+                                        href="https://instagram.com/fotografreaks_jecrc_" title="instagram">
+                                        <img loading="lazy" src="{% static "assets/icons/IMG_1067.PNG" %}" height="40px" />
+                                    </a>
+                                </div>
+
+                                <div class="m-2">
+                                    <a target="_blank" rel="nofollow" class="navbar-brand"
+                                        href="https://instagram.com/fotografreaks_jecrc_" title="instagram">
+                                        <img loading="lazy" src="{% static "assets/icons/instagram.png" %}" height="40px" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-column text-center py-4 m-0" style="background-color: rgba(0, 0, 0, 0.4)">
+                <div class="copyright m-auto">
+                    <p class="my-2">&copy; Copyright <strong>Jecrc Foundation</strong>. All Rights Reserved.&nbsp<a
+                            target="_blank" href="pages/privacy_policy.html">Privacy Policy</a></p>
+                </div>
+                <!--<div class="credits m-auto">
+                  <p class="my-2">Developed by
+                    <a target="_blank" href="https://www.linkedin.com/in/yash-raj-arora-432728239">Yash Raj Arora </a>|
+                    <a target="_blank" href="https://github.com/KhushalJangid/">Khushal Jangid </a>|
+                    <a target="_blank" href="https://www.linkedin.com/in/riya-goyal-711994225">Riya </a>|
+                    <a target="_blank" href="https://www.linkedin.com/in/archit-jain-378106231">Archit Jain </a>
+                  </p>
+                  <p class="my-2">Graphics Designed by
+                    <a target="_blank" href="https://instagram.com/shubham_saharan4?igshid=ZDdkNTZiNTM=">Shubham Saharan </a>|
+                    <a target="_blank" href="https://www.linkedin.com/in/dhruv-sharma-8b2403229">Dhruv Sharma </a>|
+                    <a target="_blank" href="https://instagram.com/raginijoshi_?igshid=ZDdkNTZiNTM=">Ragini Joshi </a>|
+                    <a target="_blank" href="https://instagram.com/sameer__mittal__?igshid=ZDdkNTZiNTM=">Sameer Mittal </a>
+                  </p>
+                </div>-->
+            </div>
         </footer>
+
+        
 
 
     <!-- ***************  script for NavBar START Hear*********** -->
-    <script src="https://unpkg.co/gsap@3/dist/gsap.min.js">
-    </script>
-    <script src="{% static "js/navbar.js" %}">
+    <script src="https://unpkg.co/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+    {% comment %} <script src="{% static "js/navbar.js" %}"> {% endcomment %}
     </script>
     {% block script %}{% endblock script %}
 

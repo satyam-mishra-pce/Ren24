@@ -1,7 +1,191 @@
-{% extends "base.html" %}
-{% block title %}Renaissance 2024{% endblock title %}
-{% block body %}
-<section class="body-section">
-    <h1>Welcome</h1>
-</section>
-{% endblock body %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renaissance 2024</title>
+    {% comment %} <link rel="stylesheet" href="style.css"> {% endcomment %}
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="{% static "css/Nav_style.css" %}">
+    <link rel="icon" type="image/png" href="{% static "assets/logo/Ren logo.png" %}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+        <style>
+            @font-face {
+                font-family: a;
+                src: url({% static "fonts/magic-school.one.ttf" %});
+            }
+            
+            @font-face {
+                font-family: b;
+                src: url({% static "fonts/magic-school.one.ttf" %});
+            }
+            
+            @font-face {
+                font-family: c;
+                src: url({% static "fonts/magic-school.one.ttf" %});
+            }
+            #page11{
+                background-image: url({% static "assets/index/dasktop_baground.jpg" %});
+            }
+        </style>
+        <link rel="stylesheet" href="{% static "css/ind.css" %}">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+          {% comment %} <a class="navbar-brand" href="#">Navbar</a> {% endcomment %}
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            {% comment %} <span class="navbar-toggler-icon"></span> {% endcomment %} 
+            <img alt="icon" src="{% static "assets/logo/Ren logo.png" %}" width="50" height="50" />
+          </button>
+          <div class="collapse navbar-collapse justify-content-center" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link" href="/">Home</a>
+              <a class="nav-link" href="{% url "celebrity" %}">Celebrity</a>
+              <a class="nav-link" href="{% url "events" %}">Events</a>
+              <a class="nav-link" href="{% url "itinerary" %}">Itinerary</a>
+              <a class="nav-link" href="#footer">Contact</a>
+              {% if request.user.is_authenticated %}
+                <a class="nav-link" href="{% url "profile" %}">
+                    {% comment %} <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                      </svg> {% endcomment %}
+                      Profile
+                    </a>
+            {% else %}
+                <a href="{% url "login" %}">
+                    {% comment %} <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+                        <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                      </svg> {% endcomment %}
+                    Login
+                </a>     
+            {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    <div id="main">
+        <div data-scroll data-scroll-speed="-5" id="page1">
+
+            <video src="{% static "assets/index/index.webm" %}" autoplay loop muted></video>
+
+        </div>
+        <div id="page11">
+            <div class="bada_daba">
+                <div class="daba">
+                    <div class="page11-inner">
+
+                        <div class="card1">
+                            <article class="profile">
+                                <div class="profile-image">
+                                    <img src="{% static "assets/index/celebrity.jpg" %}" />
+                                </div>
+                                <br>
+
+                                <h2 class="username">Celebrity Night</h2>
+
+                                <p>(Bollywood Celebrity)</p>
+                                <p style="font-family: b;">19 March 2024
+                                </p>
+
+
+
+                            </article>
+                        </div>
+                        <div class="card2">
+                            <article class="profile">
+                                <div class="profile-image">
+                                    <img src="{% static "assets/index/dj.jpg" %}" />
+                                </div>
+                                <br>
+                                <h2 class="username">DJ NIGHT</h2>
+
+                                <p>(INTERNATION DJ)</p>
+                                <p style="font-family: b;">20 March 2024</p>
+
+
+
+                            </article>
+                        </div>
+                        <div class="card3">
+                            <article class="profile">
+                                <div class="profile-image">
+                                    <img src="{% static "assets/index/band.jpg" %}" />
+                                </div>
+                                <br>
+                                <h2 class="username"> Cultural Event </h2>
+
+                                <p>(Night Cultural Event)</p>
+                                <p style="font-family: b;">21 March 2024</p>
+
+
+
+                            </article>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/gsap.min.js"
+        integrity="sha512-qF6akR/fsZAB4Co1QDDnUXWnaQseLGXoniuSuSlPQK6+aWhlMZcHzkasCSlnWoe+TJuudlka1/IQ01Dnhgq95g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/ScrollTrigger.min.js"
+        integrity="sha512-IHDCHrefnBT3vOCsvdkMvJF/MCPz/nBauQLzJkupa4Gn4tYg5a6VGyzIrjo6QAUy3We5HFOZUlkUpP0dkgE60A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static "js/index.js" %}"></script>
+
+
+    <!-- ///////// script for profile ////////// -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"
+        integrity="sha512-wC/cunGGDjXSl9OHUH0RuqSyW4YNLlsPwhcLxwWW1CR4OeC2E1xpcdZz2DeQkEmums41laI+eGMw95IJ15SS3g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    {% comment %} <script type="text/javascript" src="vanilla-tilt.js"></script> {% endcomment %}
+    <script>
+        var destroy = document.querySelectorAll(".profile");
+        var i;
+        var w = window.innerWidth;
+        VanillaTilt.init(destroy);
+
+        function myFunction(i) {
+            if (w <= 800) {
+                destroy[i].vanillaTilt.destroy();
+            }
+        }
+        for (i = 0; i < destroy.length; i++) {
+            destroy[i].addEventListener('mousemove', unTilt);
+        }
+
+
+    </script>
+
+    {% comment %} <script src="../website-menu-20/js/jquery.min.js"></script>
+    <script src="../website-menu-20/js/popper.js"></script>
+    <script src="../website-menu-20/js/bootstrap.min.js"></script>
+    <script src="../website-menu-20/js/main.js"></script>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script> {% endcomment %}
+
+</body>
+
+</html>

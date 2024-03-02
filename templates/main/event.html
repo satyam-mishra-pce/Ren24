@@ -20,9 +20,7 @@
             }
             
             body{
-                
-            
-                background-image: url(jon-arellano-ur-10\ mobile.jpg);
+                background-image: url("{% static "assets/bg/mobile/jon-arellano-ur-10 mobile.jpg" %}");
                 background-repeat: repeat-y;
                 background-size: cover;
                 background-attachment: fixed;
@@ -91,19 +89,28 @@
 
         <div class="cardx-cultural">
             <main id="app">
+                {% if request.user.is_authenticated %}
+                {% for event_set in events %}
                 <section class="cards">
-                    {% if request.user.is_authenticated %}
-                    {% for event in events %}
-                    <div class="btn card animated img"
-                        style="background-image: url({{event.poster.url}});"
-                        onclick="showModalDialog({{event.id}},{{request.user.id}})">
-                    </div>
-                    {% endfor %}
+                    {% for event in event_set %}
+                            <div class="btn card animated img"
+                                style="background-image: url({{event.poster.url}});"
+                                onclick="showModalDialog({{event.id}},{{request.user.id}})">
+                            </div>
+                            {% endfor %}
+                        </section>
+                        {% endfor %}
                     {% else %}
+                    {% for event_set in events %}
+                <section class="cards">
+                    {% for event in event_set %}
                     <div class="btn card animated img"
                         style="background-image: url({{event.poster.url}});"
                         onclick="showAnonymousModalDialog({{event.id}})">
                     </div>
+                    {% endfor %}
+                        </section>
+                        {% endfor %}
                     {% endif %}
                     {% comment %} <div class="btn card animated img"
                 style="background-image: url('/events-pic/cultural/day1/Cultural\ event\ ren\ 24\ \(1\)-01-1.png');"
@@ -113,7 +120,6 @@
                 style="background-image: url('/events-pic/cultural/day1/Cultural\ event\ ren\ 24\ \(1\)-01-1.png');"
                 onclick="openPopup()">
             </div> {% endcomment %}
-                </section>
             </main>
         </div>
         </div>

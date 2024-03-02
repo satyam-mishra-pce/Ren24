@@ -60,7 +60,7 @@ def register(request):
         if pass1 != pass2:
             messages.error(request, "Passwords didn't matched!!")
             return render(request, 'signup.html')
-        myuser = User.objects.create(email=email, 
+        myuser = User.objects.create_user(email=email, 
                                           first_name=fname,
                                           last_name=lname,
                                           password=pass1,
@@ -151,9 +151,13 @@ def profile_view(request):
             ticket_img = []
             for ticket in tickets:
                 ticket_img.append(base64.b64encode(generate_ticket(ticket.id)).decode('utf-8'))
+            if profile.dob is not None:
+                dob = profile.dob.strftime("%Y-%m-%d")
+            else:
+                dob = ''
             context = {
                 'profile':profile,
-                'dob':profile.dob.strftime("%Y-%m-%d"),
+                'dob':dob,
                 'tickets':ticket_img
             }
             return render(request, 'profile.html',context)

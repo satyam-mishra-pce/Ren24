@@ -32,7 +32,7 @@ class Events(models.Model):
     name = models.CharField(max_length=100)
     venue = models.CharField(max_length=100)
     type = models.CharField(max_length=8,choices=_eventTypes)
-    description = models.TextField(max_length=500)
+    description = models.TextField(max_length=1000,null=True,blank=True)
     amount = models.PositiveIntegerField(default=0)
     includedInPass = models.BooleanField(default=False)
     poster = models.ImageField(upload_to='events/')
@@ -130,8 +130,12 @@ class CustomTicket(models.Model):
         font_small = ImageFont.truetype(font_name, 16)  # Use a suitable font
         draw.text((350, 25), f"Booking Id: {self.id}", fill="black", font=font_small)
         draw.text((350, 70), f"{self.name} ", fill="black", font=font)
-        draw.text((350, 120),f"{self.email}", fill="black", font=font_medium)
-        draw.text((350, 170),f"{self.phone_no}", fill="black", font=font_medium)
+        draw.text((350, 115),f"{self.email}", fill="black", font=font_medium)
+        draw.text((350, 150),f"{self.phone_no}", fill="black", font=font_medium)
+        draw.text((350, 200),self.event.name.upper(), fill="black", font=font_medium)
+        draw.text((600, 200),self.event.venue, fill="black", font=font_medium)
+        draw.text((350, 240),self.event.time.strftime("%-I:%M %p"), fill="black", font=font_medium)
+        draw.text((600, 240),self.event.date.strftime("%a, %d %b, %Y"), fill="black", font=font_medium)
     
 
         # Save the image to a BytesIO buffer

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-    {% block title %}Itineary{% endblock title %} 
+    {% block title %}Itinerary{% endblock title %} 
     {% block head %}
     <link rel="stylesheet" href="{% static "css/itinerary.css" %}">
     <style>
@@ -14,15 +14,15 @@
     <div class="headline">
         <div class="days">
             <a href="{% url "itinerary" %}/1">
-                <img src="{% static "assets/itinerary/single-mushroom-removebg-preview.png" %}" alt="">
+                <img class="img" src="{% static "assets/itinerary/single-mushroom-removebg-preview.png" %}" alt="">
                 <div class="day"><b>Day 1</b></div>
             </a>
             <a href="{% url "itinerary" %}/2">
-                <img src="{% static "assets/itinerary/double-mushroom-removebg-preview.png" %}" alt="">
+                <img class="img" src="{% static "assets/itinerary/double-mushroom-removebg-preview.png" %}" alt="">
                 <div class="day"><b>Day 2</b></div>
             </a>
             <a href="#">
-                <img src="{% static "assets/itinerary/triple-mushroom-removebg-preview.png" %}" alt="">
+                <img class="img" src="{% static "assets/itinerary/triple-mushroom-removebg-preview.png" %}" alt="">
                 <div class="day"><b>Day 3</b></div>
             </a> 
         </div>
@@ -114,9 +114,9 @@
                     <b><time class="time">10:00 AM TO 12.00 PM</time></b>
                     <div class="discovery">
                         <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
-                        <h1>Half Court Basketball (3V3)</h1>
+                        <h1>Resin'O Clock</h1>
                         <b>
-                            <p>Basketball Court</p>
+                            <p>D-BLock</p>
                         </b>
                     </div>
                     <!-- <div class="scientist">
@@ -125,7 +125,7 @@
                     </div> -->
                 </div>
             </li>
-            <li>
+            {% comment %} <li>
                 <div>
                     <b><time class="time">10:00 AM TO 12.00 PM</time></b>
                     <div class="discovery">
@@ -140,7 +140,7 @@
                         <span></span>
                     </div> -->
                 </div>
-            </li>
+            </li> {% endcomment %}
             <li>
                 <div>
                     <b><time class="time">10:00 AM TO 1.00 PM</time></b>
@@ -207,7 +207,23 @@
             </li>
             <li>
                 <div>
-                    <b><time class="time">12.00 PM TO 2.00 PM</time></b>
+                    <b><time class="time">11:30 AM TO 2.00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Treasure Hunt</h1>
+                        <b>
+                            <p>D-Block stairs</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">12:00 PM TO 2:00 PM</time></b>
                     <div class="discovery">
                         <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
                         <h1>Crypto Mining</h1>
@@ -317,7 +333,7 @@
                     </div> -->
                 </div>
             </li>
-            <li>
+            {% comment %} <li>
                 <div class="contant">
                     <b><time class="time">01.30 PM TO 03.30 PM</time></b>
                     <div class="discovery">
@@ -332,7 +348,7 @@
                         <span></span>
                     </div> -->
                 </div>
-            </li>
+            </li> {% endcomment %}
             <li>
                 <div>
                     <b><time class="time">01.30 PM TO 04.30 PM</time></b>
@@ -354,7 +370,7 @@
                     <b><time class="time">03.00 PM TO 05.00 PM</time></b>
                     <div class="discovery">
                         <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
-                        <h1>Game of Series and Movies</h1>
+                        <h1>Game of Cinema</h1>
                         <b>
                             <p>Seminar Hall C-Block 401</p>
                         </b>

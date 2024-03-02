@@ -13,9 +13,101 @@ body{
 }
 
 .heading{
+    margin-top: 4vh;
     color: white;
+    display: flex;
+    justify-content: center;
+
+
+}
+
+h1{
+    font-size: 8rem;
+    font-weight: 300;
 }
 
 h1.magicSchool {
     font-family: "Magic School One", Verdana, Tahoma;
+    font-size: 8rem;
+}
+
+.flex-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.flex-element{
+    margin: 50px;
+}
+
+@media screen and (max-width: 1024px){
+    .flex-element{
+        margin: 30px;
+    }
+
+    .flex-element img{
+        height: 34.72vw;
+        width: 25vw;
+
+    }
+
+   h1{
+        font-size: 7rem;
+    }
+}
+@media screen and (max-width: 787px){
+    .flex-container{
+        display: flex;
+        flex-direction: column;
+
+
+    }
+    .flex-element img{
+        height: 41.67vw;
+        width: 30vw;
+
+    }
+
+   h1{
+        font-size: 7rem;
+    }
+}
+
+
+ @media screen and (max-width: 450px){
+    .flex-container{
+        display: flex;
+        flex-direction: column;
+
+
+    }
+    .flex-element img{
+        height: 83.34vw;
+        width: 60vw;
+
+    }
+
+   h1{
+        font-size: 5rem;
+    }
+}
+
+@media screen and (max-width: 340px){
+    .flex-container{
+        display: flex;
+        flex-direction: column;
+
+
+    }
+    .flex-element img{
+        height: 76.38vw;
+        width: 55vw;
+
+    }
+
+   h1{
+        font-size: 5rem;
+    }
 }

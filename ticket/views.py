@@ -17,27 +17,48 @@ from django.shortcuts import get_object_or_404
 
 
 def qr(request,ticketId):
-    if request.user.is_authenticated():
-        ticket = generate_master_ticket(request.user)
-    else:
-        _pass = Passes.objects.get(psid=ticketId)
-        ticket = generate_master_ticket(User.objects.get(email=_pass.email))
+    _pass = Passes.objects.get(psid=ticketId)
+    ticket = generate_master_ticket(User.objects.get(email=_pass.email))
     response = HttpResponse(ticket, content_type='image/png')
     return response
     
 def event(request):
     if request.method == 'GET':
-        # events = Events.objects.all()
-        # return render(request, 'events.html', {'events': events})
         events = Events.objects.filter(type='tech').only('id','poster')
-        return render(request,'event.html',{'events':events})
+        context = []
+        meta = []
+        i = 0
+        for event in events:
+            if i <3:
+                meta.append(event)
+            else:
+                context.append(meta.copy())
+                meta.clear()
+                meta.append(event)
+                i = 0
+            i +=1
+        if i<2:
+            context.append(meta)
+        return render(request,'event.html',{'events':context})
     
 def event_type(request,type):
     if request.method == 'GET':
-        # events = Events.objects.all()
-        # return render(request, 'events.html', {'events': events})
         events = Events.objects.filter(type=type).only('id','poster')
-        return render(request,'event.html',{'events':events})
+        context = []
+        meta = []
+        i = 0
+        for event in events:
+            if i <3:
+                meta.append(event)
+            else:
+                context.append(meta.copy())
+                meta.clear()
+                meta.append(event)
+                i = 0
+            i +=1
+        if i<2:
+            context.append(meta)
+        return render(request,'event.html',{'events':context})
 
 def getEvent(request):
     data = json.loads(request.body)

@@ -154,7 +154,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-Email='Renaissance@jecrc.ac.in'
+# Email='Renaissance@jecrc.ac.in'
+Email='pranavpurohit73@gmail.com'
 EMAIL_BACKEND = 'django_ses.SESBackend'
 
 # Static files (CSS, JavaScript, Images)

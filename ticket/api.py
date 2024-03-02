@@ -7,7 +7,7 @@ from ticket.models import CustomTicket, Ticket
 
 
 #TODO : Update this Date
-day1 = datetime.strptime('2024-3-2','%Y-%m-%d').date()
+day1 = datetime.strptime('2024-3-19','%Y-%m-%d').date()
 day2 = datetime.strptime('2024-3-20','%Y-%m-%d').date()
 day3 = datetime.strptime('2024-3-21','%Y-%m-%d').date()
 
@@ -52,15 +52,20 @@ def permit(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            # event_id = request.POST.get('event_id')
             ticket_id = data.get('ticketId')
             if ticket_id is not None:
                 today = datetime.today().date()
                 ticket = Passes.objects.get(psid=ticket_id)
+                #check if today is not a fest day
+                if today != day1 or today != day2 or today != day3:
+                    return HttpResponse('Ticket used or not for today',status=404)
+                # if today is day1 and day1 is already used
                 if ticket.day1 == True and today == day1:
                     return HttpResponse('Ticket used or not for today',status=404)
+                # if today is day2 and day2 is already used
                 elif ticket.day2 == True and today == day2:
                     return HttpResponse('Ticket used or not for today',status=404)
+                # if today is day3 and day3 is already used
                 elif ticket.day3 == True and today == day3:
                     return HttpResponse('Ticket used or not for today',status=404)
                 # if ticket.used == True :#or ticket.date != datetime.today():
@@ -71,7 +76,9 @@ def permit(request):
                     elif today == day2:
                         ticket.day2 = True
                     elif today == day3:
-                        ticket.day3 = True 
+                        ticket.day3 = True
+                    else:
+                        return HttpResponse('Ticket used or not for today',status=404) 
                     ticket.save()
                     return HttpResponse('Entry permitted',status=200)
             else:
@@ -89,19 +96,12 @@ def verify_custom(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            # event_id = request.POST.get('event_id')
             ticket_id = data.get('ticketId')
             if ticket_id is not None:
                 ticket = CustomTicket.objects.get(id=ticket_id)
-                # today = datetime.today().date()
-                today = datetime.strptime('2024-3-2','%Y-%m-%d').date()
-                # if ticket.day1 == True and today == day1:
-                #     return HttpResponse('Ticket used or not for today',status=404)
-                # if ticket.day2 == True and today == day2:
-                #     return HttpResponse('Ticket used or not for today',status=404)
-                # if ticket.day3 == True and today == day3:
-                #     return HttpResponse('Ticket used or not for today',status=404)
-                if ticket.used == True and ticket.event.date != today:
+                today = datetime.today().date()
+                # if today is not ticket day or if it is already used
+                if ticket.used == True or ticket.event.date != today:
                     return HttpResponse('Ticket used or not for today',status=404)
                 context = {
                     'first_name':str(ticket.name.split(' ')[0]),
@@ -129,9 +129,9 @@ def permit_custom(request):
             ticket_id = data.get('ticketId')
             if ticket_id is not None:
                 ticket = CustomTicket.objects.get(id=ticket_id)
-                # today = datetime.today().date()
-                today = datetime.strptime('2024-3-2','%Y-%m-%d').date()
-                if ticket.used == True and ticket.event.date.date() != today:
+                today = datetime.today().date()
+                # today = datetime.strptime('2024-3-2','%Y-%m-%d').date()
+                if ticket.used == True or ticket.event.date.date() != today:
                     return HttpResponse('Ticket used or not for today',status=404)
                 else:
                     ticket.used = True

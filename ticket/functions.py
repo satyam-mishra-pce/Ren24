@@ -7,6 +7,7 @@ from io import BytesIO
 # from reportlab.lib.pagesizes import letter
 # from reportlab.pdfgen import canvas
 from PIL import Image, ImageDraw, ImageFont
+from account.functions import getPass
 from config import settings
 from ticket.models import Ticket
 
@@ -42,12 +43,12 @@ def generate_ticket(ticket_id)->bytes:
     font = ImageFont.truetype(font_name, 32)  # Use a suitable font
     font_medium = ImageFont.truetype(font_name, 24)  # Use a suitable font
     font_small = ImageFont.truetype(font_name, 16)  # Use a suitable font
-    draw.text((350, 25), f"Booking Id: {ticket.id}", fill="white", font=font_small)
+    draw.text((350, 25), f"Booking Id: {ticket.id}", fill="black", font=font_small)
     draw.text((350, 70), f"{ticket.user.first_name} {ticket.user.last_name}", fill="black", font=font)
     draw.text((350, 120),ticket.event.name.upper(), fill="black", font=font)
-    draw.text((350, 170),f"Venue : {ticket.event.venue}", fill="white", font=font_medium)
-    # draw.text((350, 220),ticket.event.time.strftime("%-I:%M %p"), fill="black", font=font_medium)
-    # draw.text((600, 220),ticket.event.date.strftime("%a, %d %b, %Y"), fill="black", font=font_medium)
+    draw.text((350, 170),f"Venue : {ticket.event.venue}", fill="black", font=font_medium)
+    draw.text((350, 220),ticket.event.time.strftime("%-I:%M %p"), fill="black", font=font_medium)
+    draw.text((600, 220),ticket.event.date.strftime("%a, %d %b, %Y"), fill="black", font=font_medium)
 
     # Save the image to a BytesIO buffer
     img_io = BytesIO()
@@ -65,7 +66,8 @@ def generate_master_ticket(user)->bytes:
         border=2,
         error_correction=qrcode.constants.ERROR_CORRECT_H,
         )
-    qr.add_data(f"{settings.BASE_URL}/qr/{user._pass.psid}")
+    _pass = getPass(user)
+    qr.add_data(f"{settings.BASE_URL}/qr/{_pass.psid}")
     qr.make(fit=True)
     qr_img = qr.make_image(fill_color=(0,0,0), back_color="transparent").convert('RGBA')
     qr_img = qr_img.resize((270, 270))  # Resize QR code image if necessary
@@ -86,10 +88,10 @@ def generate_master_ticket(user)->bytes:
     font = ImageFont.truetype(font_name, 32)  # Use a suitable font
     font_medium = ImageFont.truetype(font_name, 24)  # Use a suitable font
     font_small = ImageFont.truetype(font_name, 16)  # Use a suitable font
-    draw.text((350, 25), f"Booking Id: {user._pass.id}", fill="white", font=font_small)
+    draw.text((350, 25), f"Booking Id: {user._pass.psid}", fill="black", font=font_small)
     draw.text((350, 70), f"{user.first_name} {user.last_name}", fill="black", font=font)
-    # draw.text((350, 120),event.name.upper(), fill="black", font=font)
-    # draw.text((350, 170),f"Venue : {ticket.event.venue}", fill="white", font=font_medium)
+    draw.text((350, 120),"Master Pass", fill="black", font=font)
+    draw.text((350, 170),"JECRC Foundation", fill="black", font=font_medium)
     draw.text((350, 220),"Validity : 19 to 21 March 2024", fill="black", font=font_medium)
     # draw.text((600, 220),ticket.event.date.strftime("%a, %d %b, %Y"), fill="black", font=font_medium)
 

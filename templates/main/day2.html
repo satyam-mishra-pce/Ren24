@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
-    {% block title %}Itineary{% endblock title %} 
+    {% block title %}Itinerary{% endblock title %} 
     {% block head %}
     <link rel="stylesheet" href="{% static "css/itinerary.css" %}">
     <style>
         body{
-            
-    background-image: url("{% static "assets/itinerary/background1.jpg" %}");
+            background-image: url("{% static "assets/itinerary/background1.jpg" %}");
         }
     </style>
     {% endblock head %}
@@ -14,15 +13,15 @@
     <div class="headline">
         <div class="days">
             <a href="{% url "itinerary" %}/1">
-                <img src="{% static "assets/itinerary/single-mushroom-removebg-preview.png" %}" alt="">
+                <img class="img" src="{% static "assets/itinerary/single-mushroom-removebg-preview.png" %}" alt="">
                 <div class="day"><b>Day 1</b></div>
             </a>
             <a href="#">
-                <img src="{% static "assets/itinerary/double-mushroom-removebg-preview.png" %}" alt="">
+                <img class="img" src="{% static "assets/itinerary/double-mushroom-removebg-preview.png" %}" alt="">
                 <div class="day"><b>Day 2</b></div>
             </a>
             <a href="{% url "itinerary" %}/3">
-                <img src="{% static "assets/itinerary/triple-mushroom-removebg-preview.png" %}" alt="">
+                <img class="img" src="{% static "assets/itinerary/triple-mushroom-removebg-preview.png" %}" alt="">
                 <div class="day"><b>Day 3</b></div>
             </a> 
         </div>
@@ -50,7 +49,7 @@
                     <b><time class="time">9:00 AM TO 11.00 AM</time></b>
                     <div class="discovery">
                         <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
-                        <h1>Mono Act</h1>
+                        <h1>Navras</h1>
                         <b>
                             <p>A-Block Audi</p>
                         </b>
@@ -146,7 +145,7 @@
                     <b><time class="time">11:00 AM TO 1.00 PM</time></b>
                     <div class="discovery">
                         <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
-                        <h1>Talent Show</h1>
+                        <h1>Hunar</h1>
                         <b>
                             <p>C-Block Stage</p>
                         </b>
@@ -159,12 +158,12 @@
             </li>
             <li>
                 <div>
-                    <b><time class="time">11:00 AM TO 1.00 PM</time></b>
+                    <b><time class="time">11:00 AM TO 04Menia:00 PM</time></b>
                     <div class="discovery">
                         <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
-                        <h1>3D Menia</h1>
+                        <h1>Game of Drones</h1>
                         <b>
-                            <p>DS-08</p>
+                            <p>Central Lawn</p>
                         </b>
                     </div>
                     <!-- <div class="scientist">
@@ -173,7 +172,7 @@
                     </div> -->
                 </div>
             </li>
-            <li>
+            {% comment %} <li>
                 <div>
                     <b><time class="time">11:00 AM TO 04.00 PM</time></b>
                     <div class="discovery">
@@ -188,7 +187,7 @@
                         <span></span>
                     </div> -->
                 </div>
-            </li>
+            </li> {% endcomment %}
             <li>
                 <div>
                     <b><time class="time">11:30 AM TO 01.00 PM</time></b>
@@ -212,7 +211,7 @@
                         <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
                         <h1>Programers Playground</h1>
                         <b>
-                            <p>Conference hall d block</p>
+                            <p>Conference hall D block</p>
                         </b>
                     </div>
                     <!-- <div class="scientist">
@@ -223,12 +222,28 @@
             </li>
             <li>
                 <div>
-                    <b><time class="time">12.00 PM TO 03.00 PM</time></b>
+                    <b><time class="time">12.00 PM TO 02:00 PM</time></b>
                     <div class="discovery">
                         <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
-                        <h1>Street Dance</h1>
+                        <h1>Technical Poster Making Competition</h1>
                         <b>
-                            <p>A-Block Quadrangle</p>
+                            <p>BLG-06</p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1>Central Lawn</h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div>
+                    <b><time class="time">12:30 PM TO 03:00 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Breakin' Battles </h1>
+                        <b>
+                            <p>A-BLock Quadrangle</p>
                         </b>
                     </div>
                     <!-- <div class="scientist">
@@ -271,44 +286,12 @@
             </li>
             <li>
                 <div>
-                    <b><time class="time">12.30 PM TO 3.00 PM</time></b>
+                    <b><time class="time">01:30 PM TO 03:30 PM</time></b>
                     <div class="discovery">
                         <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
-                        <h1>LAN Gaming</h1>
+                        <h1>Sac Race</h1>
                         <b>
-                            <p>Seminar Hall C-Block</p>
-                        </b>
-                    </div>
-                    <!-- <div class="scientist">
-                        <h1>Central Lawn</h1>
-                        <span></span>
-                    </div> -->
-                </div>
-            </li>
-            <li>
-                <div>
-                    <b><time class="time">01.00 PM TO 3.00 PM</time></b>
-                    <div class="discovery">
-                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
-                        <h1>Bits (Coding Contest)</h1>
-                        <b>
-                            <p>DF-08</p>
-                        </b>
-                    </div>
-                    <!-- <div class="scientist">
-                        <h1>Central Lawn</h1>
-                        <span></span>
-                    </div> -->
-                </div>
-            </li>
-            <li>
-                <div>
-                    <b><time class="time">02.00 PM TO 4.00 PM</time></b>
-                    <div class="discovery">
-                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
-                        <h1>IPL Auction</h1>
-                        <b>
-                            <p>C-Block Class</p>
+                            <p>C-Block Lawn</p>
                         </b>
                     </div>
                     <!-- <div class="scientist">
@@ -325,6 +308,22 @@
                         <h1>JECRC Technoads</h1>
                         <b>
                             <p> Computer lab </p>
+                        </b>
+                    </div>
+                    <!-- <div class="scientist">
+                        <h1></h1>
+                        <span></span>
+                    </div> -->
+                </div>
+            </li>
+            <li>
+                <div class="contant">
+                    <b><time class="time">02:00 PM TO 03:30 PM</time></b>
+                    <div class="discovery">
+                        <!-- <img src="https://toc.h-cdn.co/assets/16/14/3200x2136/1971-lamborghini-miura-sv_1.jpg" alt=""> -->
+                        <h1>Chess</h1>
+                        <b>
+                            <p>DF-03</p>
                         </b>
                     </div>
                     <!-- <div class="scientist">
