@@ -13,6 +13,9 @@ def itinerary(request):
 def celebrity(request):
     return render(request,'celebrities.html')
 
+def contact(request):
+    return render(request,'contact.html')
+
 # def e(request):
 #     events = Events.objects.all().only('id','poster')
 #     return render(request,'event.html',{'events':events})

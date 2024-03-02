@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Contact{% endblock title %}
+{% block head %}
+    <style>
+@media only screen and (max-width: 2560px) and (min-width: 440px){
+      body {
+        background-image: url({% static "assets/bg/landscape/jon-arellano-ur-10.jpg" %});
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+      }
+      .container-laptop {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        /* height: 100%; */
+        /* width: auto; */
+      }
+
+      .container1,
+      .container2 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      .image {
+        border-radius: 2em;
+        backdrop-filter: blur(1rem);
+        border: 1px solid transparent;
+        box-shadow: 1.3rem 1.3rem 1.3rem rgba(0, 0, 0, 0.3);
+        border-top-color: rgba(255, 255, 255, 0.5);
+        border-left-color: rgba(255, 255, 255, 0.5);
+        border-right-color: rgba(255, 255, 255, 0.2);
+        border-bottom-color: rgba(255,  255,  255, 0.2);
+        margin: 1em;
+        height: auto;
+        width: 44vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .image img {
+        height: auto;
+        width: 40vw;
+        margin: 1rem;
+      }
+
+      .container-mobile{
+        display: none;
+      }
+    }
+
+
+      @media only screen and (max-width: 440px){
+
+
+        body {
+        background-image: url({% static "assets/bg/landscape/jon-arellano-ur-10.jpg" %});
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+      }
+    .container-mobile{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+  .container-laptop{
+      display: none;
+  }
+
+  .image img{
+    height: auto;
+        width: 75vw;
+        margin: 1rem;
+        backdrop-filter: blur(2rem);
+        border-radius: 45px;
+  }
+        }
+
+
+
+
+    </style>
+    {% endblock head %}
+{% block body %}
+    <div class="container-laptop body-section">
+      <div class="container1">
+        <div class="image">
+          <img src="{% static "assets/contact/id-01.png" %}" alt="" />
+        </div>
+        <div class="image">
+          <img src="{% static "assets/contact/id-02.png" %}" alt="" />
+        </div>
+      </div>
+      <div class="container2">
+        <div class="image">
+          <img src="{% static "assets/contact/id-03.png" %}" alt="" />
+        </div>
+        <div class="image">
+          <img src="{% static "assets/contact/id-04.png" %}" alt="" />
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="container-mobile body-section">
+      <div class="image">
+        <img src="{% static "assets/contact/id-05.png" %}" alt="" />
+      </div>
+      <div class="image">
+        <img src="{% static "assets/contact/id-06.png" %}" alt="" />
+      </div>
+
+      <div class="image">
+        <img src="{% static "assets/contact/id-07.png" %}" alt="" />
+      </div>
+      <div class="image">
+        <img src="{% static "assets/contact/id-08.png" %}" alt="" />
+      </div>
+    </div>
+    {% endblock body %}
